@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</title>
+<meta name="description" content="لوحة متابعة مؤشرات التقويم المدرسي لمدرسة عبدالله ابن حذافة الابتدائية للعام الدراسي 2026-2027">
+
+<!-- Open Graph / social share preview (WhatsApp, Twitter, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gray-sand-03bd44d10.7.azurestaticapps.net/">
+<meta property="og:title" content="لوحة متابعة مؤشرات التقويم المدرسي - مدرسة عبدالله ابن حذافة الابتدائية">
+<meta property="og:description" content="متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027">
+<meta property="og:image" content="https://gray-sand-03bd44d10.7.azurestaticapps.net/assets/school-logo.jpeg">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="لوحة متابعة مؤشرات التقويم المدرسي">
+<meta name="twitter:description" content="مدرسة عبدالله ابن حذافة الابتدائية - العام الدراسي 2026-2027">
+<meta name="twitter:image" content="https://gray-sand-03bd44d10.7.azurestaticapps.net/assets/school-logo.jpeg">
+
 <meta name="theme-color" content="#0f1b35">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -305,7 +319,8 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--navy);min-h
   @page{size:A4;margin:12mm}
   body{background:white !important;font-size:11px}
   .topbar,.filter-bar,.pwa-bar,#pwaBar,.modal-overlay,.btn-update,.topbar-actions,.search-box,
-  #recordsSection,footer,.ind-chevron{display:none !important}
+  #recordsSection,footer,.ind-chevron,.view-nav{display:none !important}
+  .app-view{display:block !important}
   .topbar{display:block !important;background:white !important;color:var(--navy) !important;box-shadow:none !important;border-bottom:2px solid var(--navy);position:static !important;padding:0 0 8px}
   .topbar .topbar-inner{padding:8px 0}
   .topbar .logo-text h1{color:var(--navy);font-size:14px}
@@ -431,6 +446,19 @@ body.landing-open{overflow:hidden}
   .landing-stats{flex-wrap:wrap}
   .landing-meta span{width:100%}
 }
+/* ===== VIEW NAVIGATION (page-like sections in one file) ===== */
+.view-nav{display:flex;gap:8px;padding:14px 32px;background:rgba(255,255,255,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);overflow-x:auto;max-width:1440px;margin:0 auto}
+.view-nav-btn{flex-shrink:0;border:0;background:transparent;color:var(--slate);font-family:inherit;font-size:13px;font-weight:700;padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.view-nav-btn:hover{background:#f2f2f7}
+.view-nav-btn.active{background:#1d1d1f;color:#fff}
+.view-nav-btn-exit{background:#f2f2f7;color:#6e6e73;border:1px solid var(--border)}
+.view-nav-btn-exit:hover{background:#e8e8ed;color:#1d1d1f}
+.app-view{display:none}
+.app-view.is-active{display:block}
+.view-search-bar{display:flex;align-items:center;gap:10px}
+.view-search-bar .search-box{margin-right:0;flex:1;max-width:340px}
+@media(max-width:768px){.view-nav{padding:10px 16px}}
+
 
 </style>
 </head>
@@ -477,13 +505,23 @@ function enterDashboard(){
   document.body.classList.remove('landing-open');
   window.setTimeout(function(){ landing.hidden=true; },420);
 }
+function goToLanding(){
+  var landing=document.getElementById('landingPage');
+  landing.hidden=false;
+  document.body.classList.add('landing-open');
+  window.requestAnimationFrame(function(){
+    window.requestAnimationFrame(function(){ landing.classList.remove('is-leaving'); });
+  });
+}
 </script>
 
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-inner">
     <div class="topbar-logo">
-      <div class="logo-icon">🏫</div>
+      <div class="logo-icon" id="topbarLogoIcon">
+        <img src="assets/school-logo.jpeg" alt="شعار المدرسة" style="width:100%;height:100%;object-fit:cover;border-radius:inherit" onerror="this.remove();document.getElementById('topbarLogoIcon').textContent='🏫';">
+      </div>
       <div class="logo-text">
         <h1>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</h1>
         <p style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -504,6 +542,16 @@ function enterDashboard(){
   </div>
 </div>
 
+<!-- VIEW NAVIGATION -->
+<nav class="view-nav" id="viewNav">
+  <button class="view-nav-btn" data-view="home" onclick="goToView('home')">🏠 الرئيسية</button>
+  <button class="view-nav-btn" data-view="admin" onclick="goToView('admin')">الإدارة المدرسية</button>
+  <button class="view-nav-btn" data-view="teach" onclick="goToView('teach')">التعليم والتعلم</button>
+  <button class="view-nav-btn" data-view="out" onclick="goToView('out')">نواتج التعلم</button>
+  <button class="view-nav-btn" data-view="env" onclick="goToView('env')">البيئة المدرسية</button>
+  <button class="view-nav-btn view-nav-btn-exit" style="margin-right:auto" onclick="goToLanding()">🏫 صفحة الترحيب</button>
+</nav>
+
 <!-- PWA INSTALL BANNER -->
 <div id="pwaBar" style="display:none;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:white;padding:10px 20px;align-items:center;justify-content:space-between;gap:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600">
   <span>📲 يمكنك تثبيت التطبيق على شاشتك الرئيسية للوصول السريع دون إنترنت</span>
@@ -513,6 +561,7 @@ function enterDashboard(){
   </div>
 </div>
 
+<div id="view-home" class="app-view is-active">
 <!-- SUMMARY STATS -->
 <div class="stats-row" id="statsRow">
   <div class="stat-card">
@@ -572,25 +621,50 @@ function enterDashboard(){
     </div>
   </div>
 </section>
+</div>
 
 <!-- MAIN -->
 <div class="main">
-
-  <!-- FILTER BAR -->
-  <div class="filter-bar" style="margin-bottom:20px">
-    <span class="filter-label">عرض:</span>
-    <button class="filter-btn active" onclick="filterDomain('all',this)">الكل</button>
-    <button class="filter-btn" onclick="filterDomain('admin',this)">الإدارة المدرسية</button>
-    <button class="filter-btn" onclick="filterDomain('teach',this)">التعليم والتعلم</button>
-    <button class="filter-btn" onclick="filterDomain('out',this)">نواتج التعلم</button>
-    <button class="filter-btn" onclick="filterDomain('env',this)">البيئة المدرسية</button>
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds(this.value)">
+  <div id="view-admin" class="app-view">
+    <div class="filter-bar view-search-bar" style="margin-bottom:20px">
+      <span class="filter-label">🔍 بحث ضمن مجال الإدارة المدرسية:</span>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds('admin', this.value)">
+      </div>
     </div>
+    <div id="mainContent-admin"></div>
   </div>
-
-  <div id="mainContent"></div>
+  <div id="view-teach" class="app-view">
+    <div class="filter-bar view-search-bar" style="margin-bottom:20px">
+      <span class="filter-label">🔍 بحث ضمن مجال التعليم والتعلم:</span>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds('teach', this.value)">
+      </div>
+    </div>
+    <div id="mainContent-teach"></div>
+  </div>
+  <div id="view-out" class="app-view">
+    <div class="filter-bar view-search-bar" style="margin-bottom:20px">
+      <span class="filter-label">🔍 بحث ضمن مجال نواتج التعلم:</span>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds('out', this.value)">
+      </div>
+    </div>
+    <div id="mainContent-out"></div>
+  </div>
+  <div id="view-env" class="app-view">
+    <div class="filter-bar view-search-bar" style="margin-bottom:20px">
+      <span class="filter-label">🔍 بحث ضمن مجال البيئة المدرسية:</span>
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds('env', this.value)">
+      </div>
+    </div>
+    <div id="mainContent-env"></div>
+  </div>
 </div>
 
 <!-- UPDATE MODAL -->
@@ -923,31 +997,62 @@ function getBarColor(p,domain){
 }
 
 // ===================== RENDER =====================
-var currentFilter='all', currentSearch='';
+var searchTerms={admin:'',teach:'',out:'',env:''};
+
+function renderDomain(domainId){
+  var dom=DOMAINS.find(function(d){return d.id===domainId;});
+  if(!dom) return;
+  var container=document.getElementById('mainContent-'+domainId);
+  if(!container) return;
+  var q=searchTerms[domainId]||'';
+  var inds=INDICATORS.filter(function(i){
+    if(i.domain!==domainId) return false;
+    if(q && i.title.indexOf(q)===-1 && i.id.indexOf(q)===-1) return false;
+    return true;
+  });
+  container.innerHTML='';
+  var avg=inds.length?Math.round(inds.reduce(function(s,i){return s+loadPct(i.id);},0)/inds.length):0;
+  var hdr=document.createElement('div');
+  hdr.className='domain-header '+dom.cls.split(' ')[0];
+  hdr.innerHTML='<div class="domain-dot" style="background:'+dom.color+'"></div><div class="domain-title">'+dom.label+'</div><div class="domain-count">'+inds.length+' مؤشر</div><div class="domain-avg" id="domavg_'+dom.id+'" style="color:'+dom.color+'">متوسط الإنجاز: '+avg+'%</div>';
+  container.appendChild(hdr);
+  var grid=document.createElement('div');
+  grid.className='indicators-grid';
+  if(!inds.length){
+    grid.innerHTML='<div class="task-empty">لا نتائج مطابقة للبحث</div>';
+  } else {
+    inds.forEach(function(ind){ grid.appendChild(buildCard(ind,dom)); });
+  }
+  container.appendChild(grid);
+}
 
 function render(){
-  var content=document.getElementById('mainContent');
-  content.innerHTML='';
-  DOMAINS.forEach(function(dom){
-    var inds=INDICATORS.filter(function(i){
-      if(currentFilter!=='all' && i.domain!==currentFilter) return false;
-      if(currentSearch && i.title.indexOf(currentSearch)===-1 && i.id.indexOf(currentSearch)===-1) return false;
-      return i.domain===dom.id;
-    });
-    if(!inds.length) return;
-    var avg=Math.round(inds.reduce(function(s,i){return s+loadPct(i.id);},0)/inds.length);
-    var hdr=document.createElement('div');
-    hdr.className='domain-header '+dom.cls.split(' ')[0];
-    hdr.innerHTML='<div class="domain-dot" style="background:'+dom.color+'"></div><div class="domain-title">'+dom.label+'</div><div class="domain-count">'+inds.length+' مؤشر</div><div class="domain-avg" id="domavg_'+dom.id+'" style="color:'+dom.color+'">متوسط الإنجاز: '+avg+'%</div>';
-    content.appendChild(hdr);
-    var grid=document.createElement('div');
-    grid.className='indicators-grid';
-    inds.forEach(function(ind){
-      grid.appendChild(buildCard(ind,dom));
-    });
-    content.appendChild(grid);
-  });
+  DOMAINS.forEach(function(dom){ renderDomain(dom.id); });
   updateStats();
+}
+
+function searchInds(domainId,q){
+  searchTerms[domainId]=q;
+  renderDomain(domainId);
+}
+
+// ===================== VIEW ROUTING (page-like navigation, single file) =====================
+var VIEWS=['home','admin','teach','out','env'];
+function goToView(viewId){
+  if(VIEWS.indexOf(viewId)===-1) viewId='home';
+  document.querySelectorAll('.app-view').forEach(function(v){ v.classList.remove('is-active'); });
+  var target=document.getElementById('view-'+viewId);
+  if(target) target.classList.add('is-active');
+  document.querySelectorAll('.view-nav-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.view===viewId); });
+  if(location.hash!=='#'+viewId){ history.replaceState(null,'','#'+viewId); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function initRouting(){
+  var initial=(location.hash||'').replace('#','')||'home';
+  goToView(initial);
+  window.addEventListener('hashchange',function(){
+    goToView((location.hash||'').replace('#','')||'home');
+  });
 }
 
 function buildCard(ind,dom){
@@ -1494,18 +1599,6 @@ function printReport(){
   setTimeout(function(){window.print();},200);
 }
 
-function filterDomain(domain,btn){
-  currentFilter=domain;
-  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  render();
-}
-
-function searchInds(q){
-  currentSearch=q;
-  render();
-}
-
 function showUpdateModal(){document.getElementById('updateModal').classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 
@@ -1670,6 +1763,7 @@ function cloudUploadEvidenceImage(indId, file, title){
 // INIT
 render();
 loadSchoolName();
+initRouting();
 cloudAutoLoadOnStartup();
 
 
