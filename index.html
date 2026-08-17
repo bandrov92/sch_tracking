@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</title>
+<meta name="theme-color" content="#0f1b35">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="تقويم مدرسي">
+<link rel="manifest" id="manifestLink" href="site.webmanifest">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='32' fill='%230f1b35'/%3E%3Ctext x='96' y='130' font-size='100' text-anchor='middle'%3E%F0%9F%8F%AB%3C/text%3E%3C/svg%3E">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0f1b35;--navy2:#162347;--navy3:#1d2e5a;
+  --teal:#1a9e7a;--teal2:#22c99c;--teal3:#0d6b52;
+  --purple:#6c3fc5;--purple2:#8b5cf6;
+  --amber:#d97706;--amber2:#f59e0b;--amber-light:#fef3c7;
+  --red:#dc2626;--red2:#ef4444;
+  --green:#059669;--green2:#10b981;
+  --blue:#1d4ed8;--blue2:#3b82f6;
+  --slate:#64748b;--slate2:#94a3b8;
+  --bg:#f0f4f8;--white:#ffffff;
+  --border:rgba(0,0,0,0.08);
+  --card-shadow:0 2px 12px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.05);
+}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;direction:rtl}
+
+/* TOP BAR */
+.topbar{background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 60%,#1a3070 100%);color:white;padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:16px}
+.topbar-logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--teal),var(--teal2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.logo-text h1{font-size:16px;font-weight:800;line-height:1.2}
+.logo-text p{font-size:11px;opacity:0.7;margin-top:1px}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.btn-update{background:var(--teal);color:white;border:none;border-radius:8px;padding:8px 18px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap;line-height:1.2}
+.btn-update:hover{background:var(--teal2);transform:translateY(-1px)}
+.topbar-date{font-size:11px;opacity:0.65;text-align:center}
+
+/* SUMMARY STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 28px 0}
+.stat-card{background:white;border-radius:14px;padding:18px 20px;box-shadow:var(--card-shadow);border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.stat-icon.navy{background:linear-gradient(135deg,#162347,#1d2e5a)}
+.stat-icon.teal{background:linear-gradient(135deg,var(--teal3),var(--teal))}
+.stat-icon.amber{background:linear-gradient(135deg,#92400e,var(--amber))}
+.stat-icon.purple{background:linear-gradient(135deg,#4c1d95,var(--purple))}
+.stat-num{font-size:28px;font-weight:900;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--slate);margin-top:3px}
+.stat-sub{font-size:11px;color:var(--green2);font-weight:700;margin-top:2px}
+
+/* MAIN CONTENT */
+.main{padding:20px 28px 40px}
+
+/* SECTION HEADERS */
+.domain-header{display:flex;align-items:center;gap:12px;margin:28px 0 16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.domain-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0}
+.domain-title{font-size:17px;font-weight:800;color:var(--navy)}
+.domain-count{background:var(--navy);color:white;border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;margin-right:auto}
+.domain-avg{font-size:13px;font-weight:700}
+
+/* FILTER BAR */
+.filter-bar{background:white;border-radius:14px;padding:14px 20px;box-shadow:var(--card-shadow);border:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:0}
+.filter-label{font-size:12px;color:var(--slate);font-weight:600}
+.filter-btn{padding:6px 14px;border-radius:20px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;background:white;color:var(--slate);transition:all .15s}
+.filter-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+.filter-btn:hover:not(.active){border-color:var(--navy);color:var(--navy)}
+.search-box{margin-right:auto;display:flex;align-items:center;gap:8px;background:#f8fafc;border:1.5px solid var(--border);border-radius:10px;padding:6px 12px}
+.search-box input{border:none;background:transparent;font-family:'Cairo',sans-serif;font-size:12px;color:var(--navy);outline:none;width:180px}
+
+/* INDICATOR CARDS */
+.indicators-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.ind-card{background:white;border-radius:14px;border:1px solid var(--border);box-shadow:var(--card-shadow);overflow:hidden;transition:all .2s;cursor:pointer}
+.ind-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.ind-card.expanded .ind-body{display:block}
+.ind-head{padding:16px 18px;display:flex;align-items:flex-start;gap:12px}
+.ind-code{background:var(--navy);color:white;border-radius:8px;padding:5px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;letter-spacing:0.5px;direction:ltr}
+.ind-title{font-size:13px;font-weight:700;color:var(--navy);line-height:1.55;flex:1}
+.ind-chevron{color:var(--slate2);font-size:12px;transition:transform .25s;flex-shrink:0;margin-top:2px}
+.ind-card.expanded .ind-chevron{transform:rotate(180deg)}
+.ind-progress-wrap{padding:0 18px 14px;display:flex;align-items:center;gap:10px}
+.ind-bar-bg{flex:1;height:7px;background:#f0f4f8;border-radius:4px;overflow:hidden}
+.ind-bar-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.ind-pct{font-size:13px;font-weight:800;min-width:36px;text-align:left}
+.ind-status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;margin:0 18px 12px}
+.status-great{background:#d1fae5;color:#065f46}
+.status-good{background:#dbeafe;color:#1e40af}
+.status-mid{background:#fef3c7;color:#92400e}
+.status-low{background:#fee2e2;color:#991b1b}
+
+.ind-body{display:none;padding:0 18px 16px;border-top:1px solid #f0f4f8}
+.ind-section{margin-top:12px}
+.ind-section-title{font-size:11px;font-weight:800;color:var(--teal3);letter-spacing:0.5px;margin-bottom:7px;text-transform:uppercase}
+.ind-tools{display:flex;flex-wrap:wrap;gap:5px}
+.tool-badge{padding:3px 10px;background:#f0f4f8;border-radius:20px;font-size:11px;color:var(--slate);font-weight:600}
+.ind-steps{list-style:none;display:flex;flex-direction:column;gap:6px}
+.step-item{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:#374151;line-height:1.55;cursor:pointer;padding:7px 9px;border-radius:8px;border:1.5px solid #e8edf3;background:#fafbfc;transition:all .15s;user-select:none}
+.step-item:hover{background:#f0f4f8;border-color:#cbd5e1}
+.step-item.checked{background:#ecfdf5;border-color:#86efac;color:#065f46}
+.step-check{width:18px;height:18px;border-radius:5px;border:1.8px solid #cbd5e1;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:white;background:white;transition:all .15s;margin-top:1px}
+.step-item.checked .step-check{background:var(--teal2);border-color:var(--teal2)}
+.step-item.checked .step-text{font-weight:700}
+.step-text{flex:1}
+.pct-info-wrap{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed #e2e8f0;font-size:11px;color:var(--slate);font-weight:600}
+.pct-info-wrap strong{color:var(--navy);font-weight:800}
+
+/* OVERALL PROGRESS RING */
+.progress-ring{position:relative;width:64px;height:64px}
+.progress-ring svg{transform:rotate(-90deg)}
+.progress-ring circle{fill:none;stroke-linecap:round}
+.ring-bg{stroke:#e2e8f0;stroke-width:7}
+.ring-fill{stroke:var(--teal2);stroke-width:7;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--navy)}
+
+/* DOMAIN COLORS */
+.d-admin .ind-code{background:#162347}
+.d-admin .ind-bar-fill{background:linear-gradient(90deg,#1d2e5a,#3b5bdb)}
+.d-admin .domain-dot{background:#162347}
+.d-admin .domain-avg{color:#162347}
+
+.d-teach .ind-code{background:#0d6b52}
+.d-teach .ind-bar-fill{background:linear-gradient(90deg,#0d6b52,var(--teal2))}
+.d-teach .domain-dot{background:#0d6b52}
+.d-teach .domain-avg{color:#0d6b52}
+
+.d-out .ind-code{background:#4c1d95}
+.d-out .ind-bar-fill{background:linear-gradient(90deg,#4c1d95,var(--purple2))}
+.d-out .domain-dot{background:#4c1d95}
+.d-out .domain-avg{color:#4c1d95}
+
+.d-env .ind-code{background:#92400e}
+.d-env .ind-bar-fill{background:linear-gradient(90deg,#92400e,var(--amber2))}
+.d-env .domain-dot{background:#92400e}
+.d-env .domain-avg{color:#92400e}
+
+/* TASKS */
+.tasks-box{margin-top:12px;background:#f8fafc;border:1.5px solid var(--border);border-radius:12px;padding:14px}
+.tasks-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.tasks-head h4{font-size:12px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:6px}
+.tasks-count{background:var(--navy);color:white;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:700}
+.task-add-btn{background:var(--teal);color:white;border:none;border-radius:8px;padding:5px 12px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px}
+.task-add-btn:hover{background:var(--teal2)}
+.task-list{display:flex;flex-direction:column;gap:8px}
+.task-empty{text-align:center;font-size:11px;color:var(--slate);padding:14px;border:1.5px dashed #cbd5e1;border-radius:8px}
+.task-item{background:white;border:1px solid var(--border);border-radius:10px;padding:10px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:start;transition:all .2s}
+.task-item.done{background:#ecfdf5;border-color:#a7f3d0;opacity:0.85}
+.task-item.done .task-title{text-decoration:line-through;color:var(--slate)}
+.task-check{width:22px;height:22px;border-radius:6px;border:2px solid #cbd5e1;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;color:white;transition:all .15s;margin-top:2px}
+.task-item.done .task-check{background:var(--green2);border-color:var(--green2)}
+.task-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+.task-title{font-size:12px;font-weight:700;color:var(--navy);line-height:1.4;word-break:break-word}
+.task-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:10.5px;color:var(--slate)}
+.task-chip{display:inline-flex;align-items:center;gap:3px;background:#f1f5f9;padding:2px 7px;border-radius:10px;font-weight:600}
+.task-chip.owner{background:#dbeafe;color:#1e40af}
+.task-chip.due{background:#fef3c7;color:#92400e}
+.task-chip.due.overdue{background:#fee2e2;color:#991b1b;font-weight:800}
+.task-chip.due.soon{background:#fed7aa;color:#9a3412;font-weight:700}
+.task-del{background:none;border:none;color:#dc2626;cursor:pointer;font-size:14px;padding:2px 6px;border-radius:6px;line-height:1}
+.task-del:hover{background:#fee2e2}
+.task-form{background:white;border:1.5px solid var(--teal);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.task-form input{width:100%;font-family:'Cairo',sans-serif;font-size:12px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;outline:none;color:var(--navy)}
+.task-form input:focus{border-color:var(--teal)}
+.task-form-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.task-form-actions{display:flex;gap:6px;justify-content:flex-end}
+.task-form-actions button{font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;padding:6px 14px;border-radius:7px;border:none;cursor:pointer}
+.task-save{background:var(--teal);color:white}
+.task-cancel{background:#e2e8f0;color:var(--navy)}
+@media(max-width:480px){.task-form-row{grid-template-columns:1fr}}
+/* ===== EVIDENCE / SHAWAHED ===== */
+.evid-box{margin-top:12px;background:linear-gradient(135deg,#fef9f3,#fdf4e7);border:1.5px solid #f3d9b1;border-radius:12px;padding:14px}
+.evid-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.evid-head h4{margin:0;font-size:13px;color:#7c4a03;font-weight:800;display:flex;align-items:center;gap:6px}
+.evid-count{background:#f59e0b;color:white;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700}
+.evid-add-btn{background:#f59e0b;color:white;border:none;border-radius:8px;padding:5px 12px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+.evid-add-btn:hover{background:#d97706}
+.evid-list{display:flex;flex-direction:column;gap:8px}
+.evid-empty{text-align:center;font-size:11px;color:#92651e;padding:14px;border:1.5px dashed #f3d9b1;border-radius:8px;background:rgba(255,255,255,0.5)}
+.evid-item{background:white;border:1px solid #f3d9b1;border-radius:10px;padding:10px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;transition:all .2s}
+.evid-item:hover{border-color:#f59e0b;box-shadow:0 2px 8px rgba(245,158,11,0.15)}
+.evid-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:#fef3c7}
+.evid-icon.gdrive{background:linear-gradient(135deg,#4285f4,#34a853)}
+.evid-icon.gdocs{background:#4285f4}
+.evid-icon.gsheets{background:#34a853}
+.evid-icon.gslides{background:#fbbc04}
+.evid-icon.image{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+.evid-icon.link{background:#64748b}
+.evid-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.evid-title{font-size:12px;font-weight:700;color:var(--navy);line-height:1.4;word-break:break-word}
+.evid-meta{font-size:10px;color:var(--slate);display:flex;gap:8px;flex-wrap:wrap}
+.evid-meta a{color:#2563eb;text-decoration:none;font-weight:600}
+.evid-meta a:hover{text-decoration:underline}
+.evid-actions{display:flex;gap:4px;align-items:center}
+.evid-open,.evid-del{background:none;border:none;cursor:pointer;font-size:14px;padding:5px 8px;border-radius:6px;line-height:1}
+.evid-open{color:#2563eb}
+.evid-open:hover{background:#dbeafe}
+.evid-del{color:#dc2626}
+.evid-del:hover{background:#fee2e2}
+.evid-form{background:white;border:1.5px solid #f59e0b;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.evid-tabs{display:flex;gap:4px;background:#f1f5f9;padding:3px;border-radius:8px}
+.evid-tab{flex:1;background:transparent;border:none;padding:6px 10px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;color:var(--slate);cursor:pointer;border-radius:6px;transition:all .15s}
+.evid-tab.active{background:white;color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.evid-form input[type="text"],.evid-form input[type="url"]{width:100%;font-family:'Cairo',sans-serif;font-size:12px;padding:7px 10px;border:1px solid var(--border);border-radius:7px;outline:none;color:var(--navy)}
+.evid-form input:focus{border-color:#f59e0b}
+.evid-form-hint{font-size:10px;color:var(--slate);background:#fef3c7;padding:6px 8px;border-radius:6px;line-height:1.5}
+.evid-file-label{display:flex;align-items:center;justify-content:center;gap:6px;border:1.5px dashed #f3d9b1;border-radius:8px;padding:14px;cursor:pointer;background:#fffbf3;font-size:12px;font-weight:700;color:#92651e;transition:all .15s}
+.evid-file-label:hover{border-color:#f59e0b;background:#fef3c7}
+.evid-file-label input{display:none}
+.evid-form-actions{display:flex;gap:6px;justify-content:flex-end}
+.evid-form-actions button{font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;padding:6px 14px;border-radius:7px;border:none;cursor:pointer}
+.evid-save{background:#f59e0b;color:white}
+.evid-cancel{background:#e2e8f0;color:var(--navy)}
+.evid-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid #f3d9b1;cursor:pointer}
+.evid-image-preview{margin-top:6px;max-width:100%;max-height:120px;border-radius:8px;border:1px solid var(--border)}
+
+/* SMART ANALYSIS */
+.smart-analysis{margin-top:12px;border-radius:12px;padding:14px;border:1.5px solid;position:relative;overflow:hidden}
+.smart-analysis.sa-low{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5}
+.smart-analysis.sa-mid{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fcd34d}
+.smart-analysis.sa-good{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd}
+.smart-analysis.sa-great{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#6ee7b7}
+.sa-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;margin-bottom:8px}
+.sa-icon{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:white;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.sa-low .sa-head{color:#991b1b}
+.sa-mid .sa-head{color:#92400e}
+.sa-good .sa-head{color:#1e40af}
+.sa-great .sa-head{color:#065f46}
+.sa-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.sa-list li{font-size:11.5px;line-height:1.6;color:#374151;padding-right:18px;position:relative}
+.sa-list li::before{content:'◆';position:absolute;right:0;top:0;font-size:9px;opacity:0.6}
+.sa-low .sa-list li::before{color:#dc2626}
+.sa-mid .sa-list li::before{color:#d97706}
+.sa-good .sa-list li::before{color:#2563eb}
+.sa-great .sa-list li::before{color:#059669}
+.sa-predict{margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.7);border-radius:8px;font-size:11px;color:#374151;display:flex;align-items:center;gap:6px;border:1px dashed rgba(0,0,0,0.1)}
+.sa-predict.warn{background:#fef3c7;border-color:#fbbf24;color:#78350f;font-weight:700}
+.sa-predict.danger{background:#fee2e2;border-color:#f87171;color:#991b1b;font-weight:700}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;justify-content:center;align-items:center}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:18px;max-width:560px;width:90%;max-height:80vh;overflow-y:auto;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.modal h2{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:16px}
+.modal-close{float:left;background:none;border:none;font-size:20px;cursor:pointer;color:var(--slate);line-height:1}
+.modal-section{margin-bottom:14px}
+.modal-section h3{font-size:12px;font-weight:800;color:var(--teal3);margin-bottom:6px;letter-spacing:0.5px}
+.modal-section p,.modal-section li{font-size:13px;color:#374151;line-height:1.7}
+.modal-section ul{padding-right:16px}
+
+@media(max-width:768px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .main,.topbar-inner,.stats-row{padding-left:16px;padding-right:16px}
+  .topbar-date{display:none}
+  .search-box{display:none}
+  .indicators-grid{grid-template-columns:1fr}
+  .domain-count{display:none}
+  .chart-section{padding:16px}
+  .chart-grid{grid-template-columns:1fr !important}
+}
+
+/* CHART SECTION */
+/* KPI PANEL */
+.kpi-panel{background:linear-gradient(135deg,#0f1b35 0%,#162347 60%,#1d2e5a 100%);border-radius:16px;padding:20px 24px;margin:20px 28px 0;box-shadow:0 4px 20px rgba(15,27,53,0.25);color:white;position:relative;overflow:hidden}
+.kpi-panel::before{content:'';position:absolute;top:-30%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(34,201,156,0.15),transparent 70%);pointer-events:none}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;flex-wrap:wrap;gap:10px}
+.kpi-head h3{font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px}
+.kpi-snapshot-btn{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 14px;font-family:'Cairo',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}
+.kpi-snapshot-btn:hover{background:rgba(34,201,156,0.3);border-color:var(--teal2)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative}
+.kpi-card{background:rgba(255,255,255,0.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px;transition:all .2s}
+.kpi-card:hover{background:rgba(255,255,255,0.13);transform:translateY(-2px)}
+.kpi-label{font-size:11px;font-weight:600;opacity:0.75;display:flex;align-items:center;gap:5px;margin-bottom:8px}
+.kpi-value{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px}
+.kpi-sub{font-size:10.5px;opacity:0.8;line-height:1.4;font-weight:600}
+.kpi-trend{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:800;margin-top:6px}
+.kpi-trend.up{background:rgba(34,201,156,0.25);color:#6ee7b7}
+.kpi-trend.down{background:rgba(239,68,68,0.25);color:#fca5a5}
+.kpi-trend.flat{background:rgba(148,163,184,0.25);color:#cbd5e1}
+.kpi-card.best{border-color:rgba(110,231,183,0.4)}
+.kpi-card.worst{border-color:rgba(252,165,165,0.4)}
+.kpi-mini{font-size:11.5px;font-weight:800;line-height:1.3;margin-bottom:3px;opacity:0.95}
+@media(max-width:768px){.kpi-panel{margin:16px;padding:16px}.kpi-grid{grid-template-columns:1fr 1fr;gap:10px}.kpi-value{font-size:22px}}
+
+.chart-section{background:white;border-radius:14px;padding:22px 24px;box-shadow:var(--card-shadow);border:1px solid var(--border);margin:20px 28px 0}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.chart-head h3{font-size:16px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px}
+.chart-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:center}
+.bars-chart{display:flex;flex-direction:column;gap:14px}
+.bar-row{display:grid;grid-template-columns:160px 1fr 50px;align-items:center;gap:12px}
+.bar-label{font-size:12px;font-weight:700;color:var(--navy)}
+.bar-track{height:22px;background:#f1f5f9;border-radius:11px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:11px;transition:width .8s cubic-bezier(.4,0,.2,1);background:linear-gradient(90deg,var(--c1),var(--c2))}
+.bar-val{font-size:13px;font-weight:800;text-align:left}
+.donut-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.donut-legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:11px;font-weight:700;color:var(--slate)}
+.donut-legend span{display:flex;align-items:center;gap:5px}
+.donut-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* PRINT */
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:white !important;font-size:11px}
+  .topbar,.filter-bar,.pwa-bar,#pwaBar,.modal-overlay,.btn-update,.topbar-actions,.search-box,
+  #recordsSection,footer,.ind-chevron{display:none !important}
+  .topbar{display:block !important;background:white !important;color:var(--navy) !important;box-shadow:none !important;border-bottom:2px solid var(--navy);position:static !important;padding:0 0 8px}
+  .topbar .topbar-inner{padding:8px 0}
+  .topbar .logo-text h1{color:var(--navy);font-size:14px}
+  .topbar .logo-text p{color:var(--slate)}
+  .stats-row{padding:10px 0 0;grid-template-columns:repeat(4,1fr) !important;gap:8px}
+  .stat-card{box-shadow:none;border:1px solid #cbd5e1;padding:10px;break-inside:avoid}
+  .stat-num{font-size:18px}
+  .stat-label{font-size:10px}
+  .stat-sub{font-size:9px}
+  .main{padding:0}
+  .chart-section{margin:10px 0;box-shadow:none;border:1px solid #cbd5e1;break-inside:avoid;padding:14px}
+  .kpi-panel{margin:10px 0;padding:12px;break-inside:avoid;background:#0f1b35 !important}
+  .kpi-grid{grid-template-columns:repeat(4,1fr) !important;gap:6px}
+  .kpi-snapshot-btn{display:none !important}
+  .kpi-value{font-size:20px}
+  .indicators-grid{grid-template-columns:1fr 1fr !important;gap:8px}
+  .ind-card{box-shadow:none;border:1px solid #cbd5e1;break-inside:avoid;cursor:default}
+  .ind-card .ind-body{display:block !important;background:#fafbfc}
+  .ind-head{padding:8px 10px}
+  .ind-title{font-size:11px}
+  .domain-header{margin:14px 0 8px;break-after:avoid}
+  .step-item{font-size:10px;padding:3px 6px}
+  .tool-badge{font-size:9px;padding:2px 6px}
+  .ind-section-title{font-size:10px}
+  .evid-add-btn,.evid-form,.evid-actions{display:none !important}
+  .evid-box{background:white !important;border:1px solid #cbd5e1 !important;padding:8px;break-inside:avoid}
+  .evid-item{break-inside:avoid;padding:6px}
+  .evid-title{font-size:10px}
+  .evid-meta{font-size:9px}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;color-adjust:exact !important}
+}
+/* ===== VISUAL REFRESH: APPLE-INSPIRED SYSTEM ===== */
+:root{--navy:#1d1d1f;--navy2:#2c2c2e;--navy3:#3a3a3c;--teal:#007aff;--teal2:#5ac8fa;--teal3:#0066cc;--purple:#5856d6;--purple2:#af52de;--amber:#ff9f0a;--amber2:#ffcc00;--green:#34c759;--green2:#30d158;--blue:#007aff;--blue2:#5ac8fa;--slate:#6e6e73;--slate2:#aeaeb2;--bg:#f5f5f7;--white:#fff;--border:rgba(60,60,67,.14);--card-shadow:0 10px 30px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04)}
+body,body *{font-family:'Segoe UI','Segoe UI Arabic',Tahoma,-apple-system,BlinkMacSystemFont,Roboto,'Helvetica Neue',Arial,sans-serif !important}body{background:radial-gradient(circle at 15% -10%,#e8f2ff 0,transparent 30%),radial-gradient(circle at 90% 0,#f3edff 0,transparent 26%),var(--bg);letter-spacing:-.01em}
+button,input{font-family:inherit !important}
+.topbar{background:rgba(29,29,31,.82);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.topbar-inner{max-width:1440px;margin:auto;padding:15px 32px}.topbar-logo{gap:14px}.logo-icon{width:40px;height:40px;border-radius:13px;background:linear-gradient(145deg,#0a84ff,#5ac8fa);box-shadow:inset 0 1px rgba(255,255,255,.35),0 8px 18px rgba(0,122,255,.24)}
+.logo-text h1{font-size:17px;font-weight:750;letter-spacing:-.02em}.logo-text p{font-size:11px;opacity:.7}.btn-update{border-radius:999px;padding:8px 15px;background:#0a84ff;box-shadow:inset 0 1px rgba(255,255,255,.26);font-weight:700}.btn-update:hover{filter:brightness(1.1);transform:scale(1.02)}
+.stats-row{max-width:1440px;margin:auto;padding:26px 32px 0;gap:16px}.stat-card{border-radius:22px;padding:19px 20px;background:rgba(255,255,255,.78);backdrop-filter:blur(18px);border-color:rgba(255,255,255,.85);box-shadow:var(--card-shadow)}.stat-card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(0,0,0,.1)}.stat-icon{width:46px;height:46px;border-radius:15px;box-shadow:inset 0 1px rgba(255,255,255,.25)}.stat-num{font-size:30px;letter-spacing:-.05em}.stat-label{font-size:12px}
+.kpi-panel{max-width:1376px;margin:24px auto 0;border-radius:26px;padding:25px 28px;background:linear-gradient(135deg,#1d1d1f,#2c2c2e 58%,#202e4a);box-shadow:0 20px 45px rgba(18,26,44,.18);border:1px solid rgba(255,255,255,.11)}.kpi-panel::before{width:430px;height:430px;top:-58%;left:-6%;background:radial-gradient(circle,rgba(90,200,250,.25),transparent 68%)}.kpi-head h3{font-size:17px}.kpi-snapshot-btn{border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.11);backdrop-filter:blur(10px)}.kpi-grid{gap:12px}.kpi-card{border-radius:18px;padding:16px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.13)}.kpi-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.15)}.kpi-value{font-size:30px;letter-spacing:-.05em}
+.chart-section{max-width:1376px;margin:24px auto 0;border-radius:26px;padding:26px 28px;background:rgba(255,255,255,.76);backdrop-filter:blur(18px);border-color:rgba(255,255,255,.9);box-shadow:var(--card-shadow)}.chart-head h3{font-size:17px}.bar-track{height:16px;border-radius:99px;background:#e9e9ed}.bar-fill{border-radius:99px;box-shadow:inset 0 1px rgba(255,255,255,.25)}
+.main{max-width:1440px;margin:auto;padding:24px 32px 54px}.filter-bar{border-radius:20px;padding:12px 14px;background:rgba(255,255,255,.72);backdrop-filter:blur(18px);border-color:rgba(255,255,255,.85);box-shadow:var(--card-shadow)}.filter-btn{border-radius:999px;padding:8px 14px;background:transparent;border:0}.filter-btn.active{background:#1d1d1f;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.16)}.filter-btn:hover:not(.active){background:#e8e8ed;border-color:transparent}.search-box{border-radius:999px;background:#f2f2f7;border:0;padding:8px 14px}.search-box input{width:195px}
+.domain-header{margin:36px 0 18px;padding-bottom:0;border:0}.domain-dot{width:11px;height:11px;box-shadow:0 0 0 5px color-mix(in srgb,currentColor 12%,transparent)}.domain-title{font-size:20px;letter-spacing:-.025em}.domain-count{border-radius:999px;background:#1d1d1f;padding:4px 11px}.domain-avg{background:rgba(255,255,255,.65);padding:5px 10px;border-radius:999px;border:1px solid var(--border)}
+.indicators-grid{gap:18px}.ind-card{border-radius:22px;background:rgba(255,255,255,.85);border-color:rgba(255,255,255,.92);box-shadow:var(--card-shadow)}.ind-card:hover{transform:translateY(-5px);box-shadow:0 18px 38px rgba(0,0,0,.1)}.ind-head{padding:19px 20px;gap:13px}.ind-code{border-radius:10px;padding:6px 10px;box-shadow:inset 0 1px rgba(255,255,255,.2)}.ind-title{font-size:13.5px;line-height:1.65}.ind-progress-wrap{padding:0 20px 15px}.ind-bar-bg{height:8px;border-radius:99px;background:#e9e9ed}.ind-bar-fill{border-radius:99px}.ind-status{border-radius:999px;margin:0 20px 15px;padding:4px 10px}.ind-body{padding:0 20px 20px;border-color:#e9e9ed}.tool-badge{background:#f2f2f7;border-radius:999px;padding:5px 10px}.step-item{border-radius:12px;border-color:#e5e5ea;background:#fbfbfd;padding:8px 10px}.step-item:hover{background:#f2f7ff;border-color:#b8d9ff}.step-check{border-radius:7px}.pct-info-wrap{border-color:#d9d9df}
+.tasks-box,.evid-box,.smart-analysis{border-radius:16px}.tasks-box{background:#f7f7fa;border-color:#e5e5ea}.task-item,.evid-item{border-radius:13px}.task-add-btn,.evid-add-btn,.task-save,.evid-save{border-radius:999px;padding:7px 13px}.task-form,.evid-form{border-radius:14px}.modal{border-radius:28px;box-shadow:0 28px 70px rgba(0,0,0,.25)}.modal-overlay{background:rgba(0,0,0,.34);backdrop-filter:blur(8px)}
+@media(max-width:768px){.topbar-inner,.stats-row,.main{padding-left:16px;padding-right:16px}.stats-row{padding-top:16px}.kpi-panel,.chart-section{margin-left:16px;margin-right:16px;border-radius:22px}.kpi-panel{padding:20px}.chart-section{padding:20px}.domain-title{font-size:18px}.indicators-grid{gap:14px}}
+.site-footer{max-width:1376px;margin:0 auto 28px;padding:0 2px;color:#6e6e73}.site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);box-shadow:0 8px 24px rgba(0,0,0,.04);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.site-footer-school{font-size:13px;font-weight:750;color:#1d1d1f;letter-spacing:-.015em}.site-footer-credit{font-size:12px;font-weight:600;color:#6e6e73}.site-footer-credit strong{color:#007aff;font-weight:750}@media(max-width:768px){.site-footer{margin:0 16px 20px}.site-footer-inner{padding:15px 16px;align-items:flex-start;flex-direction:column;gap:6px}.site-footer-school{font-size:12px}.site-footer-credit{font-size:11px}}
+/* Landing page */
+
+/* ===== LANDING PAGE ===== */
+body.landing-open{overflow:hidden}
+
+.landing-page{
+  position:fixed;inset:0;z-index:100000;
+  display:grid;place-items:center;padding:32px;
+  background:
+    radial-gradient(circle at 14% 12%,rgba(34,201,156,.14),transparent 32%),
+    radial-gradient(circle at 88% 86%,rgba(0,122,255,.10),transparent 34%),
+    linear-gradient(180deg,#fbfdfc 0%,#f4faf8 100%);
+  transition:opacity .45s ease,visibility .45s ease;
+}
+.landing-page::before,.landing-page::after{content:"";position:absolute;border:1px solid rgba(26,158,122,.13);border-radius:50%;pointer-events:none}
+.landing-page::before{width:min(52vw,620px);height:min(52vw,620px);top:-28vw;right:-14vw}
+.landing-page::after{width:min(42vw,470px);height:min(42vw,470px);bottom:-24vw;left:-10vw}
+.landing-page.is-leaving{opacity:0;visibility:hidden}
+
+.landing-shell{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:.86fr 1.14fr;
+  width:min(100%,980px);
+  border-radius:32px;overflow:hidden;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(26,158,122,.16);
+  box-shadow:0 30px 80px rgba(15,71,67,.16),0 4px 14px rgba(15,71,67,.06);
+  backdrop-filter:blur(18px);
+  animation:landingIn .55s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes landingIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+
+.landing-visual{
+  position:relative;padding:40px 34px;
+  display:flex;flex-direction:column;justify-content:center;gap:22px;
+  background:linear-gradient(150deg,#0f1b35 0%,#0d3b34 55%,#0a6b5c 130%);
+  color:#eafaf6;overflow:hidden;
+}
+.landing-visual::before{content:"";position:absolute;inset:-40% -20% auto auto;width:60%;padding-bottom:60%;border-radius:50%;background:radial-gradient(circle,rgba(34,201,156,.28),transparent 70%)}
+.landing-visual::after{content:"";position:absolute;left:-25%;bottom:-30%;width:70%;padding-bottom:70%;border-radius:50%;background:radial-gradient(circle,rgba(10,132,255,.22),transparent 70%)}
+.landing-visual-badge{position:relative;width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px rgba(255,255,255,.3)}
+.landing-visual-title{position:relative;font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.landing-visual-sub{position:relative;font-size:13px;color:#bfe9de;line-height:1.75;max-width:30ch}
+.landing-visual-domains{position:relative;list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.landing-visual-domains li{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:#e3f7f1;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}
+.lvd-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 4px rgba(255,255,255,.08)}
+
+.landing-card{position:relative;padding:46px 44px 40px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.landing-logo-wrap{position:relative;width:104px;height:104px;margin:0 auto 20px}
+.landing-logo{width:100%;height:100%;object-fit:cover;border-radius:26px;border:1px solid rgba(26,158,122,.18);box-shadow:0 14px 26px rgba(0,132,120,.16)}
+.landing-logo-fallback{display:none;width:100%;height:100%;border-radius:26px;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(145deg,#1a9e7a,#22c99c);box-shadow:0 14px 26px rgba(0,132,120,.22)}
+.landing-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:#e8f8f5;color:#087f74;font-size:12px;font-weight:700}
+.landing-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#16a394;box-shadow:0 0 0 4px rgba(22,163,148,.13)}
+.landing-card h1{margin:18px 0 8px;color:#12332f;font-size:clamp(22px,3.2vw,28px);font-weight:800;line-height:1.3;letter-spacing:-.02em}
+.landing-card p{color:#5c6f6b;font-size:14.5px;line-height:1.7}
+.landing-stats{display:flex;justify-content:center;gap:10px;margin:22px 0 0}
+.landing-stat{flex:1;max-width:150px;padding:12px 10px;border-radius:14px;background:#f5faf9;border:1px solid #dcefeb}
+.landing-stat strong{display:block;font-size:22px;font-weight:900;color:#0d6b52;letter-spacing:-.03em}
+.landing-stat span{display:block;font-size:11px;font-weight:600;color:#6b7f7a;margin-top:2px}
+.landing-meta{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:18px 0 0}
+.landing-meta span{padding:8px 12px;border-radius:12px;background:#f5faf9;border:1px solid #dcefeb;color:#42615c;font-size:12.5px;font-weight:700}
+.landing-meta strong{color:#126b64}
+.landing-enter{margin-top:26px;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:200px;border:0;border-radius:15px;padding:14px 24px;background:linear-gradient(135deg,#078d81,#15ad9c);box-shadow:0 12px 24px rgba(7,141,129,.26);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.landing-enter:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(7,141,129,.34)}
+.landing-enter:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:4px}
+.landing-note{margin-top:14px;color:#94a5a1;font-size:11px}
+
+@media(max-width:860px){
+  .landing-shell{grid-template-columns:1fr;max-width:520px}
+  .landing-visual{display:none}
+}
+@media(max-width:600px){
+  .landing-page{padding:18px}
+  .landing-card{padding:34px 22px 28px}
+  .landing-logo-wrap{width:88px;height:88px}
+  .landing-stats{flex-wrap:wrap}
+  .landing-meta span{width:100%}
+}
+
+</style>
+</head>
+<body class="landing-open">
+<section class="landing-page" id="landingPage" aria-labelledby="landingTitle">
+  <div class="landing-shell">
+    <div class="landing-visual" aria-hidden="true">
+      <div class="landing-visual-badge">🏫</div>
+      <div class="landing-visual-title">التميز المؤسسي</div>
+      <div class="landing-visual-sub">رحلة تحسين مستمرة قائمة على البيانات عبر أربعة مجالات للتقويم المدرسي</div>
+      <ul class="landing-visual-domains">
+        <li><span class="lvd-dot" style="background:#3b5bdb"></span>مجال الإدارة المدرسية</li>
+        <li><span class="lvd-dot" style="background:#22c99c"></span>مجال التعليم والتعلم</li>
+        <li><span class="lvd-dot" style="background:#af52de"></span>مجال نواتج التعلم</li>
+        <li><span class="lvd-dot" style="background:#ffcc00"></span>مجال البيئة المدرسية</li>
+      </ul>
+    </div>
+    <div class="landing-card">
+      <div class="landing-logo-wrap">
+        <img class="landing-logo" src="assets/school-logo.jpeg" alt="شعار مدرسة عبدالله ابن حذافة الابتدائية" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="landing-logo-fallback">🏫</span>
+      </div>
+      <div class="landing-eyebrow">العام الدراسي 2026-2027</div>
+      <h1 id="landingTitle">مدرسة عبدالله ابن حذافة الابتدائية</h1>
+      <p>لوحة متابعة مؤشرات التقويم المدرسي</p>
+      <div class="landing-stats">
+        <div class="landing-stat"><strong id="landingIndCount">—</strong><span>مؤشر أداء</span></div>
+        <div class="landing-stat"><strong id="landingDomCount">—</strong><span>مجالات تطويرية</span></div>
+      </div>
+      <div class="landing-meta">
+        <span>مدير المدرسة: <strong>أ. سعيد أحمد القرني</strong></span>
+        <span>إعداد: <strong>لجنة التميز</strong></span>
+      </div>
+      <button class="landing-enter" type="button" onclick="enterDashboard()">دخول إلى اللوحة <span aria-hidden="true">←</span></button>
+      <div class="landing-note">منصة متابعة داخلية للمدرسة</div>
+    </div>
+  </div>
+</section>
+
+<script>
+function enterDashboard(){
+  var landing=document.getElementById('landingPage');
+  landing.classList.add('is-leaving');
+  document.body.classList.remove('landing-open');
+  window.setTimeout(function(){ landing.hidden=true; },420);
+}
+</script>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-logo">
+      <div class="logo-icon">🏫</div>
+      <div class="logo-text">
+        <h1>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</h1>
+        <p style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span id="schoolNameDisplay" style="color:#22c99c;font-weight:700;cursor:pointer" onclick="editSchoolName()" title="انقر لتعديل اسم المدرسة">اسم المدرسة</span>
+          <button onclick="editSchoolName()" style="background:rgba(34,201,156,0.15);color:#22c99c;border:1px solid rgba(34,201,156,0.3);border-radius:5px;padding:1px 7px;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;line-height:1.6" title="تعديل اسم المدرسة">✏️</button>
+        </p>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <div class="topbar-date" id="topDate"></div>
+      <button class="btn-update" onclick="exportData()" style="background:#1d4ed8">📤 تصدير</button>
+      <button class="btn-update" onclick="document.getElementById('importFile').click()" style="background:#7c3aed">📥 استيراد</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+      <button class="btn-update" onclick="printReport()" style="background:#059669">🖨️ طباعة</button>
+      <button class="btn-update" onclick="showUpdateModal()">🔄 دليل التحديث</button>
+      <button class="btn-update" onclick="showCloudModal()" style="background:#0d9488">☁️ السحابة</button>
+    </div>
+  </div>
+</div>
+
+<!-- PWA INSTALL BANNER -->
+<div id="pwaBar" style="display:none;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:white;padding:10px 20px;align-items:center;justify-content:space-between;gap:12px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600">
+  <span>📲 يمكنك تثبيت التطبيق على شاشتك الرئيسية للوصول السريع دون إنترنت</span>
+  <div style="display:flex;gap:8px;flex-shrink:0">
+    <button id="pwaInstallBtn" onclick="installPWA()" style="background:white;color:#1d4ed8;border:none;border-radius:8px;padding:6px 16px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:800;cursor:pointer">تثبيت الآن</button>
+    <button onclick="document.getElementById('pwaBar').style.display='none'" style="background:rgba(255,255,255,0.15);color:white;border:none;border-radius:8px;padding:6px 12px;font-family:'Cairo',sans-serif;font-size:12px;cursor:pointer">لاحقاً</button>
+  </div>
+</div>
+
+<!-- SUMMARY STATS -->
+<div class="stats-row" id="statsRow">
+  <div class="stat-card">
+    <div class="stat-icon navy">📋</div>
+    <div>
+      <div class="stat-num" id="totalInds">0</div>
+      <div class="stat-label">إجمالي المؤشرات</div>
+      <div class="stat-sub">عبر 4 مجالات</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon teal">✅</div>
+    <div>
+      <div class="stat-num" id="highInds">0</div>
+      <div class="stat-label">مؤشرات متحققة (75%+)</div>
+      <div class="stat-sub" id="highPct"></div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon amber">⚡</div>
+    <div>
+      <div class="stat-num" id="midInds">0</div>
+      <div class="stat-label">مؤشرات قيد التطوير</div>
+      <div class="stat-sub" id="midPct"></div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon purple">🎯</div>
+    <div>
+      <div class="stat-num" id="avgPct">0%</div>
+      <div class="stat-label">متوسط الإنجاز الكلي</div>
+      <div class="stat-sub">لجميع المجالات</div>
+    </div>
+  </div>
+</div>
+
+<!-- KPI PANEL -->
+<section class="kpi-panel" id="kpiPanel">
+  <div class="kpi-head">
+    <h3>🎯 لوحة مؤشرات الأداء الرئيسية (KPI)</h3>
+    <button class="kpi-snapshot-btn" onclick="saveKpiSnapshot()" title="حفظ الوضع الحالي كمرجع لقياس التحسن">📌 حفظ لقطة مرجعية</button>
+  </div>
+  <div class="kpi-grid" id="kpiGrid"></div>
+</section>
+
+<!-- PERFORMANCE CHART -->
+<section class="chart-section" id="chartSection">
+  <div class="chart-head">
+    <h3>📊 الرسم البياني للأداء العام</h3>
+    <div style="font-size:11px;color:var(--slate);font-weight:600">متوسطات الإنجاز حسب المجال</div>
+  </div>
+  <div class="chart-grid">
+    <div class="bars-chart" id="barsChart"></div>
+    <div class="donut-wrap">
+      <svg id="donutChart" width="200" height="200" viewBox="0 0 200 200"></svg>
+      <div class="donut-legend" id="donutLegend"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar" style="margin-bottom:20px">
+    <span class="filter-label">عرض:</span>
+    <button class="filter-btn active" onclick="filterDomain('all',this)">الكل</button>
+    <button class="filter-btn" onclick="filterDomain('admin',this)">الإدارة المدرسية</button>
+    <button class="filter-btn" onclick="filterDomain('teach',this)">التعليم والتعلم</button>
+    <button class="filter-btn" onclick="filterDomain('out',this)">نواتج التعلم</button>
+    <button class="filter-btn" onclick="filterDomain('env',this)">البيئة المدرسية</button>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" placeholder="ابحث عن مؤشر..." oninput="searchInds(this.value)">
+    </div>
+  </div>
+
+  <div id="mainContent"></div>
+</div>
+
+<!-- UPDATE MODAL -->
+<div class="modal-overlay" id="updateModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('updateModal')">✕</button>
+    <h2>📊 دليل تحديث البيانات</h2>
+    <div class="modal-section">
+      <h3>آلية التحديث الدوري</h3>
+      <ul>
+        <li>افتح بطاقة المؤشر لعرض آليات التحقق والخطوات</li>
+        <li>انقر على أي آلية محققة لوضع علامة ✓ أمامها</li>
+        <li>تُحسب نسبة الإنجاز تلقائياً = (عدد الآليات المحققة ÷ إجمالي الآليات) × 100%</li>
+        <li>تُحفظ كل التعديلات تلقائياً في متصفح جهازك</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>المصادر المقترحة للتحقق</h3>
+      <ul>
+        <li>تقارير التقويم الذاتي الدورية</li>
+        <li>نتائج الاستبانات (معلم، متعلم، أسرة)</li>
+        <li>محاضر الزيارات الميدانية</li>
+        <li>تقارير نافس والاختبارات الوطنية الملائمة للمرحلة الابتدائية</li>
+        <li>وثائق الخطط التشغيلية والتطويرية</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>سلم التصنيف</h3>
+      <ul>
+        <li>🟢 <strong>ممتاز (75-100%)</strong>: المؤشر محقق بشكل كامل أو شبه كامل</li>
+        <li>🔵 <strong>جيد (50-74%)</strong>: المؤشر محقق جزئياً ويسير في الاتجاه الصحيح</li>
+        <li>🟡 <strong>يحتاج تطوير (25-49%)</strong>: المؤشر في مرحلة البدء ويتطلب تدخلاً</li>
+        <li>🔴 <strong>ضعيف (0-24%)</strong>: المؤشر لم يتحقق ويستدعي خطة عاجلة</li>
+      </ul>
+    </div>
+    <button onclick="closeModal('updateModal')" style="background:var(--navy);color:white;border:none;border-radius:10px;padding:10px 24px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px">إغلاق</button>
+  </div>
+</div>
+
+<!-- CLOUD SYNC MODAL -->
+<div class="modal-overlay" id="cloudModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('cloudModal')">✕</button>
+    <h2>☁️ المزامنة السحابية</h2>
+    <div class="modal-section">
+      <h3>حالة المزامنة</h3>
+      <p id="cloudStatusText">لم تُجرَ أي مزامنة بعد على هذا الجهاز</p>
+    </div>
+    <div class="modal-section">
+      <h3>إجراءات</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="cloudSaveNow()" style="background:#0d9488;color:white;border:none;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer">☁️ حفظ الآن للسحابة</button>
+        <button onclick="cloudLoadLatest(false)" style="background:#1d4ed8;color:white;border:none;border-radius:10px;padding:10px 18px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer">⬇️ تحميل آخر نسخة</button>
+      </div>
+    </div>
+    <div class="modal-section">
+      <p style="font-size:11px;color:var(--slate);line-height:1.7">تعمل المزامنة تلقائياً بعد نشر الموقع على Azure وربطه بتدفقات Power Automate — لا حاجة لإدخال أي روابط هنا؛ تُضبط من إعدادات الخادم فقط ولا تمر أبداً عبر المتصفح.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+var DOMAINS = [
+  { id:'admin', label:'مجال الإدارة المدرسية', cls:'d-admin', color:'#162347' },
+  { id:'teach', label:'مجال التعليم والتعلم',  cls:'d-teach', color:'#0d6b52' },
+  { id:'out',   label:'مجال نواتج التعلم',     cls:'d-out',   color:'#4c1d95' },
+  { id:'env',   label:'مجال البيئة المدرسية',  cls:'d-env',   color:'#92400e' }
+];
+
+var INDICATORS = [
+  // ===== ADMIN =====
+  { id:'1-1-1-1', domain:'admin', title:'تضع المدرسة خطة تشغيلية شاملة وفق أهداف تطويرية محددة',
+    tools:['استبانة المعلم','مقابلة الإدارة','تحليل الخطة التشغيلية'],
+    steps:['التحقق من اكتمال عناصر الخطة التشغيلية','قياسية الأهداف وارتباطها بالتطوير','نسبة إشراك المنسوبين ≥90%','وجود مبادرات نوعية طموحة','توزيع الأدوار وفق خطة زمنية واضحة'] },
+  { id:'2-1-1-1', domain:'admin', title:'تتابع المدرسة تنفيذ خطتها التشغيلية وتطورها بما يضمن تحقيق أهدافها',
+    tools:['استبانة المعلم','مقابلة الإدارة','تحليل الوثائق'],
+    steps:['وجود إجراءات محددة لمتابعة البرامج','رصد الفجوة بين المستهدف والمنجز','تقويم الخطة بأساليب متنوعة','تطوير الخطة وفق المستجدات'] },
+  { id:'1-1-2-1', domain:'admin', title:'تعزز المدرسة القيم الإسلامية والهوية الوطنية',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة الموجه','خطة التوجيه الطالبي'],
+    steps:['توظيف المناسبات في الأنشطة الصفية وغير الصفية','تنفيذ 3 أساليب متنوعة أو مبتكرة','تنفيذ برامج الوعي الفكري المعتمدة','تعميق الممارسات اليومية الداعمة للهوية'] },
+  { id:'2-1-2-1', domain:'admin', title:'تطبق المدرسة قيم مهنة التعليم وأخلاقياتها وتتابع الالتزام بها',
+    tools:['استبانة المعلم','مقابلة الإدارة','تحليل الوثائق'],
+    steps:['نشر الوعي بقيم المهنة لدى المنسوبين','توزيع المهام وإصدار التكاليف اللازمة','متابعة الالتزام بقواعد السلوك المهني','تعميق علاقات الاحترام المتبادل'] },
+  { id:'3-1-2-1', domain:'admin', title:'تطبق المدرسة إجراءات محددة لدعم الانضباط المدرسي وتتابع الالتزام بها',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','خطة التوجيه الطالبي'],
+    steps:['متابعة حالات الغياب والتأخر الصباحي','تطبيق إجراءات واضحة للمساءلة','تنفيذ برامج وقائية وعلاجية للانضباط','نشر ثقافة السلوك بأساليب متنوعة'] },
+  { id:'4-1-2-1', domain:'admin', title:'تنفذ المدرسة برامج داعمة للسلوك الإيجابي وتتابعها',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة الموجه','خطة التوجيه الطالبي'],
+    steps:['تشخيص المشكلات السلوكية بأساليب علمية','برامج وقائية وعلاجية مرتبطة بنتائج التشخيص','استثمار الشراكات المجتمعية للسلوك الإيجابي','خطط تدخل للحالات الخاصة وذوي الإعاقة'] },
+  { id:'5-1-2-1', domain:'admin', title:'تنفذ المدرسة برامج وأنشطة إثرائية لتطوير مواهب المتعلمين وتهيئتهم للمستقبل',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','البرامج الإثرائية'],
+    steps:['خطة للأنشطة الإثرائية الصفية وغير الصفية','دعم المشاركة في المسابقات الوطنية والدولية','تطبيق أساليب الكشف عن المواهب والقدرات','نشر ثقافة التميز وتشجيع المتميزين'] },
+  { id:'1-1-3-1', domain:'admin', title:'تعزز المدرسة بناء العلاقات الإيجابية والتعاون في المجتمع المدرسي',
+    tools:['استبانة المعلم','مقابلة المعلم','تحليل الوثائق'],
+    steps:['خطة لتعزيز العمل التعاوني بين المنسوبين','متابعة تطبيق المهام التعاونية','أنشطة ترفيهية ورياضية وثقافية داعمة','تعميق علاقات الاحترام المتبادل'] },
+  { id:'2-1-3-1', domain:'admin', title:'تعزز المدرسة مشاركة الأسرة في تعلم أبنائها والتحضير لمستقبلهم',
+    tools:['استبانة الأسرة','مقابلة الموجه','خطة التوجيه الطالبي'],
+    steps:['برامج توعوية لدور الأسرة في التعلم','فرص تواصل فعال ومتنوع مع الأسرة','إشراك الأسرة في تقويم خدمات المدرسة','أنشطة مبتكرة لتعزيز مشاركة الأسرة'] },
+  { id:'3-1-3-1', domain:'admin', title:'تعزز المدرسة الشراكة المجتمعية لدعم التعلم والتأثير الإيجابي في المجتمع',
+    tools:['استبانة المعلم','استبانة الأسرة','مقابلة الإدارة','تحليل الوثائق'],
+    steps:['فرص للتواصل والتعاون مع مؤسسات المجتمع','تنظيم أنشطة توعوية للمجتمع المحلي','شراكة فعالة مع المؤسسات الوطنية','استثمار إمكانات الشراكات لدعم التعلم'] },
+  { id:'4-1-4-1', domain:'admin', title:'تدعم المدرسة منسوبيها للحصول على الرخصة المهنية وتتابعها',
+    tools:['نتائج الرخص المهنية','استبانة المعلم','تحليل الوثائق'],
+    steps:['برامج توعوية للحصول على الرخص المهنية','تحديد الاحتياجات التدريبية وتأهيل المعلمين','تقديم الدعم المستمر لاجتياز الرخصة','متابعة نسب الحصول على الرخص دورياً'] },
+  { id:'5-1-4-1', domain:'admin', title:'تدعم المدرسة التطوير المهني لمنسوبيها وفق نتائج تقويم الأداء',
+    tools:['استبانة المعلم','مقابلة المعلم','خطة التطوير المهني'],
+    steps:['خطة تطوير مهني مبنية على نتائج تقويم الأداء','إشراك المعلمين في مجتمعات التعلم المهني','قياس أثر برامج التطوير على الأداء التدريسي','دعم إجراء البحوث والدراسات الإجرائية'] },
+  { id:'6-1-4-1', domain:'admin', title:'تطبق المدرسة التقويم الذاتي المبني على المعايير المعتمدة بشكل مستمر',
+    tools:['استبانة المعلم','تحليل الوثائق'],
+    steps:['تشكيل فريق التقويم الذاتي وفق المعايير','نشر ثقافة التقويم الذاتي في المجتمع المدرسي','إشراك جميع المنسوبين في عمليات التقويم','توثيق جميع إجراءات التقويم الذاتي'] },
+  { id:'7-1-4-1', domain:'admin', title:'تنفذ المدرسة خطة للتحسين بناءً على نتائج التقويم المدرسي وتتابعها',
+    tools:['استبانة المعلم','مقابلة الإدارة','خطة متابعة مؤشرات الأداء'],
+    steps:['بناء خطة تحسين وفق أولويات التقويم الذاتي','تنفيذ برامج وأنشطة خطة التحسين','متابعة التنفيذ بانتظام وتوثيقه','تطوير خطة التحسين بشكل مستمر'] },
+  { id:'1-1-5-1', domain:'admin', title:'تلتزم المدرسة بالمحافظة على حقوق المتعلمين وحمايتهم',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة الموجه','وثائق الحماية'],
+    steps:['برامج توعوية بحقوق المتعلمين وسبل الحماية','نشر الخطوط الساخنة (1919) و(116111)','تطبيق إجراءات حماية شاملة تراعي جميع المتعلمين','رصد ومعالجة حالات الإهمال وتوفير الحاجات الأساسية'] },
+  { id:'2-1-5-1', domain:'admin', title:'توفر المدرسة مناخاً آمناً للتعلم والنمو نفسياً واجتماعياً',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','مقابلة الموجه'],
+    steps:['تطبيق برامج للحد من التنمر والسلوك العدواني','أساليب استباقية للكشف عن مؤشرات التنمر','برامج تشجع المناقشة والحوار وتقبل الرأي الآخر','تعميق الممارسات الداعمة للنمو النفسي والاجتماعي'] },
+
+  // ===== TEACH =====
+  { id:'1-1-1-2', domain:'teach', title:'توفر المدرسة فرصاً متكافئة للتعلم تلبي احتياجات المتعلمين ومنهم ذوو الإعاقة والموهوبون',
+    tools:['استبانة المتعلم','مقابلة المتعلم','الملاحظة الصفية'],
+    steps:['توفير مصادر تلبي احتياجات جميع المتعلمين','مصادر متنوعة لذوي صعوبات التعلم والإعاقة','مصادر إثرائية لسريعي التعلم والموهوبين','إتاحة فرص متكافئة في استخدام الأنشطة'] },
+  { id:'2-1-1-2', domain:'teach', title:'تدعم المدرسة تنفيذ المناهج بما يحقق نواتج التعلم المستهدفة',
+    tools:['استبانة المتعلم','مقابلة المعلم','الملاحظة الصفية'],
+    steps:['متابعة السير في المنهج وفق الخطة الدراسية','تأمين حصص للمعلم المتأخر في المنهج','تقديم التغذية الراجعة ومقترحات التحسين','توفير أنشطة ومصادر لدعم تعلم المحتوى'] },
+  { id:'3-1-1-2', domain:'teach', title:'تنوع المدرسة في استراتيجيات التعليم والتعلم لتلبية احتياجات المتعلمين',
+    tools:['استبانة المتعلم','مقابلة المعلم','الملاحظة الصفية'],
+    steps:['استخدام استراتيجيات تركز على التعلم النشط','مراعاة الفروق الفردية بين المتعلمين','استراتيجيات تتسق مع نواتج التعلم المستهدفة','دعم تعلم ذوي صعوبات التعلم والموهوبين'] },
+  { id:'4-1-1-2', domain:'teach', title:'تفعّل المدرسة التقنية الرقمية لدعم تعلم المتعلمين وتلبية احتياجاتهم',
+    tools:['استبانة المعلم','استبانة المتعلم','مقابلة الإدارة','الملاحظة الصفية'],
+    steps:['إجراءات واضحة للتعلم الإلكتروني والتعلم عن بعد','تفعيل التجهيزات التقنية في بيئة التعلم','تنمية مهارات التقنية الرقمية للمتعلمين','تعزيز الوعي بالأمن الرقمي وأخلاقيات التقنية'] },
+  { id:'5-1-1-2', domain:'teach', title:'تنفذ المدرسة أنشطة تعلم تطبيقية ترتبط بحياة المتعلمين',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة المتعلم','الملاحظة الصفية'],
+    steps:['أنشطة متنوعة ومبتكرة ترتبط بالحياة الواقعية','تشجيع التطبيقات العملية في المواقف الحياتية','تعزيز البحث والاستقصاء والتجريب الذاتي','توظيف ما تعلمه المتعلم في حياته اليومية'] },
+  { id:'6-1-1-2', domain:'teach', title:'تنمي المدرسة المهارات القرائية والعددية الأساسية لدى المتعلمين',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة المتعلم','الملاحظة الصفية','ملفات الإنجاز'],
+    steps:['أنشطة متنوعة لتنمية مهارات القراءة والكتابة','أنشطة علاجية وإثرائية للمهارات العددية','مشاركة المتعلمين في المسابقات الوطنية والدولية','تعميق الممارسات اليومية الداعمة للمهارات الأساسية'] },
+  { id:'7-1-1-2', domain:'teach', title:'تنمي المدرسة مهارات التفكير والبحث والابتكار لدى المتعلمين',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة المتعلم','الملاحظة الصفية','ملفات الإنجاز'],
+    steps:['أنشطة لتنمية التفكير الناقد والإبداعي وحل المشكلات','دمج مهارات التفكير في الموضوعات الدراسية','أنشطة علاجية وإثرائية لمهارات التفكير العليا','تعميق ممارسات دعم التفكير والابتكار يومياً'] },
+  { id:'8-1-1-2', domain:'teach', title:'تنمي المدرسة المهارات العاطفية والاجتماعية لدى المتعلمين',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة المعلم','الملاحظة الصفية'],
+    steps:['بيئة تعلم تعزز المهارات العاطفية والاجتماعية','أنشطة لتنمية القدرة على ضبط الانفعالات','تشجيع العمل التعاوني والحوار الفعال','تعميق المهارات العاطفية من خلال الممارسات اليومية'] },
+  { id:'9-1-1-2', domain:'teach', title:'تعزز المدرسة دافعية المتعلمين للتعلم والاستمتاع به',
+    tools:['استبانة المتعلم','استبانة الأسرة','مقابلة المعلم','الملاحظة الصفية'],
+    steps:['بيئة تعلم تحفز على المشاركة والاستمتاع','أساليب تحفيز متنوعة (إشادة، مكافآت، احتفاء)','أنشطة تراعي ميول المتعلمين واهتماماتهم','تعميق الدافعية من خلال الممارسات اليومية'] },
+  { id:'1-1-2-2', domain:'teach', title:'تطبق المدرسة أساليب وأدوات تقويم متنوعة للكشف عن مستويات أداء المتعلمين',
+    tools:['استبانة المتعلم','استبانة الأسرة','نماذج تقويم الأداء','الملاحظة الصفية'],
+    steps:['استخدام أدوات تقويم تظهر التمايز في الأداء','توظيف التقويم التشخيصي والتكويني','تفعيل التقويم الإلكتروني وأدوات التحليل الرقمية','تصنيف المتعلمين إلى فئات الأداء الأساسية'] },
+  { id:'2-1-2-2', domain:'teach', title:'تطبق المدرسة أساليب وأدوات متنوعة لتقويم نواتج التعلم في مناهج التعليم',
+    tools:['استبانة المتعلم','استبانة الأسرة','سجلات متابعة الأداء','الملاحظة الصفية'],
+    steps:['قياس نواتج التعلم المستهدفة في المناهج','توظيف نتائج التقويم لتحديد الفجوات','تنفيذ معالجات تعليمية مرتبطة بنواتج التعلم','مراجعة دورية لجودة التقويم ومدى ملاءمته'] },
+  { id:'3-1-2-2', domain:'teach', title:'تحلل المدرسة نتائج التقويم وتوظفها في تحسين عمليات التعليم والتعلم',
+    tools:['استبانة المعلم','تحليل الوثائق','مقابلة المعلم'],
+    steps:['تحليل نتائج تقويم أداء المتعلمين بانتظام','تفسير النتائج وتحديد أسباب الصعوبات','بناء خطط علاجية مرتبطة بنتائج التقويم','متابعة تنفيذ الخطط العلاجية بانتظام'] },
+  { id:'4-1-2-2', domain:'teach', title:'تقدم المدرسة التغذية الراجعة للمتعلمين وأولياء أمورهم وتتابع تقدمهم',
+    tools:['استبانة المتعلم','استبانة الأسرة','تحليل الوثائق','مقابلة المعلم'],
+    steps:['تقديم تغذية راجعة فورية أثناء التعلم','تنويع أساليب التغذية الراجعة','تعزيز التعلم الذاتي من خلال التغذية الراجعة','مراعاة الفروق الفردية في التغذية الراجعة'] },
+
+  // ===== OUTCOMES =====
+  { id:'1-1-1-3', domain:'out', title:'يحقق المتعلمون نتائج مرتفعة في مجال القراءة وفقاً للاختبارات الوطنية (نافس)',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['دراسة وتحليل بطاقة نتائج نافس في القراءة وتحديد الفجوات','تقديم الدعم اللازم لتحسين المستوى التحصيلي في القراءة','رفع مستوى استعداد الطلبة لاختبارات القراءة الوطنية','تطبيق برامج داعمة لرفع نتائج القراءة','تعميق الممارسات اليومية الدالة على تحسين مستوى القراءة'] },
+  { id:'2-1-1-3', domain:'out', title:'يحقق المتعلمون نتائج مرتفعة في مجال الرياضيات وفقاً للاختبارات الوطنية (نافس)',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['دراسة وتحليل بطاقة نتائج نافس في الرياضيات','تحديد المهارات الرياضية الضعيفة وتقديم الدعم اللازم','رفع مستوى استعداد الطلبة لاختبارات الرياضيات الوطنية','تطبيق برامج داعمة لرفع نتائج الرياضيات','تعميق الممارسات اليومية الدالة على تحسين مستوى الرياضيات'] },
+  { id:'3-1-1-3', domain:'out', title:'يحقق المتعلمون نتائج مرتفعة في مجال العلوم وفقاً للاختبارات الوطنية (نافس)',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['دراسة وتحليل بطاقة نتائج نافس في العلوم','تحديد المهارات العلمية الضعيفة وتقديم الدعم اللازم','رفع مستوى استعداد الطلبة لاختبارات العلوم الوطنية','تطبيق برامج داعمة لرفع نتائج العلوم','تعميق الممارسات اليومية الدالة على تحسين مستوى العلوم'] },
+  { id:'4-1-1-3', domain:'out', title:'يحقق المتعلمون تقدماً في مجال القراءة قياساً على مستوى أداء المدرسة السابق في الاختبارات الوطنية',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['مقارنة نتائج المدرسة الحالية بالسنوات السابقة في القراءة','تحديد فجوات التقدم ووضع خطط تحسين','تطبيق برامج علاجية وإثرائية للقراءة','متابعة التقدم بشكل دوري وتوثيقه','تعميق الممارسات اليومية الداعمة لتطور القراءة'] },
+  { id:'5-1-1-3', domain:'out', title:'يحقق المتعلمون تقدماً في مجال الرياضيات قياساً على مستوى أداء المدرسة السابق في الاختبارات الوطنية',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['مقارنة نتائج المدرسة الحالية بالسنوات السابقة في الرياضيات','تحديد فجوات التقدم ووضع خطط تحسين','تطبيق برامج علاجية وإثرائية للرياضيات','متابعة التقدم بشكل دوري وتوثيقه','تعميق الممارسات اليومية الداعمة لتطور الرياضيات'] },
+  { id:'6-1-1-3', domain:'out', title:'يحقق المتعلمون تقدماً في مجال العلوم قياساً على مستوى أداء المدرسة السابق في الاختبارات الوطنية',
+    tools:['نتائج الطلبة في نافس'],
+    steps:['مقارنة نتائج المدرسة الحالية بالسنوات السابقة في العلوم','تحديد فجوات التقدم ووضع خطط تحسين','تطبيق برامج علاجية وإثرائية للعلوم','متابعة التقدم بشكل دوري وتوثيقه','تعميق الممارسات اليومية الداعمة لتطور العلوم'] },
+  { id:'1-1-2-3', domain:'out', title:'يظهر المتعلمون الاعتزاز بالقيم والهوية الوطنية',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','الملاحظة الصفية','مالحظة بيئة التعلم'],
+    steps:['قياس فخر المتعلمين بانتمائهم لوطنهم','إبراز الرموز والهوية الوطنية في البيئة المدرسية','ممارسات يومية دالة على الاعتزاز بالهوية','تقييم دوري لمستوى الانتماء الوطني'] },
+  { id:'2-1-2-3', domain:'out', title:'يظهر المتعلمون اتجاهات إيجابية نحو ذواتهم والآخرين',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','المقابلات','الملاحظة الصفية'],
+    steps:['قياس قدرة المتعلمين على التعامل الإيجابي','ملاحظة الثقة بالنفس في المواقف التعليمية','رصد تعبير المتعلمين عن آرائهم بحرية','ممارسات يومية إيجابية نحو الذات والآخرين'] },
+  { id:'3-1-2-3', domain:'out', title:'يظهر المتعلمون التزاماً بالممارسات الصحية السليمة',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','الملاحظة الصفية','بيئة التعلم'],
+    steps:['قياس وعي 90%+ من المتعلمين بالتغذية الصحية','رصد ممارسة الأنشطة البدنية بانتظام','تطبيق العادات الصحية في الممارسات اليومية','برامج توعوية بأهمية الحفاظ على سلامة الجسم والعقل'] },
+  { id:'4-1-2-3', domain:'out', title:'يشارك المتعلمون في الأنشطة المجتمعية والأعمال التطوعية',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','المقابلات','بيئة التعلم'],
+    steps:['قياس نسبة المشاركة في الأعمال التطوعية','التسجيل في منصة العمل التطوعي','تنفيذ مبادرات وبرامج تطوعية ملموسة','تعميق ثقافة التطوع في الممارسات اليومية'] },
+  { id:'5-1-2-3', domain:'out', title:'يلتزم المتعلمون بقواعد السلوك والانضباط المدرسي',
+    tools:['استبانة المعلم','المقابلات','تقارير الانضباط','الملاحظة الصفية','بيئة التعلم'],
+    steps:['قياس نسبة الملتزمين بقواعد السلوك','رصد نسبة المتعلمين المنتظمين في الحضور','رصد حالات الغياب والتأخر والمخالفات','تعميق الممارسات اليومية الدالة على الالتزام'] },
+  { id:'6-1-2-3', domain:'out', title:'يظهر المتعلمون الاستقلالية والقدرة على التعلم الذاتي',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','المقابلات','الملاحظة الصفية'],
+    steps:['قياس الدافعية الذاتية للتعلم','رصد قدرة المتعلمين على تحديد أهداف تعلمهم','قياس مهارات البحث في مصادر موثوقة','ممارسات يومية دالة على الاستقلالية'] },
+  { id:'7-1-2-3', domain:'out', title:'يظهر المتعلمون اعتزازاً بثقافتهم واحتراماً للتنوع الثقافي في المجتمع',
+    tools:['استبانة المعلم','استبانة المتعلم','استبانة الأسرة','مقابلة المتعلم','بيئة التعلم'],
+    steps:['قياس اعتزاز المتعلمين بثقافة المجتمع وتراثه','رصد الفخر باللغة العربية والهوية','تقييم احترام التنوع الثقافي للشعوب الأخرى','ممارسات دالة على الاعتزاز الثقافي يومياً'] },
+
+  // ===== ENV =====
+  { id:'1-1-1-4', domain:'env', title:'توفر المدرسة مبنى تعليمياً يستوفي المواصفات والاشتراطات المعتمدة',
+    tools:['مالحظة بيئة التعلم','تحليل وثائق التجهيزات والأمن'],
+    steps:['دراسة بيئة المدرسة وتقديم المقترحات التطويرية','التواصل مع مقدمي الخدمات للحصول على أفضل خدمة','الاهتمام بمرافق المدرسة وتنظيمها ونظافتها','تحديث سجلات المواصفات والاشتراطات دورياً'] },
+  { id:'2-1-1-4', domain:'env', title:'تنظيم مبنى المدرسة ملائم لعدد المتعلمين وخصائص المرحلة العمرية ومنهم ذوو الإعاقة',
+    tools:['مالحظة بيئة التعلم','استبانة المعلم'],
+    steps:['تقييم أثاث المبنى وملاءمته للمرحلة العمرية','ضمان سهولة التنقل لذوي الإعاقة','مراجعة مناسبة ساحات المدرسة للأنشطة','إعداد استطالعات قياس رضا المستفيدين'] },
+  { id:'3-1-1-4', domain:'env', title:'تتوافر فصول ومعامل ملائمة للعملية التعليمية تلبي احتياجات المتعلمين',
+    tools:['مالحظة بيئة التعلم','استبانة المعلم','استبانة المتعلم'],
+    steps:['التحقق من مناسبة الفصول لعدد المتعلمين','مراجعة تجهيزات الفصول والمعامل','ضمان تلبية احتياجات ذوي الإعاقة','متابعة التهوية والإضاءة ودرجة الحرارة'] },
+  { id:'4-1-1-4', domain:'env', title:'تلبي المرافق والخدمات المساندة احتياجات المتعلمين ومنهم ذوو الإعاقة',
+    tools:['مالحظة بيئة التعلم','استبانة المعلم'],
+    steps:['تقييم مناسبة المقصف وأماكن تناول الطعام','ضمان ملاءمة دورات المياه للجميع','توفير أماكن لممارسة الأنشطة المناسبة','مراعاة احتياجات ذوي الإعاقة في جميع المرافق'] },
+  { id:'1-1-2-4', domain:'env', title:'تتوافر في مبنى المدرسة ومرافقها جميع متطلبات الأمن والسالمة',
+    tools:['مالحظة بيئة التعلم','استبانة الأسرة','خطة الأمن والسلامة وخطط الإخلاء'],
+    steps:['التحقق من سريان تقرير الأمن والسلامة','وجود الشهادات الصحية سارية للعاملين','تدريب المنسوبين على خطة الإخلاء','سلامة مخارج الطوارئ وطفايات الحريق وكواشف الدخان'] },
+  { id:'2-1-2-4', domain:'env', title:'تتابع المدرسة صيانة المبنى وجميع مرافقه وتجهيزاته بشكل دوري',
+    tools:['استبانة المعلم','تحليل الوثائق','مالحظة بيئة التعلم'],
+    steps:['توافر خطط للصيانة الوقائية والعلاجية','رفع بالغات الدعم الفني بانتظام','تقارير دورية لواقع المرافق والتجهيزات','تنفيذ برامج توعوية بالمحافظة على الممتلكات'] },
+  { id:'3-1-2-4', domain:'env', title:'تتابع المدرسة نظافة المبنى المدرسي وجميع مرافقه بشكل مستمر',
+    tools:['استبانة المعلم','استبانة المتعلم','مالحظة بيئة التعلم'],
+    steps:['متابعة نظافة الفصول والممرات والساحات','نظافة دورات المياه وتقييمها بانتظام','توزيع حاويات النفايات في مختلف أماكن المدرسة','استمارة متابعة وتقييم مستمرة للنظافة'] }
+];
+
+// ===================== LANDING STATS =====================
+(function(){
+  var elInd = document.getElementById('landingIndCount');
+  var elDom = document.getElementById('landingDomCount');
+  if(elInd) elInd.textContent = INDICATORS.length;
+  if(elDom) elDom.textContent = DOMAINS.length;
+})();
+
+// ===================== STORAGE =====================
+// نظام جديد: نخزّن مصفوفة الخطوات المحققة، والنسبة تُحسب تلقائياً
+function loadChecks(id, total){
+  var raw = localStorage.getItem('checks_'+id);
+  if(raw){
+    try{
+      var arr = JSON.parse(raw);
+      if(Array.isArray(arr)){
+        while(arr.length < total) arr.push(false);
+        return arr.slice(0, total);
+      }
+    }catch(e){}
+  }
+  // ترحيل من النظام القديم
+  var oldPct = localStorage.getItem('pct_'+id);
+  var arr2 = new Array(total).fill(false);
+  if(oldPct !== null){
+    var p = parseInt(oldPct) || 0;
+    var n = Math.round((p/100)*total);
+    for(var i=0;i<n;i++) arr2[i]=true;
+    localStorage.setItem('checks_'+id, JSON.stringify(arr2));
+  }
+  return arr2;
+}
+function saveChecks(id, arr){ localStorage.setItem('checks_'+id, JSON.stringify(arr)); }
+function loadPct(id){
+  var ind = INDICATORS.find(function(x){return x.id===id;});
+  if(!ind) return 0;
+  var arr = loadChecks(id, ind.steps.length);
+  var done = arr.filter(function(v){return v;}).length;
+  return Math.round((done/ind.steps.length)*100);
+}
+function savePct(id, v){
+  // للاستيراد فقط: نحوّل النسبة إلى عدد خطوات محققة
+  var ind = INDICATORS.find(function(x){return x.id===id;});
+  if(!ind) return;
+  var total = ind.steps.length;
+  var n = Math.round((v/100)*total);
+  var arr = new Array(total).fill(false);
+  for(var i=0;i<n;i++) arr[i]=true;
+  saveChecks(id, arr);
+}
+function toggleStep(indId, stepIdx){
+  var ind = INDICATORS.find(function(x){return x.id===indId;});
+  if(!ind) return;
+  var arr = loadChecks(indId, ind.steps.length);
+  arr[stepIdx] = !arr[stepIdx];
+  saveChecks(indId, arr);
+  setLastUpdate(indId);
+  // تحديث واجهة البطاقة
+  var li = document.getElementById('step_'+indId+'_'+stepIdx);
+  if(li){ li.classList.toggle('checked', arr[stepIdx]); }
+  var newPct = loadPct(indId);
+  var bar = document.getElementById('bar_'+indId);
+  var lbl = document.getElementById('pctlabel_'+indId);
+  var col = getBarColor(newPct, indId);
+  if(bar){ bar.style.width = newPct+'%'; bar.style.background = col; }
+  if(lbl){ lbl.textContent = newPct+'%'; lbl.style.color = col; }
+  var done = arr.filter(function(v){return v;}).length;
+  var info = document.getElementById('stepinfo_'+indId);
+  if(info){ info.innerHTML = '<strong>'+done+'</strong> من <strong>'+ind.steps.length+'</strong> آليات تحقّقت — نسبة الإنجاز <strong>'+newPct+'%</strong>'; }
+  var card = document.getElementById('card_'+indId);
+  if(card){
+    var st = getStatus(newPct);
+    var badge = card.querySelector('.ind-status');
+    if(badge){ badge.className = 'ind-status '+st.cls; badge.textContent = st.label; }
+  }
+  refreshAnalysis(indId);
+  // تحديث متوسط المجال
+  updateDomainAverages();
+  updateStats();
+}
+function updateDomainAverages(){
+  DOMAINS.forEach(function(dom){
+    var inds = INDICATORS.filter(function(i){return i.domain===dom.id;});
+    if(!inds.length) return;
+    var avg = Math.round(inds.reduce(function(s,i){return s+loadPct(i.id);},0)/inds.length);
+    var el = document.getElementById('domavg_'+dom.id);
+    if(el) el.textContent = 'متوسط الإنجاز: '+avg+'%';
+  });
+}
+
+// ===================== STATUS =====================
+function getStatus(p){
+  if(p>=75) return {cls:'status-great',label:'ممتاز'};
+  if(p>=50) return {cls:'status-good',label:'جيد'};
+  if(p>=25) return {cls:'status-mid',label:'يحتاج تطوير'};
+  return {cls:'status-low',label:'ضعيف'};
+}
+function getBarColor(p,domain){
+  if(p>=75) return '#10b981';
+  if(p>=50) return '#3b82f6';
+  if(p>=25) return '#f59e0b';
+  return '#ef4444';
+}
+
+// ===================== RENDER =====================
+var currentFilter='all', currentSearch='';
+
+function render(){
+  var content=document.getElementById('mainContent');
+  content.innerHTML='';
+  DOMAINS.forEach(function(dom){
+    var inds=INDICATORS.filter(function(i){
+      if(currentFilter!=='all' && i.domain!==currentFilter) return false;
+      if(currentSearch && i.title.indexOf(currentSearch)===-1 && i.id.indexOf(currentSearch)===-1) return false;
+      return i.domain===dom.id;
+    });
+    if(!inds.length) return;
+    var avg=Math.round(inds.reduce(function(s,i){return s+loadPct(i.id);},0)/inds.length);
+    var hdr=document.createElement('div');
+    hdr.className='domain-header '+dom.cls.split(' ')[0];
+    hdr.innerHTML='<div class="domain-dot" style="background:'+dom.color+'"></div><div class="domain-title">'+dom.label+'</div><div class="domain-count">'+inds.length+' مؤشر</div><div class="domain-avg" id="domavg_'+dom.id+'" style="color:'+dom.color+'">متوسط الإنجاز: '+avg+'%</div>';
+    content.appendChild(hdr);
+    var grid=document.createElement('div');
+    grid.className='indicators-grid';
+    inds.forEach(function(ind){
+      grid.appendChild(buildCard(ind,dom));
+    });
+    content.appendChild(grid);
+  });
+  updateStats();
+}
+
+function buildCard(ind,dom){
+  var pct=loadPct(ind.id);
+  var st=getStatus(pct);
+  var card=document.createElement('div');
+  card.className='ind-card '+dom.cls;
+  card.id='card_'+ind.id;
+
+  var checks = loadChecks(ind.id, ind.steps.length);
+  var doneCount = checks.filter(function(v){return v;}).length;
+  var totalCount = ind.steps.length;
+
+  var toolsHtml=ind.tools.map(function(t){return '<span class="tool-badge">'+t+'</span>';}).join('');
+  var stepsHtml=ind.steps.map(function(s,idx){
+    var isChecked = checks[idx];
+    return '<li id="step_'+ind.id+'_'+idx+'" class="step-item'+(isChecked?' checked':'')+'" onclick="toggleStep(\''+ind.id+'\','+idx+')">'
+      +'<span class="step-check">'+(isChecked?'✓':'')+'</span>'
+      +'<span class="step-text">'+s+'</span>'
+      +'</li>';
+  }).join('');
+
+  card.innerHTML='<div class="ind-head" onclick="toggleCard(\''+ind.id+'\')">'
+    +'<div class="ind-code">'+ind.id+'</div>'
+    +'<div class="ind-title">'+ind.title+'</div>'
+    +'<div class="ind-chevron">▼</div>'
+    +'</div>'
+    +'<div class="ind-progress-wrap">'
+    +'<div class="ind-bar-bg"><div class="ind-bar-fill" id="bar_'+ind.id+'" style="width:'+pct+'%;background:'+getBarColor(pct,ind.domain)+'"></div></div>'
+    +'<div class="ind-pct" id="pctlabel_'+ind.id+'" style="color:'+getBarColor(pct,ind.domain)+'">'+pct+'%</div>'
+    +'</div>'
+    +'<span class="ind-status '+st.cls+'">'+st.label+'</span>'
+    +'<div class="ind-body">'
+    +'<div class="ind-section"><div class="ind-section-title">أدوات التقويم المستخدمة</div><div class="ind-tools">'+toolsHtml+'</div></div>'
+    +'<div class="ind-section" style="margin-top:10px"><div class="ind-section-title">آلية التحقق والخطوات — انقر للتعليم</div><ul class="ind-steps">'+stepsHtml+'</ul></div>'
+    +'<div class="pct-info-wrap" id="stepinfo_'+ind.id+'"><strong>'+doneCount+'</strong> من <strong>'+totalCount+'</strong> آليات تحقّقت — نسبة الإنجاز <strong>'+pct+'%</strong></div>'
+    +'<div id="analysis_'+ind.id+'">'+buildAnalysisHtml(ind,pct)+'</div>'
+    +'<div id="tasks_'+ind.id+'">'+buildTasksHtml(ind.id)+'</div>'
+    +'<div id="evid_'+ind.id+'">'+buildEvidenceHtml(ind.id)+'</div>'
+    +'</div>';
+  return card;
+}
+
+// ===================== TASKS =====================
+function loadTasks(id){
+  try{ var raw=localStorage.getItem('tasks_'+id); return raw?JSON.parse(raw):[]; }catch(e){ return []; }
+}
+function saveTasks(id, tasks){ localStorage.setItem('tasks_'+id, JSON.stringify(tasks)); }
+
+function buildTasksHtml(indId){
+  var tasks=loadTasks(indId);
+  var doneN=tasks.filter(function(t){return t.done;}).length;
+  var listHtml = tasks.length
+    ? tasks.map(function(t){return renderTaskItem(indId,t);}).join('')
+    : '<div class="task-empty">لا توجد مهام بعد — أضف أول مهمة لتطوير هذا المؤشر</div>';
+  return '<div class="tasks-box">'
+    +'<div class="tasks-head">'
+      +'<h4>📝 مهام تطوير المؤشر <span class="tasks-count">'+doneN+'/'+tasks.length+'</span></h4>'
+      +'<button class="task-add-btn" onclick="showTaskForm(\''+indId+'\')">＋ إضافة مهمة</button>'
+    +'</div>'
+    +'<div id="taskform_'+indId+'"></div>'
+    +'<div class="task-list" id="tasklist_'+indId+'">'+listHtml+'</div>'
+  +'</div>';
+}
+
+function renderTaskItem(indId,t){
+  var dueChip='';
+  if(t.due){
+    var today=new Date(); today.setHours(0,0,0,0);
+    var due=new Date(t.due); due.setHours(0,0,0,0);
+    var diff=Math.round((due-today)/(1000*60*60*24));
+    var cls='due';
+    var label=t.due;
+    if(!t.done){
+      if(diff<0){ cls='due overdue'; label='متأخر '+Math.abs(diff)+' يوم — '+t.due; }
+      else if(diff===0){ cls='due soon'; label='اليوم — '+t.due; }
+      else if(diff<=3){ cls='due soon'; label='خلال '+diff+' أيام — '+t.due; }
+    }
+    dueChip='<span class="task-chip '+cls+'">📅 '+label+'</span>';
+  }
+  var ownerChip = t.owner ? '<span class="task-chip owner">👤 '+escapeHtml(t.owner)+'</span>' : '';
+  return '<div class="task-item'+(t.done?' done':'')+'">'
+    +'<div class="task-check" onclick="toggleTaskDone(\''+indId+'\',\''+t.id+'\')">'+(t.done?'✓':'')+'</div>'
+    +'<div class="task-body">'
+      +'<div class="task-title">'+escapeHtml(t.title)+'</div>'
+      +'<div class="task-meta">'+ownerChip+dueChip+'</div>'
+    +'</div>'
+    +'<button class="task-del" onclick="deleteTask(\''+indId+'\',\''+t.id+'\')" title="حذف">🗑</button>'
+  +'</div>';
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+function refreshTasks(indId){
+  var box=document.getElementById('tasks_'+indId);
+  if(box) box.innerHTML=buildTasksHtml(indId);
+}
+
+function showTaskForm(indId){
+  var holder=document.getElementById('taskform_'+indId);
+  if(!holder) return;
+  var todayStr=new Date().toISOString().slice(0,10);
+  holder.innerHTML='<div class="task-form">'
+    +'<input type="text" id="tf_title_'+indId+'" placeholder="عنوان المهمة (مثال: إعداد تقرير زيارة صفية)">'
+    +'<div class="task-form-row">'
+      +'<input type="text" id="tf_owner_'+indId+'" placeholder="المسؤول (الاسم/الوظيفة)">'
+      +'<input type="date" id="tf_due_'+indId+'" value="'+todayStr+'">'
+    +'</div>'
+    +'<div class="task-form-actions">'
+      +'<button class="task-cancel" onclick="hideTaskForm(\''+indId+'\')">إلغاء</button>'
+      +'<button class="task-save" onclick="addTask(\''+indId+'\')">حفظ المهمة</button>'
+    +'</div>'
+  +'</div>';
+  setTimeout(function(){ var t=document.getElementById('tf_title_'+indId); if(t) t.focus(); },50);
+}
+function hideTaskForm(indId){
+  var holder=document.getElementById('taskform_'+indId);
+  if(holder) holder.innerHTML='';
+}
+function addTask(indId){
+  var title=(document.getElementById('tf_title_'+indId).value||'').trim();
+  var owner=(document.getElementById('tf_owner_'+indId).value||'').trim();
+  var due=(document.getElementById('tf_due_'+indId).value||'').trim();
+  if(!title){ alert('يرجى إدخال عنوان المهمة'); return; }
+  var tasks=loadTasks(indId);
+  tasks.push({ id:'t'+Date.now()+Math.floor(Math.random()*999), title:title, owner:owner, due:due, done:false, created:Date.now() });
+  saveTasks(indId,tasks);
+  refreshTasks(indId);
+}
+function toggleTaskDone(indId,taskId){
+  var tasks=loadTasks(indId);
+  var t=tasks.find(function(x){return x.id===taskId;});
+  if(!t) return;
+  t.done=!t.done;
+  saveTasks(indId,tasks);
+  refreshTasks(indId);
+}
+function deleteTask(indId,taskId){
+  if(!confirm('حذف هذه المهمة؟')) return;
+  var tasks=loadTasks(indId).filter(function(x){return x.id!==taskId;});
+  saveTasks(indId,tasks);
+  refreshTasks(indId);
+}
+
+// ===================== EVIDENCE / SHAWAHED =====================
+function loadEvidence(id){
+  try{ var raw=localStorage.getItem('evid_'+id); return raw?JSON.parse(raw):[]; }catch(e){ return []; }
+}
+function saveEvidence(id, list){
+  try{ localStorage.setItem('evid_'+id, JSON.stringify(list)); }
+  catch(e){ alert('تعذّر الحفظ — قد تكون مساحة التخزين ممتلئة. جرّب حذف بعض الصور أو استخدم روابط ملف خارجي بدلاً من رفع الصور.'); }
+}
+function detectEvidenceType(url){
+  var u=(url||'').toLowerCase();
+  return {type:'link',icon:'🔗',label:'رابط'};
+}
+function buildEvidenceHtml(indId){
+  var list=loadEvidence(indId);
+  var listHtml = list.length
+    ? list.map(function(e){return renderEvidenceItem(indId,e);}).join('')
+    : '<div class="evid-empty">لا توجد شواهد بعد — أضف رابط ملف خارجي أو ارفع صورة كشاهد</div>';
+  return '<div class="evid-box">'
+    +'<div class="evid-head">'
+      +'<h4>📎 الشواهد والمرفقات <span class="evid-count">'+list.length+'</span></h4>'
+      +'<button class="evid-add-btn" onclick="showEvidenceForm(indId)">＋ إضافة شاهد</button>'
+    +'</div>'
+    +'<div id="evidform_'+indId+'"></div>'
+    +'<div class="evid-list" id="evidlist_'+indId+'">'+listHtml+'</div>'
+  +'</div>';
+}
+function renderEvidenceItem(indId,e){
+  if(e.kind==='image'){
+    return '<div class="evid-item">'
+      +'<img class="evid-thumb" src="'+e.data+'" alt="" onclick="viewEvidenceImage(\''+e.id+'\',\''+indId+'\')">'
+      +'<div class="evid-body">'
+        +'<div class="evid-title">'+escapeHtml(e.title||'صورة شاهد')+'</div>'
+        +'<div class="evid-meta"><span>🖼 صورة محلية</span><span>'+(e.size?formatBytes(e.size):'')+'</span></div>'
+      +'</div>'
+      +'<div class="evid-actions">'
+        +'<button class="evid-open" onclick="viewEvidenceImage(\''+e.id+'\',\''+indId+'\')" title="عرض">👁</button>'
+        +'<button class="evid-del" onclick="deleteEvidence(\''+indId+'\',\''+e.id+'\')" title="حذف">🗑</button>'
+      +'</div>'
+    +'</div>';
+  }
+  var t=detectEvidenceType(e.url);
+  return '<div class="evid-item">'
+    +'<div class="evid-icon '+t.type+'" style="color:white">'+(e.cloudStored?'☁️':t.icon)+'</div>'
+    +'<div class="evid-body">'
+      +'<div class="evid-title">'+escapeHtml(e.title||t.label)+'</div>'
+      +'<div class="evid-meta"><a href="'+escapeAttr(e.url)+'" target="_blank" rel="noopener">'+(e.cloudStored?'مخزّن سحابياً':t.label)+' — فتح ↗</a></div>'
+    +'</div>'
+    +'<div class="evid-actions">'
+      +'<button class="evid-open" onclick="window.open(\''+escapeAttr(e.url)+'\',\'_blank\')" title="فتح">↗</button>'
+      +'<button class="evid-del" onclick="deleteEvidence(\''+indId+'\',\''+e.id+'\')" title="حذف">🗑</button>'
+    +'</div>'
+  +'</div>';
+}
+function escapeAttr(s){ return String(s).replace(/'/g,"%27").replace(/"/g,'&quot;'); }
+function formatBytes(b){
+  if(b<1024) return b+' بايت';
+  if(b<1048576) return (b/1024).toFixed(1)+' كب';
+  return (b/1048576).toFixed(2)+' مب';
+}
+function refreshEvidence(indId){
+  var box=document.getElementById('evid_'+indId);
+  if(box) box.innerHTML=buildEvidenceHtml(indId);
+}
+function showEvidenceForm(indId){
+  var holder=document.getElementById('evidform_'+indId);
+  if(!holder) return;
+  holder.innerHTML='<div class="evid-form">'
+    +'<div class="evid-tabs">'
+      +'<button class="evid-tab active" id="evtab_link_'+indId+'" onclick="switchEvidTab(\''+indId+'\',\'link\')">🔗 رابط ملف خارجي</button>'
+      +'<button class="evid-tab" id="evtab_image_'+indId+'" onclick="switchEvidTab(\''+indId+'\',\'image\')">🖼 رفع صورة</button>'
+    +'</div>'
+    +'<div id="evpane_'+indId+'">'+evidLinkPane(indId)+'</div>'
+    +'<div class="evid-form-actions">'
+      +'<button class="evid-cancel" onclick="hideEvidenceForm(\''+indId+'\')">إلغاء</button>'
+      +'<button class="evid-save" onclick="saveEvidenceForm(\''+indId+'\')">حفظ الشاهد</button>'
+    +'</div>'
+  +'</div>';
+}
+function evidLinkPane(indId){
+  return '<input type="text" id="ev_title_'+indId+'" placeholder="عنوان الشاهد (مثال: محضر اجتماع المعلمين)">'
+    +'<input type="url" id="ev_url_'+indId+'" placeholder="https://example.com/file أو example.com/file">'
+    +'<div class="evid-form-hint">💡 الصق رابط ملف أو مجلد من ملف خارجي . تأكد أن الصلاحيات تسمح بالمشاهدة.</div>';
+}
+function evidImagePane(indId){
+  return '<input type="text" id="ev_title_'+indId+'" placeholder="عنوان الصورة (اختياري)">'
+    +'<label class="evid-file-label"><input type="file" id="ev_file_'+indId+'" accept="image/*" onchange="previewEvidImage(\''+indId+'\')">📤 اختر صورة (الحد الأقصى 1 ميجا)</label>'
+    +'<div id="ev_preview_'+indId+'"></div>'
+    +'<div class="evid-form-hint">⚠️ الصور تُحفظ في متصفحك فقط. للملفات الكبيرة استخدم ملف خارجي.</div>';
+}
+function switchEvidTab(indId, tab){
+  document.getElementById('evtab_link_'+indId).classList.toggle('active', tab==='link');
+  document.getElementById('evtab_image_'+indId).classList.toggle('active', tab==='image');
+  document.getElementById('evpane_'+indId).innerHTML = tab==='link' ? evidLinkPane(indId) : evidImagePane(indId);
+  document.getElementById('evpane_'+indId).dataset.tab = tab;
+}
+function previewEvidImage(indId){
+  var f=document.getElementById('ev_file_'+indId).files[0];
+  if(!f) return;
+  if(f.size>1048576){ alert('حجم الصورة يتجاوز 1 ميجا. يرجى اختيار صورة أصغر أو استخدام ملف خارجي.'); document.getElementById('ev_file_'+indId).value=''; return; }
+  var r=new FileReader();
+  r.onload=function(ev){
+    document.getElementById('ev_preview_'+indId).innerHTML='<img class="evid-image-preview" src="'+ev.target.result+'">';
+  };
+  r.readAsDataURL(f);
+}
+function hideEvidenceForm(indId){
+  var holder=document.getElementById('evidform_'+indId);
+  if(holder) holder.innerHTML='';
+}
+function saveEvidenceForm(indId){
+  var pane=document.getElementById('evpane_'+indId);
+  var tab=(pane && pane.dataset.tab)||'link';
+  var title=(document.getElementById('ev_title_'+indId).value||'').trim();
+  var list=loadEvidence(indId);
+  if(tab==='image'){
+    var f=document.getElementById('ev_file_'+indId).files[0];
+    if(!f){ alert('يرجى اختيار صورة'); return; }
+    if(f.size>1048576){ alert('حجم الصورة يتجاوز 1 ميجا'); return; }
+    function saveImageLocally(){
+      var r=new FileReader();
+      r.onload=function(ev){
+        list.push({ id:'e'+Date.now()+Math.floor(Math.random()*999), kind:'image', title:title||f.name, data:ev.target.result, size:f.size, created:Date.now() });
+        saveEvidence(indId,list);
+        refreshEvidence(indId);
+      };
+      r.readAsDataURL(f);
+    }
+    if(true){
+      showToast('⏳ جارِ رفع الصورة للسحابة...');
+      cloudUploadEvidenceImage(indId, f, title).then(function(url){
+        list.push({ id:'e'+Date.now()+Math.floor(Math.random()*999), kind:'link', title:title||f.name, url:url, cloudStored:true, created:Date.now() });
+        saveEvidence(indId,list);
+        refreshEvidence(indId);
+        showToast('✅ تم رفع الصورة إلى السحابة');
+      }).catch(function(){
+        showToast('❌ تعذّر الرفع السحابي — سيُحفظ محلياً بدلاً من ذلك','error');
+        saveImageLocally();
+      });
+    } else {
+      saveImageLocally();
+    }
+  } else {
+    var url=(document.getElementById('ev_url_'+indId).value||'').trim();
+    if(!url){ alert('يرجى لصق رابط الشاهد'); return; }
+    if(!/^https?:\/\//i.test(url)){ alert('الرابط غير صحيح — يجب أن يبدأ بـ https://'); return; }
+    list.push({ id:'e'+Date.now()+Math.floor(Math.random()*999), kind:'link', title:title, url:url, created:Date.now() });
+    saveEvidence(indId,list);
+    refreshEvidence(indId);
+  }
+}
+function deleteEvidence(indId, evId){
+  if(!confirm('حذف هذا الشاهد؟')) return;
+  var list=loadEvidence(indId).filter(function(x){return x.id!==evId;});
+  saveEvidence(indId,list);
+  refreshEvidence(indId);
+}
+function viewEvidenceImage(evId, indId){
+  var e=loadEvidence(indId).find(function(x){return x.id===evId;});
+  if(!e || e.kind!=='image') return;
+  var w=window.open('','_blank');
+  if(w) w.document.write('<html><head><title>'+escapeHtml(e.title||'شاهد')+'</title></head><body style="margin:0;background:#0f172a;display:flex;align-items:center;justify-content:center;min-height:100vh"><img src="'+e.data+'" style="max-width:100%;max-height:100vh"></body></html>');
+}
+
+// ===================== SMART ANALYSIS =====================
+function getLastUpdate(id){
+  var ts = localStorage.getItem('lastUpdate_'+id);
+  return ts ? parseInt(ts) : null;
+}
+function setLastUpdate(id){
+  localStorage.setItem('lastUpdate_'+id, Date.now().toString());
+}
+function daysSince(ts){
+  if(!ts) return null;
+  return Math.floor((Date.now()-ts)/(1000*60*60*24));
+}
+
+function getRecommendations(ind, pct){
+  var domain = ind.domain;
+  var recs = [];
+  if(pct < 25){
+    recs.push('🚨 المؤشر في وضع حرج — يتطلب خطة عاجلة خلال 7 أيام');
+    recs.push('شكّل فريق عمل صغير (2-3 أشخاص) لمتابعة المؤشر أسبوعياً');
+    recs.push('ابدأ بأبسط آلية تحقق وحققها كاملة قبل الانتقال للتالية');
+    if(domain==='admin') recs.push('اعقد اجتماعاً مع الإدارة لتوزيع المسؤوليات وتحديد المتابع');
+    if(domain==='teach') recs.push('فعّل الزيارات الصفية المتبادلة بين المعلمين كأداة تطوير سريعة');
+    if(domain==='out') recs.push('حلّل نتائج آخر اختبار لتحديد فجوات التعلم وتركيز الجهد');
+    if(domain==='env') recs.push('ابدأ بجولة ميدانية لرصد أبرز التحديات في البيئة المدرسية');
+  } else if(pct < 50){
+    recs.push('⚠️ المؤشر يحتاج تطوير — راجع الآليات غير المحققة وخطّط لها');
+    recs.push('حدد آلية واحدة كل أسبوع لتحقيقها بشكل كامل');
+    recs.push('وثّق الأدلة (صور، تقارير، استبانات) لكل آلية تُنجز');
+    if(domain==='teach') recs.push('استخدم نتائج تقويم المعلمين لتحديد الاحتياجات التدريبية');
+    if(domain==='out') recs.push('قارن نتائج الفصول لرصد الفجوات وتدخّل بخطط دعم فردية');
+  } else if(pct < 75){
+    recs.push('💡 أداء جيد — ركّز على الآليات المتبقية لرفع المؤشر إلى مستوى الإنجاز');
+    recs.push('عزّز الممارسات الناجحة من خلال نشرها بين بقية المعلمين');
+    recs.push('اطلب تغذية راجعة من المستفيدين (معلمين/متعلمين/أسر) لتحسين النوعية');
+    recs.push('وثّق قصص النجاح في المؤشر لاستخدامها في التقارير الفصلية');
+  } else if(pct < 100){
+    recs.push('✨ أداء ممتاز — حافظ على الزخم وأكمل ما تبقى');
+    recs.push('استثمر هذا المؤشر كنموذج يُحتذى للمؤشرات الأخرى في نفس المجال');
+    recs.push('شارك الممارسات مع المدارس المجاورة في اللقاءات المهنية');
+  } else {
+    recs.push('🏆 المؤشر محقق بالكامل — استدامة الأداء هي التحدي الآن');
+    recs.push('ضع خطة استدامة فصلية لضمان عدم تراجع المؤشر');
+    recs.push('وثّق التجربة كـ "ممارسة متميزة" في تقرير التقويم الذاتي');
+    recs.push('استخدم وقت الفريق المتاح لرفع مؤشرات أخرى ضعيفة في نفس المجال');
+  }
+  return recs;
+}
+
+function buildAnalysisHtml(ind, pct){
+  var cls,icon,title;
+  if(pct<25){cls='sa-low';icon='🚨';title='تحليل ذكي — تدخّل عاجل مطلوب';}
+  else if(pct<50){cls='sa-mid';icon='⚠️';title='تحليل ذكي — يحتاج إلى تطوير';}
+  else if(pct<75){cls='sa-good';icon='💡';title='تحليل ذكي — توصيات للتعزيز';}
+  else {cls='sa-great';icon='✅';title='تحليل ذكي — استدامة وتميّز';}
+  var recs = getRecommendations(ind, pct);
+  var listHtml = recs.map(function(r){return '<li>'+r+'</li>';}).join('');
+
+  return '<div class="smart-analysis '+cls+'">'
+    +'<div class="sa-head"><span class="sa-icon">'+icon+'</span>'+title+'</div>'
+    +'<ul class="sa-list">'+listHtml+'</ul>'
+    +'</div>';
+}
+
+function refreshAnalysis(indId){
+  var ind = INDICATORS.find(function(x){return x.id===indId;});
+  if(!ind) return;
+  var pct = loadPct(indId);
+  var box = document.getElementById('analysis_'+indId);
+  if(box) box.innerHTML = buildAnalysisHtml(ind, pct);
+}
+
+function toggleCard(id){
+  var card=document.getElementById('card_'+id);
+  card.classList.toggle('expanded');
+}
+
+function updatePct(id){
+  var inp=document.getElementById('input_'+id);
+  var v=Math.max(0,Math.min(100,parseInt(inp.value)||0));
+  inp.value=v;
+  savePct(id,v);
+  var bar=document.getElementById('bar_'+id);
+  var lbl=document.getElementById('pctlabel_'+id);
+  var col=getBarColor(v,id);
+  if(bar){ bar.style.width=v+'%'; bar.style.background=col; }
+  if(lbl){ lbl.textContent=v+'%'; lbl.style.color=col; }
+  // update status badge
+  var card=document.getElementById('card_'+id);
+  if(card){
+    var st=getStatus(v);
+    var badge=card.querySelector('.ind-status');
+    if(badge){ badge.className='ind-status '+st.cls; badge.textContent=st.label; }
+  }
+  updateStats();
+}
+
+function updateStats(){
+  var all=INDICATORS.length;
+  var high=INDICATORS.filter(function(i){return loadPct(i.id)>=75;}).length;
+  var mid=INDICATORS.filter(function(i){var p=loadPct(i.id);return p>=25&&p<75;}).length;
+  var avg=Math.round(INDICATORS.reduce(function(s,i){return s+loadPct(i.id);},0)/all);
+  document.getElementById('totalInds').textContent=all;
+  document.getElementById('highInds').textContent=high;
+  document.getElementById('midInds').textContent=mid;
+  document.getElementById('highPct').textContent=Math.round(high/all*100)+'% من الإجمالي';
+  document.getElementById('midPct').textContent=Math.round(mid/all*100)+'% من الإجمالي';
+  document.getElementById('avgPct').textContent=avg+'%';
+  renderChart();
+  renderKPI();
+}
+
+// ===================== KPI PANEL =====================
+function getDomainLabel(id){ var d=DOMAINS.find(function(x){return x.id===id;}); return d?d.label.replace('مجال ',''):id; }
+
+function saveKpiSnapshot(){
+  var snap={ avg:0, ts:Date.now() };
+  var all=INDICATORS.length||1;
+  snap.avg=Math.round(INDICATORS.reduce(function(s,i){return s+loadPct(i.id);},0)/all);
+  localStorage.setItem('kpiSnapshot', JSON.stringify(snap));
+  renderKPI();
+  alert('✅ تم حفظ لقطة مرجعية بمتوسط '+snap.avg+'% — ستُقاس نسبة التحسن مقارنةً بها');
+}
+function loadKpiSnapshot(){
+  try{ var raw=localStorage.getItem('kpiSnapshot'); return raw?JSON.parse(raw):null; }catch(e){ return null; }
+}
+
+function renderKPI(){
+  var grid=document.getElementById('kpiGrid');
+  if(!grid) return;
+  var all=INDICATORS.length||1;
+  var pcts=INDICATORS.map(function(i){return {id:i.id,title:i.title,domain:i.domain,pct:loadPct(i.id)};});
+  var avg=Math.round(pcts.reduce(function(s,x){return s+x.pct;},0)/all);
+  var sorted=pcts.slice().sort(function(a,b){return b.pct-a.pct;});
+  var best=sorted[0], worst=sorted[sorted.length-1];
+
+  // Improvement vs snapshot
+  var snap=loadKpiSnapshot();
+  var trendHtml='';
+  if(snap){
+    var diff=avg-snap.avg;
+    var d=new Date(snap.ts);
+    var dateStr=d.getDate()+'/'+(d.getMonth()+1);
+    var pctChange = snap.avg>0 ? Math.round((diff/snap.avg)*100) : (diff>0?100:0);
+    var sign = diff>0?'+':'';
+    var cls = diff>0?'up':(diff<0?'down':'flat');
+    var arrow = diff>0?'↑':(diff<0?'↓':'→');
+    var label = diff>0?'تحسّن':(diff<0?'تراجع':'ثابت');
+    trendHtml = '<div class="kpi-trend '+cls+'">'+arrow+' '+sign+pctChange+'%</div>'
+      +'<div class="kpi-sub" style="margin-top:4px">'+label+' '+sign+diff+' نقطة منذ '+dateStr+'</div>';
+  } else {
+    trendHtml = '<div class="kpi-trend flat">— لا توجد لقطة</div>'
+      +'<div class="kpi-sub" style="margin-top:4px">احفظ لقطة مرجعية لقياس التحسن</div>';
+  }
+
+  grid.innerHTML =
+    '<div class="kpi-card">'
+      +'<div class="kpi-label">📊 متوسط الأداء العام</div>'
+      +'<div class="kpi-value">'+avg+'%</div>'
+      +'<div class="kpi-sub">عبر '+all+' مؤشر في 4 مجالات</div>'
+    +'</div>'
+    +'<div class="kpi-card best">'
+      +'<div class="kpi-label">🏆 أعلى مؤشر</div>'
+      +'<div class="kpi-value" style="color:#6ee7b7">'+best.pct+'%</div>'
+      +'<div class="kpi-mini">'+best.id+' — '+escapeHtml(best.title.length>40?best.title.slice(0,40)+'…':best.title)+'</div>'
+      +'<div class="kpi-sub">'+getDomainLabel(best.domain)+'</div>'
+    +'</div>'
+    +'<div class="kpi-card worst">'
+      +'<div class="kpi-label">⚠️ أضعف مؤشر</div>'
+      +'<div class="kpi-value" style="color:#fca5a5">'+worst.pct+'%</div>'
+      +'<div class="kpi-mini">'+worst.id+' — '+escapeHtml(worst.title.length>40?worst.title.slice(0,40)+'…':worst.title)+'</div>'
+      +'<div class="kpi-sub">'+getDomainLabel(worst.domain)+'</div>'
+    +'</div>'
+    +'<div class="kpi-card">'
+      +'<div class="kpi-label">📈 نسبة التحسن</div>'
+      +'<div class="kpi-value">'+(snap?(avg-snap.avg>=0?'+':'')+(avg-snap.avg)+'pt':'—')+'</div>'
+      +trendHtml
+    +'</div>';
+}
+
+// ===================== CHART =====================
+function renderChart(){
+  var bars=document.getElementById('barsChart');
+  if(!bars) return;
+  var data=DOMAINS.map(function(d){
+    var inds=INDICATORS.filter(function(i){return i.domain===d.id;});
+    var avg=inds.length?Math.round(inds.reduce(function(s,i){return s+loadPct(i.id);},0)/inds.length):0;
+    return {label:d.label,avg:avg,color:d.color};
+  });
+  bars.innerHTML=data.map(function(d){
+    return '<div class="bar-row">'
+      +'<div class="bar-label">'+d.label+'</div>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:0%;--c1:'+d.color+';--c2:'+d.color+'cc" data-w="'+d.avg+'"></div></div>'
+      +'<div class="bar-val" style="color:'+d.color+'">'+d.avg+'%</div>'
+      +'</div>';
+  }).join('');
+  setTimeout(function(){
+    bars.querySelectorAll('.bar-fill').forEach(function(el){el.style.width=el.dataset.w+'%';});
+  },50);
+
+  var statuses=[
+    {label:'ممتاز (75%+)',color:'#10b981',count:0},
+    {label:'جيد (50-74%)',color:'#3b82f6',count:0},
+    {label:'يحتاج تطوير (25-49%)',color:'#f59e0b',count:0},
+    {label:'ضعيف (<25%)',color:'#ef4444',count:0}
+  ];
+  INDICATORS.forEach(function(i){
+    var p=loadPct(i.id);
+    if(p>=75) statuses[0].count++;
+    else if(p>=50) statuses[1].count++;
+    else if(p>=25) statuses[2].count++;
+    else statuses[3].count++;
+  });
+  var total=INDICATORS.length||1;
+  var svg=document.getElementById('donutChart');
+  var cx=100,cy=100,r=70,sw=24;
+  var circ=2*Math.PI*r;
+  var offset=0;
+  var avgAll=Math.round(INDICATORS.reduce(function(s,i){return s+loadPct(i.id);},0)/total);
+  var html='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#f1f5f9" stroke-width="'+sw+'"/>';
+  statuses.forEach(function(s){
+    if(!s.count) return;
+    var len=(s.count/total)*circ;
+    html+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="'+sw+'" stroke-dasharray="'+len+' '+(circ-len)+'" stroke-dashoffset="'+(-offset)+'" transform="rotate(-90 '+cx+' '+cy+')"/>';
+    offset+=len;
+  });
+  html+='<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-family="Cairo" font-size="28" font-weight="900" fill="#0f1b35">'+avgAll+'%</text>';
+  html+='<text x="'+cx+'" y="'+(cy+18)+'" text-anchor="middle" font-family="Cairo" font-size="11" fill="#64748b">الإنجاز الكلي</text>';
+  svg.innerHTML=html;
+  document.getElementById('donutLegend').innerHTML=statuses.map(function(s){
+    return '<span><i style="background:'+s.color+'"></i>'+s.label+' ('+s.count+')</span>';
+  }).join('');
+}
+
+// ===================== PRINT =====================
+function printReport(){
+  document.querySelectorAll('.ind-card').forEach(function(c){c.classList.add('expanded');});
+  setTimeout(function(){window.print();},200);
+}
+
+function filterDomain(domain,btn){
+  currentFilter=domain;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  render();
+}
+
+function searchInds(q){
+  currentSearch=q;
+  render();
+}
+
+function showUpdateModal(){document.getElementById('updateModal').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+function resetAllData(){document.getElementById('resetModal').classList.add('open');}
+function confirmReset(){
+  INDICATORS.forEach(function(i){
+    localStorage.removeItem('pct_'+i.id);
+    var arr = new Array(i.steps.length).fill(false);
+    localStorage.setItem('checks_'+i.id, JSON.stringify(arr));
+  });
+  closeModal('resetModal');
+  render();
+  setTimeout(function(){
+    document.querySelectorAll('.ind-bar-fill').forEach(function(b){
+      var w=b.style.width;b.style.width='0';setTimeout(function(){b.style.width=w;},50);
+    });
+  },100);
+}
+
+// DATE
+(function(){
+  var d=new Date();
+  var days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  var months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('topDate').textContent=days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
+})();
+
+// ===================== CLOUD SYNC (via /api proxy) =====================
+// ملاحظة معمارية: متصفح المستخدم لا يتصل بروابط Power Automate مباشرة إطلاقاً —
+// نقطة "When an HTTP request is received" في Power Automate لا تُعيد رؤوس CORS،
+// فأي fetch() من المتصفح إليها مباشرة سيُرفض. لذلك تمر كل الطلبات عبر
+// دوال Azure Functions بسيطة (نفس نطاق الموقع: /api/cloud-save, /api/cloud-load,
+// /api/cloud-upload) وهي من يتصل بـ Power Automate من جهة الخادم؛ روابط
+// التدفقات الفعلية تُخزَّن فقط كمتغيرات بيئة في إعدادات Azure، لا في الكود
+// ولا في متصفح أي مستخدم.
+function updateCloudStatusText(){
+  var el = document.getElementById('cloudStatusText');
+  if(!el) return;
+  var last = localStorage.getItem('cloudLastSync');
+  el.textContent = last ? ('آخر مزامنة: '+new Date(last).toLocaleString('ar-SA')) : 'لم تُجرَ أي مزامنة بعد على هذا الجهاز';
+}
+function showCloudModal(){
+  updateCloudStatusText();
+  document.getElementById('cloudModal').classList.add('open');
+}
+
+function collectFullState(){
+  var state = {
+    version:'2.0',
+    savedAt:new Date().toISOString(),
+    schoolName: localStorage.getItem('schoolName')||'',
+    kpiSnapshot: (function(){ try{ return JSON.parse(localStorage.getItem('kpiSnapshot')||'null'); }catch(e){ return null; } })(),
+    indicators:{}
+  };
+  INDICATORS.forEach(function(ind){
+    state.indicators[ind.id] = {
+      checks: loadChecks(ind.id, ind.steps.length),
+      tasks: loadTasks(ind.id),
+      evidence: loadEvidence(ind.id),
+      lastUpdate: getLastUpdate(ind.id)
+    };
+  });
+  return state;
+}
+
+function applyFullState(state){
+  if(!state || typeof state!=='object' || !state.indicators) throw new Error('بيانات سحابية غير صالحة');
+  if(state.schoolName){
+    localStorage.setItem('schoolName', state.schoolName);
+  }
+  if(state.kpiSnapshot){
+    localStorage.setItem('kpiSnapshot', JSON.stringify(state.kpiSnapshot));
+  }
+  INDICATORS.forEach(function(ind){
+    var d = state.indicators[ind.id];
+    if(!d) return;
+    if(Array.isArray(d.checks)) saveChecks(ind.id, d.checks);
+    if(Array.isArray(d.tasks)) saveTasks(ind.id, d.tasks);
+    if(Array.isArray(d.evidence)) saveEvidence(ind.id, d.evidence);
+    if(d.lastUpdate) localStorage.setItem('lastUpdate_'+ind.id, String(d.lastUpdate));
+  });
+  render();
+  loadSchoolName();
+  if(state.savedAt) localStorage.setItem('cloudLastSync', state.savedAt);
+  updateCloudStatusText();
+}
+
+function cloudSaveNow(){
+  var state = collectFullState();
+  var known = localStorage.getItem('cloudLastSync');
+
+  function doSave(){
+    showToast('⏳ جارِ الحفظ للسحابة...');
+    fetch('/api/cloud-save', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(state)
+    }).then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      localStorage.setItem('cloudLastSync', state.savedAt);
+      updateCloudStatusText();
+      showToast('✅ تم الحفظ في السحابة بنجاح');
+    }).catch(function(err){
+      showToast('❌ تعذّر الحفظ — تأكد أن الموقع منشور على Azure وأن التدفقات مضبوطة','error');
+    });
+  }
+
+  if(known){
+    fetch('/api/cloud-load', {method:'POST'}).then(function(res){ return res.json(); }).then(function(remote){
+      if(remote && remote.savedAt && remote.savedAt !== known){
+        if(confirm('يبدو أن هناك نسخة أحدث محفوظة من عضو آخر بتاريخ '+new Date(remote.savedAt).toLocaleString('ar-SA')+'.\nمتابعة الحفظ ستستبدلها ببياناتك الحالية. هل تريد المتابعة؟')){
+          doSave();
+        }
+      } else {
+        doSave();
+      }
+    }).catch(function(){ doSave(); });
+  } else {
+    doSave();
+  }
+}
+
+function cloudLoadLatest(silent){
+  if(!silent) showToast('⏳ جارِ التحميل من السحابة...');
+  fetch('/api/cloud-load', {method:'POST'}).then(function(res){
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    return res.json();
+  }).then(function(data){
+    applyFullState(data);
+    if(!silent) showToast('✅ تم تحميل آخر نسخة من السحابة');
+  }).catch(function(err){
+    if(!silent) showToast('❌ تعذّر التحميل — تأكد أن الموقع منشور على Azure وأن التدفقات مضبوطة','error');
+  });
+}
+
+function cloudAutoLoadOnStartup(){
+  cloudLoadLatest(true);
+}
+
+function cloudUploadEvidenceImage(indId, file, title){
+  return new Promise(function(resolve, reject){
+    var r = new FileReader();
+    r.onload = function(ev){
+      var base64 = String(ev.target.result).split(',')[1] || '';
+      fetch('/api/cloud-upload', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ indicatorId:indId, fileName:file.name, fileContentBase64:base64 })
+      }).then(function(res){
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        return res.json();
+      }).then(function(data){
+        if(!data || !data.url) throw new Error('no-url-returned');
+        resolve(data.url);
+      }).catch(reject);
+    };
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+// INIT
+render();
+loadSchoolName();
+cloudAutoLoadOnStartup();
+
+
+// ===== SCHOOL NAME =====
+function loadSchoolName(){
+  var name = localStorage.getItem('schoolName') || '';
+  var el = document.getElementById('schoolNameDisplay');
+  if(el) el.textContent = name || 'اسم المدرسة';
+}
+function editSchoolName(){
+  var current = localStorage.getItem('schoolName') || '';
+  var inp = document.getElementById('schoolNameInput');
+  if(inp) inp.value = current;
+  document.getElementById('schoolModal').classList.add('open');
+  setTimeout(function(){ if(inp) inp.focus(); }, 200);
+}
+function saveSchoolName(){
+  var val = (document.getElementById('schoolNameInput').value || '').trim();
+  if(val){
+    localStorage.setItem('schoolName', val);
+    var el = document.getElementById('schoolNameDisplay');
+    if(el) el.textContent = val;
+    showToast('✅ تم حفظ اسم المدرسة');
+  }
+  closeModal('schoolModal');
+}
+
+// ===== EXPORT DATA =====
+function exportData(){
+  var data={version:'1.0',date:new Date().toISOString(),indicators:{}};
+  INDICATORS.forEach(function(i){data.indicators[i.id]=loadPct(i.id);});
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  var d=new Date();
+  a.download='تقويم-مدرسي-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ تم تصدير البيانات بنجاح');
+}
+
+// ===== IMPORT DATA =====
+function importData(input){
+  var file=input.files[0];
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.indicators) throw new Error('ملف غير صالح');
+      var count=0;
+      INDICATORS.forEach(function(i){
+        if(data.indicators[i.id]!==undefined){
+          savePct(i.id,parseInt(data.indicators[i.id]));
+          count++;
+        }
+      });
+      render();
+      setTimeout(function(){
+        document.querySelectorAll('.ind-bar-fill').forEach(function(b){
+          var w=b.style.width;b.style.width='0';setTimeout(function(){b.style.width=w;},50);
+        });
+      },100);
+      showToast('✅ تم استيراد '+count+' مؤشر بنجاح');
+    }catch(err){
+      showToast('❌ خطأ: تأكد من صحة الملف','error');
+    }
+    input.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ===== TOAST NOTIFICATION =====
+function showToast(msg,type){
+  var t=document.getElementById('toast');
+  if(!t){
+    t=document.createElement('div');
+    t.id='toast';
+    t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f1b35;color:white;padding:12px 24px;border-radius:12px;font-family:Cairo,sans-serif;font-size:13px;font-weight:700;z-index:9999;transition:transform .3s,opacity .3s;opacity:0;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.3)';
+    document.body.appendChild(t);
+  }
+  if(type==='error') t.style.background='#dc2626';
+  else t.style.background='#0d6b52';
+  t.textContent=msg;
+  t.style.opacity='1';
+  t.style.transform='translateX(-50%) translateY(0)';
+  clearTimeout(t._timer);
+  t._timer=setTimeout(function(){
+    t.style.opacity='0';
+    t.style.transform='translateX(-50%) translateY(80px)';
+  },3000);
+}
+
+// ===== PWA / SERVICE WORKER =====
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('pwaBar').style.display='flex';
+});
+window.addEventListener('appinstalled',function(){
+  document.getElementById('pwaBar').style.display='none';
+  showToast('🎉 تم تثبيت التطبيق بنجاح على شاشتك الرئيسية');
+});
+function installPWA(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(r){
+      if(r.outcome==='accepted') document.getElementById('pwaBar').style.display='none';
+      deferredPrompt=null;
+    });
+  }
+}
+
+// Azure Static Web Apps serves these production PWA files as real assets.
+// They override the local preview fallbacks above when the site is hosted.
+document.getElementById('manifestLink').href='site.webmanifest';
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+
+
+// Animate bars on load
+setTimeout(function(){
+  document.querySelectorAll('.ind-bar-fill').forEach(function(b){
+    var w=b.style.width; b.style.width='0'; setTimeout(function(){b.style.width=w;},50);
+  });
+},100);
+</script>
+
+
+<!-- SCHOOL NAME MODAL -->
+<div class="modal-overlay" id="schoolModal">
+  <div class="modal" style="max-width:400px">
+    <button class="modal-close" onclick="closeModal('schoolModal')">✕</button>
+    <h2 style="margin-bottom:16px;font-size:16px">🏫 اسم المدرسة</h2>
+    <p style="font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.7">أدخل اسم مدرستك ليظهر في لوحة المتابعة ويُحفظ تلقائياً.</p>
+    <input id="schoolNameInput" type="text" placeholder="مثال: مدرسة الملك فهد الابتدائية"
+      style="width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,0.12);border-radius:10px;font-family:Cairo,sans-serif;font-size:14px;font-weight:600;color:#0f1b35;outline:none;margin-bottom:14px;direction:rtl"
+      onkeydown="if(event.key==='Enter')saveSchoolName()">
+    <div style="display:flex;gap:8px">
+      <button onclick="saveSchoolName()" style="flex:1;background:#0f1b35;color:white;border:none;border-radius:10px;padding:11px;font-family:Cairo,sans-serif;font-size:13px;font-weight:800;cursor:pointer">💾 حفظ</button>
+      <button onclick="closeModal('schoolModal')" style="background:#f0f4f8;color:#0f1b35;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;padding:11px 18px;font-family:Cairo,sans-serif;font-size:13px;font-weight:700;cursor:pointer">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESET CONFIRM MODAL -->
+<div class="modal-overlay" id="resetModal">
+  <div class="modal" style="max-width:420px;text-align:center">
+    <div style="font-size:48px;margin-bottom:14px">⚠️</div>
+    <h2 style="margin-bottom:10px;font-size:18px">تصفير جميع البيانات</h2>
+    <p style="font-size:13px;color:#64748b;line-height:1.7;margin-bottom:22px">سيتم إعادة تعيين نسب الإنجاز لجميع المؤشرات (52 مؤشراً) إلى الصفر.<br>هذه العملية <strong>لا يمكن التراجع عنها.</strong></p>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button onclick="confirmReset()" style="background:#dc2626;color:white;border:none;border-radius:10px;padding:11px 28px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s" onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">🗑 نعم، تصفير الكل</button>
+      <button onclick="closeModal('resetModal')" style="background:#f0f4f8;color:#1a1a2e;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;padding:11px 28px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCHOOL RECORDS SECTION -->
+<section style="max-width:1200px;margin:30px auto 20px;padding:0 16px">
+  <div style="background:linear-gradient(135deg,#0f1b35,#1d2e5a);border-radius:16px;padding:22px 24px;margin-bottom:18px;color:white;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-30px;left:-30px;width:120px;height:120px;border:1px solid rgba(255,255,255,0.06);border-radius:50%"></div>
+    <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:2">
+      <div style="width:48px;height:48px;background:linear-gradient(135deg,#22c99c,#3b82f6);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px">📚</div>
+      <div>
+        <h2 style="margin:0;font-size:18px;font-weight:800">السجلات المدرسية</h2>
+        <p style="margin:4px 0 0;font-size:12px;opacity:0.75">8 مجالات تنظيمية للسجلات والمنفذين</p>
+      </div>
+    </div>
+  </div>
+  <div id="recordsContainer" style="display:flex;flex-direction:column;gap:12px"></div>
+</section>
+
+<script>
+const RECORDS_DOMAINS = [
+  {id:1,title:"القيادة والتخطيط والتطوير",subtitle:"خريطة القيادة والتطوير",icon:"🎯",color:"#3b82f6",desc:"السجلات التي تقود التوجيه العام، الخطة، ومتابعة التحسين، وتوثيق التطوير المهني والمؤسسي.",records:[
+    {name:"سجل الخطة التشغيلية",exec:"إدارة المدرسة / مدير المدرسة / وكيل الشؤون التعليمية / رائد النشاط"},
+    {name:"سجل برامج الخطة التشغيلية وتوثيق البرامج",exec:"مدير المدرسة"},
+    {name:"سجل متابعة وتقويم الخطة التشغيلية",exec:"مدير المدرسة"},
+    {name:"سجل الخطة التشغيلية (قسم المتابعة والتقويم)",exec:"مدير المدرسة"},
+    {name:"سجل توثيق البرامج",exec:"مدير المدرسة"},
+    {name:"سجل تطوير وتحسين الخطة التشغيلية",exec:"مدير المدرسة"},
+    {name:"خطة متابعة السلوك الوظيفي",exec:"مدير المدرسة / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل النمو المهني",exec:"مدير المدرسة / وكيل الشؤون التعليمية / رائد النشاط"},
+    {name:"سجل الرخص المهنية",exec:"مدير المدرسة"},
+    {name:"سجل التطوير المهني",exec:"مدير المدرسة"},
+    {name:"سجل التقويم الذاتي",exec:"مدير المدرسة"}
+  ]},
+  {id:2,title:"التنظيم الإداري وشؤون العاملين",subtitle:"هيكل الإدارة والمتابعة",icon:"🗂️",color:"#8b5cf6",desc:"السجلات التي تنظّم العمل الإداري، والمتابعة اليومية، وملفات العاملين، وحركة الاتصال الداخلي.",records:[
+    {name:"سجل اللجان المدرسية",exec:"مدير المدرسة"},
+    {name:"سجل التكليفات",exec:"مدير المدرسة"},
+    {name:"سجل اللجنة الإدارية",exec:"مدير المدرسة"},
+    {name:"سجل الاجتماعات",exec:"مدير المدرسة / وكيل الشؤون التعليمية / رائد النشاط"},
+    {name:"سجل التبليغات",exec:"مدير المدرسة / وكيل الشؤون التعليمية / رائد النشاط"},
+    {name:"سجل الملفات",exec:"مدير المدرسة / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل حصر الغياب والتأخر",exec:"مدير المدرسة / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل استئذان الموظفين",exec:"مدير المدرسة / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل أحوال الموظفين",exec:"مدير المدرسة"},
+    {name:"بيانات الكادر الإداري من نظام نور",exec:"مدير المدرسة"},
+    {name:"سجل الوصف الوظيفي",exec:"مدير المدرسة"}
+  ]},
+  {id:3,title:"الشؤون التعليمية والتنظيم المدرسي",subtitle:"بنية التنظيم التعليمي",icon:"📖",color:"#0ea5e9",desc:"السجلات التي تضبط العمل التعليمي، وتنظيم الجداول، والبيانات التعليمية، والمتابعة المدرسية.",records:[
+    {name:"سجل برامج الإرشاد",exec:"مدير المدرسة"},
+    {name:"سجل الزيارة الصفية",exec:"مدير المدرسة"},
+    {name:"الجدول المدرسي",exec:"مدير المدرسة"},
+    {name:"بيانات الكادر التعليمي من نظام نور",exec:"مدير المدرسة"},
+    {name:"توزيع الأنصبة",exec:"مدير المدرسة"},
+    {name:"الموقع الإلكتروني للمدرسة",exec:"مدير المدرسة"}
+  ]},
+  {id:4,title:"التوجيه والإرشاد والانضباط",subtitle:"مسار الإرشاد والسلوك",icon:"🧭",color:"#22c99c",desc:"السجلات التي تدعم التوجيه، والحالات الفردية، وتعزيز السلوك الإيجابي، والضبط المدرسي والوقاية.",records:[
+    {name:"سجل لجنة التوجيه والإرشاد",exec:"رائد النشاط / الموجه الطلابي / وكيل الشؤون الطلابية / وكيل الشؤون التعليمية"},
+    {name:"سجل الحالات الفردية",exec:"الموجه الطلابي / وكيل الشؤون الطلابية"},
+    {name:"سجل المخالفات السلوكية",exec:"وكيل الشؤون الطلابية / الموجه الطلابي"},
+    {name:"سجل التوقيع على قواعد السلوك والمواظبة",exec:"وكيل الشؤون الطلابية / الموجه الطلابي"},
+    {name:"سجل الحالات الطارئة",exec:"وكيل الشؤون الطلابية / الموجه الطلابي"}
+  ]},
+  {id:5,title:"النشاط والبرامج والموهبة",subtitle:"حيوية البرامج والموهبة",icon:"🌟",color:"#f59e0b",desc:"السجلات المرتبطة بالبرامج الطلابية، وتنمية المواهب، وتوثيق الأنشطة، وقياس الحضور التنفيذي للمبادرات.",records:[
+    {name:"سجل برامج النشاط",exec:"مدير المدرسة"},
+    {name:"سجل الأنشطة والبرامج",exec:"رائد النشاط / الموجه الطلابي / وكيل الشؤون الطلابية / مدير المدرسة"},
+    {name:"سجل الموهوبين",exec:"وكيل الشؤون الطلابية / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل ملف البرامج والأنشطة",exec:"وكيل الشؤون الطلابية / رائد النشاط / الموجه الطلابي"}
+  ]},
+  {id:6,title:"التواصل والشراكة المجتمعية",subtitle:"جسور الأسرة والمجتمع",icon:"🤝",color:"#ec4899",desc:"السجلات التي تربط المدرسة بالأسرة والمجتمع، وتقيس الآراء، وتوثّق قنوات التواصل والتفاعل المؤسسي.",records:[
+    {name:"سجل استطلاع الرأي والاستبانات",exec:"مدير المدرسة / وكيل الشؤون الطلابية / رائد النشاط / الموجه الطلابي"},
+    {name:"سجل التواصل مع الأسرة",exec:"وكيل الشؤون الطلابية / رائد النشاط / الموجه الطلابي"},
+    {name:"سجل الشراكة المجتمعية",exec:"مدير المدرسة / وكيل الشؤون الطلابية / رائد النشاط / الموجه الطلابي"}
+  ]},
+  {id:7,title:"التحفيز والجودة والتميز",subtitle:"مؤشرات التميز والتحفيز",icon:"🏆",color:"#eab308",desc:"السجلات التي تعكس ثقافة التحفيز، وأعمال الجودة، وصناعة التميز المؤسسي داخل المدرسة.",records:[
+    {name:"سجل التحفيز والتكريم",exec:"مدير المدرسة / وكيل الشؤون التعليمية / الموجه الطلابي"},
+    {name:"سجل لجنة التميز",exec:"مدير المدرسة / الموجه الطلابي / رائد النشاط"},
+    {name:"سجل لجنة التميز المدرسي",exec:"مدير المدرسة"},
+    {name:"نشرات",exec:"مدير المدرسة / وكيل الشؤون التعليمية / رائد النشاط"}
+  ]},
+  {id:8,title:"الشؤون المالية والموارد",subtitle:"ضبط الموارد والتمويل",icon:"💰",color:"#10b981",desc:"السجلات التي تضبط الموارد المالية، وتوثق الإجراءات المرتبطة بالموازنة والرسوم والسياسات المالية.",records:[
+    {name:"سجل التكاليف",exec:"مدير المدرسة"},
+    {name:"سجل الخطة المالية",exec:"مدير المدرسة"},
+    {name:"سجل فريق الصندوق المدرسي",exec:"مدير المدرسة"},
+    {name:"سجل السياسات المالية",exec:"مدير المدرسة"},
+    {name:"سجل تحصيل الرسوم",exec:"مدير المدرسة"},
+    {name:"استمارة الرسوم الدراسية",exec:"مدير المدرسة"}
+  ]}
+];
+
+function renderRecords(){
+  const container = document.getElementById('recordsContainer');
+  if(!container) return;
+  container.innerHTML = RECORDS_DOMAINS.map(d=>`
+    <div class="record-domain" style="background:white;border-radius:14px;box-shadow:0 2px 12px rgba(15,27,53,0.06);border:1px solid rgba(15,27,53,0.06);overflow:hidden">
+      <button onclick="toggleRecordDomain(${d.id})" style="width:100%;background:none;border:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:14px;font-family:'Cairo',sans-serif;text-align:right">
+        <div style="width:44px;height:44px;background:linear-gradient(135deg,${d.color},${d.color}cc);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${d.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <span style="background:${d.color}1a;color:${d.color};font-size:11px;font-weight:800;padding:3px 9px;border-radius:6px">المجال 0${d.id}</span>
+            <span style="font-size:11px;color:#94a3b8">${d.records.length} سجلات</span>
+          </div>
+          <div style="font-size:15px;font-weight:800;color:#0f1b35;margin-top:5px;line-height:1.4">${d.title}</div>
+          <div style="font-size:12px;color:#64748b;margin-top:2px">${d.subtitle}</div>
+        </div>
+        <div id="rec-arrow-${d.id}" style="font-size:18px;color:#94a3b8;transition:transform .25s">▼</div>
+      </button>
+      <div id="rec-body-${d.id}" style="display:none;padding:0 18px 18px;border-top:1px solid #f0f4f8">
+        <p style="font-size:12px;color:#64748b;line-height:1.7;margin:14px 0 14px">${d.desc}</p>
+        <div style="overflow-x:auto;border-radius:10px;border:1px solid #e2e8f0">
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead>
+              <tr style="background:linear-gradient(135deg,${d.color}15,${d.color}08)">
+                <th style="padding:10px 12px;text-align:right;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0;width:55%">السجل</th>
+                <th style="padding:10px 12px;text-align:right;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0">المنفذون</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${d.records.map((r,i)=>`<tr style="background:${i%2?'#fafbfc':'white'}"><td style="padding:10px 12px;color:#1a1a2e;font-weight:600;border-bottom:1px solid #f0f4f8">${r.name}</td><td style="padding:10px 12px;color:#64748b;line-height:1.6;border-bottom:1px solid #f0f4f8">${r.exec}</td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleRecordDomain(id){
+  const body = document.getElementById('rec-body-'+id);
+  const arrow = document.getElementById('rec-arrow-'+id);
+  if(!body) return;
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  if(arrow) arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', renderRecords);
+} else {
+  renderRecords();
+}
+</script>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-school">مدرسة عبدالله ابن حذافة الابتدائية</div>
+    <div class="site-footer-credit">إعداد: <strong>أ. بندر بن عايض الأسمري</strong></div>
+  </div>
+</footer>
+
+
+</body>
+</html>
