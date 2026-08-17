@@ -2118,10 +2118,61 @@ const RECORDS_DOMAINS = [
   ]}
 ];
 
+function escAttr(s){
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function getRecordExec(recId, fallback){
+  const saved = localStorage.getItem('recExec_'+recId);
+  return (saved !== null && saved !== undefined) ? saved : fallback;
+}
+function saveRecordExec(recId, val){
+  localStorage.setItem('recExec_'+recId, val);
+}
+
+var RECORD_STATUS_OPTIONS = [
+  {v:'not-started', label:'لم يبدأ',    color:'#dc2626', bg:'#fef2f2'},
+  {v:'in-progress',  label:'قيد الإعداد', color:'#b45309', bg:'#fffbeb'},
+  {v:'done',         label:'مكتمل',      color:'#059669', bg:'#ecfdf5'}
+];
+function statusInfo(v){
+  return RECORD_STATUS_OPTIONS.find(function(o){ return o.v===v; }) || RECORD_STATUS_OPTIONS[0];
+}
+function getRecordStatus(recId){
+  return localStorage.getItem('recStatus_'+recId) || 'not-started';
+}
+function domainProgressPct(d){
+  if(!d.records.length) return 0;
+  var done = 0;
+  d.records.forEach(function(r,i){ if(getRecordStatus('d'+d.id+'-r'+i)==='done') done++; });
+  return Math.round(done / d.records.length * 100);
+}
+function updateDomainProgress(domId){
+  var d = RECORDS_DOMAINS.find(function(x){ return x.id===domId; });
+  if(!d) return;
+  var pct = domainProgressPct(d);
+  var bar = document.getElementById('rec-progress-bar-'+domId);
+  var txt = document.getElementById('rec-progress-txt-'+domId);
+  if(bar) bar.style.width = pct+'%';
+  if(txt) txt.textContent = pct+'%';
+}
+function saveRecordStatus(recId, domId, val){
+  localStorage.setItem('recStatus_'+recId, val);
+  var el = document.getElementById('rec-status-'+recId);
+  if(el){
+    var o = statusInfo(val);
+    el.style.color = o.color;
+    el.style.background = o.bg;
+    el.style.borderColor = o.color+'40';
+  }
+  updateDomainProgress(domId);
+}
+
 function renderRecords(){
   const container = document.getElementById('recordsContainer');
   if(!container) return;
-  container.innerHTML = RECORDS_DOMAINS.map(d=>`
+  container.innerHTML = RECORDS_DOMAINS.map(d=>{
+    const pct = domainProgressPct(d);
+    return `
     <div class="record-domain" style="background:white;border-radius:14px;box-shadow:0 2px 12px rgba(15,27,53,0.06);border:1px solid rgba(15,27,53,0.06);overflow:hidden">
       <button onclick="toggleRecordDomain(${d.id})" style="width:100%;background:none;border:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:14px;font-family:'Cairo',sans-serif;text-align:right">
         <div style="width:44px;height:44px;background:linear-gradient(135deg,${d.color},${d.color}cc);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${d.icon}</div>
@@ -2132,6 +2183,10 @@ function renderRecords(){
           </div>
           <div style="font-size:15px;font-weight:800;color:#0f1b35;margin-top:5px;line-height:1.4">${d.title}</div>
           <div style="font-size:12px;color:#64748b;margin-top:2px">${d.subtitle}</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:9px;max-width:280px">
+            <div class="bar-track" style="flex:1;height:7px;background:#eef1f5"><div class="bar-fill" id="rec-progress-bar-${d.id}" style="width:${pct}%;--c1:${d.color};--c2:${d.color}cc"></div></div>
+            <span id="rec-progress-txt-${d.id}" style="font-size:11px;font-weight:800;color:${d.color};flex-shrink:0;min-width:32px">${pct}%</span>
+          </div>
         </div>
         <div id="rec-arrow-${d.id}" style="font-size:18px;color:#94a3b8;transition:transform .25s">▼</div>
       </button>
@@ -2141,18 +2196,33 @@ function renderRecords(){
           <table style="width:100%;border-collapse:collapse;font-size:12.5px">
             <thead>
               <tr style="background:linear-gradient(135deg,${d.color}15,${d.color}08)">
-                <th style="padding:10px 12px;text-align:right;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0;width:55%">السجل</th>
+                <th style="padding:10px 12px;text-align:right;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0;width:45%">السجل</th>
+                <th style="padding:10px 12px;text-align:center;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0;width:120px">الحالة</th>
                 <th style="padding:10px 12px;text-align:right;font-weight:800;color:#0f1b35;border-bottom:1px solid #e2e8f0">المنفذون</th>
               </tr>
             </thead>
             <tbody>
-              ${d.records.map((r,i)=>`<tr style="background:${i%2?'#fafbfc':'white'}"><td style="padding:10px 12px;color:#1a1a2e;font-weight:600;border-bottom:1px solid #f0f4f8">${r.name}</td><td style="padding:10px 12px;color:#64748b;line-height:1.6;border-bottom:1px solid #f0f4f8">${r.exec}</td></tr>`).join('')}
+              ${d.records.map((r,i)=>{
+                const recId = 'd'+d.id+'-r'+i;
+                const val = getRecordExec(recId, r.exec);
+                const st = getRecordStatus(recId);
+                const so = statusInfo(st);
+                const opts = RECORD_STATUS_OPTIONS.map(o=>`<option value="${o.v}"${o.v===st?' selected':''}>${o.label}</option>`).join('');
+                return `<tr style="background:${i%2?'#fafbfc':'white'}">
+                  <td style="padding:10px 12px;color:#1a1a2e;font-weight:600;border-bottom:1px solid #f0f4f8">${r.name}</td>
+                  <td style="padding:8px 8px;border-bottom:1px solid #f0f4f8;text-align:center">
+                    <select id="rec-status-${recId}" onchange="saveRecordStatus('${recId}',${d.id},this.value)" style="font-family:'Cairo',sans-serif;font-size:11px;font-weight:800;border:1px solid ${so.color}40;border-radius:8px;padding:5px 6px;cursor:pointer;color:${so.color};background:${so.bg};width:100%">${opts}</select>
+                  </td>
+                  <td style="padding:6px 8px;border-bottom:1px solid #f0f4f8"><input type="text" value="${escAttr(val)}" onchange="saveRecordExec('${recId}',this.value)" style="width:100%;box-sizing:border-box;background:transparent;border:0;border-bottom:1px dashed transparent;padding:4px 4px;font-family:'Cairo',sans-serif;font-size:12.5px;font-weight:300;color:#94a3b8;line-height:1.6" onfocus="this.style.borderBottomColor='#cbd5e1'" onblur="this.style.borderBottomColor='transparent'"></td>
+                </tr>`;
+              }).join('')}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function toggleRecordDomain(id){
