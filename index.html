@@ -370,80 +370,75 @@ button,input{font-family:inherit !important}
 .site-footer{max-width:1376px;margin:0 auto 28px;padding:0 2px;color:#6e6e73}.site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);box-shadow:0 8px 24px rgba(0,0,0,.04);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.site-footer-school{font-size:13px;font-weight:750;color:#1d1d1f;letter-spacing:-.015em}.site-footer-credit{font-size:12px;font-weight:600;color:#6e6e73}.site-footer-credit strong{color:#007aff;font-weight:750}@media(max-width:768px){.site-footer{margin:0 16px 20px}.site-footer-inner{padding:15px 16px;align-items:flex-start;flex-direction:column;gap:6px}.site-footer-school{font-size:12px}.site-footer-credit{font-size:11px}}
 /* Landing page */
 
-/* ===== LANDING PAGE ===== */
+/* ===== LANDING PAGE (centered hero, organic gradient background) ===== */
 body.landing-open{overflow:hidden}
 
 .landing-page{
   position:fixed;inset:0;z-index:100000;
-  display:grid;place-items:center;padding:32px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
   background:
-    radial-gradient(circle at 14% 12%,rgba(34,201,156,.14),transparent 32%),
-    radial-gradient(circle at 88% 86%,rgba(0,122,255,.10),transparent 34%),
-    linear-gradient(180deg,#fbfdfc 0%,#f4faf8 100%);
+    radial-gradient(ellipse 60% 46% at 6% -4%, rgba(34,201,156,.20), transparent 62%),
+    radial-gradient(ellipse 50% 42% at 104% 10%, rgba(10,107,92,.16), transparent 60%),
+    radial-gradient(ellipse 46% 38% at 12% 104%, rgba(10,132,255,.10), transparent 58%),
+    linear-gradient(180deg,#f7fbfa 0%,#eef7f4 100%);
   transition:opacity .45s ease,visibility .45s ease;
 }
-.landing-page::before,.landing-page::after{content:"";position:absolute;border:1px solid rgba(26,158,122,.13);border-radius:50%;pointer-events:none}
-.landing-page::before{width:min(52vw,620px);height:min(52vw,620px);top:-28vw;right:-14vw}
-.landing-page::after{width:min(42vw,470px);height:min(42vw,470px);bottom:-24vw;left:-10vw}
 .landing-page.is-leaving{opacity:0;visibility:hidden}
-
-.landing-shell{
-  position:relative;z-index:1;
-  display:grid;grid-template-columns:.86fr 1.14fr;
-  width:min(100%,980px);
-  border-radius:32px;overflow:hidden;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(26,158,122,.16);
-  box-shadow:0 30px 80px rgba(15,71,67,.16),0 4px 14px rgba(15,71,67,.06);
-  backdrop-filter:blur(18px);
-  animation:landingIn .55s cubic-bezier(.2,.7,.3,1) both;
+.landing-page::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(15,71,67,.11) 1px,transparent 1.6px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 68% 55% at 50% 16%,#000 0%,transparent 75%);
+  mask-image:radial-gradient(ellipse 68% 55% at 50% 16%,#000 0%,transparent 75%);
 }
-@keyframes landingIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.landing-skyline{position:absolute;left:0;right:0;bottom:0;height:min(26vw,220px);pointer-events:none;z-index:0;opacity:.5}
 
-.landing-visual{
-  position:relative;padding:40px 34px;
-  display:flex;flex-direction:column;justify-content:center;gap:22px;
-  background:linear-gradient(150deg,#0f1b35 0%,#0d3b34 55%,#0a6b5c 130%);
-  color:#eafaf6;overflow:hidden;
+.landing-topbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;max-width:1040px;margin:0 auto;padding:24px 32px 0}
+.landing-topbar-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#0d3b34}
+.landing-mini-logo{width:30px;height:30px;border-radius:9px;object-fit:cover;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.landing-vision-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.72);border:1px solid rgba(15,71,67,.12);font-size:11.5px;font-weight:800;color:#0d6b52;backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(15,71,67,.06)}
+
+.landing-hero{
+  position:relative;z-index:2;max-width:600px;margin:0 auto;padding:22px 28px 64px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  animation:landingIn .6s cubic-bezier(.2,.7,.3,1) both;
 }
-.landing-visual::before{content:"";position:absolute;inset:-40% -20% auto auto;width:60%;padding-bottom:60%;border-radius:50%;background:radial-gradient(circle,rgba(34,201,156,.28),transparent 70%)}
-.landing-visual::after{content:"";position:absolute;left:-25%;bottom:-30%;width:70%;padding-bottom:70%;border-radius:50%;background:radial-gradient(circle,rgba(10,132,255,.22),transparent 70%)}
-.landing-visual-badge{position:relative;width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px rgba(255,255,255,.3)}
-.landing-visual-title{position:relative;font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
-.landing-visual-sub{position:relative;font-size:13px;color:#bfe9de;line-height:1.75;max-width:30ch}
-.landing-visual-domains{position:relative;list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.landing-visual-domains li{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:#e3f7f1;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}
-.lvd-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 4px rgba(255,255,255,.08)}
+@keyframes landingIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-.landing-card{position:relative;padding:46px 44px 40px;text-align:center;display:flex;flex-direction:column;align-items:center}
-.landing-logo-wrap{position:relative;width:104px;height:104px;margin:0 auto 20px}
-.landing-logo{width:100%;height:100%;object-fit:cover;border-radius:26px;border:1px solid rgba(26,158,122,.18);box-shadow:0 14px 26px rgba(0,132,120,.16)}
-.landing-logo-fallback{display:none;width:100%;height:100%;border-radius:26px;align-items:center;justify-content:center;font-size:42px;background:linear-gradient(145deg,#1a9e7a,#22c99c);box-shadow:0 14px 26px rgba(0,132,120,.22)}
-.landing-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:#e8f8f5;color:#087f74;font-size:12px;font-weight:700}
+.landing-logo-wrap{position:relative;width:172px;height:172px;margin:8px auto 22px;border-radius:36px;overflow:hidden;background:#fff;border:1px solid rgba(26,158,122,.18);box-shadow:0 24px 46px rgba(0,132,120,.18),0 4px 14px rgba(0,132,120,.08)}
+.landing-logo{width:100%;height:100%;object-fit:cover}
+.landing-logo-fallback{display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:58px;background:linear-gradient(145deg,#1a9e7a,#22c99c)}
+
+.landing-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:#e8f8f5;color:#087f74;font-size:12px;font-weight:700;margin-bottom:16px}
 .landing-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#16a394;box-shadow:0 0 0 4px rgba(22,163,148,.13)}
-.landing-card h1{margin:18px 0 8px;color:#12332f;font-size:clamp(22px,3.2vw,28px);font-weight:800;line-height:1.3;letter-spacing:-.02em}
-.landing-card p{color:#5c6f6b;font-size:14.5px;line-height:1.7}
-.landing-stats{display:flex;justify-content:center;gap:10px;margin:22px 0 0}
-.landing-stat{flex:1;max-width:150px;padding:12px 10px;border-radius:14px;background:#f5faf9;border:1px solid #dcefeb}
-.landing-stat strong{display:block;font-size:22px;font-weight:900;color:#0d6b52;letter-spacing:-.03em}
-.landing-stat span{display:block;font-size:11px;font-weight:600;color:#6b7f7a;margin-top:2px}
-.landing-meta{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:18px 0 0}
-.landing-meta span{padding:8px 12px;border-radius:12px;background:#f5faf9;border:1px solid #dcefeb;color:#42615c;font-size:12.5px;font-weight:700}
-.landing-meta strong{color:#126b64}
-.landing-enter{margin-top:26px;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:200px;border:0;border-radius:15px;padding:14px 24px;background:linear-gradient(135deg,#078d81,#15ad9c);box-shadow:0 12px 24px rgba(7,141,129,.26);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
-.landing-enter:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(7,141,129,.34)}
-.landing-enter:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:4px}
-.landing-note{margin-top:14px;color:#94a5a1;font-size:11px}
 
-@media(max-width:860px){
-  .landing-shell{grid-template-columns:1fr;max-width:520px}
-  .landing-visual{display:none}
-}
+.landing-hero h1{color:#0d2b26;font-size:clamp(24px,3.6vw,32px);font-weight:900;line-height:1.35;letter-spacing:-.02em;margin-bottom:8px}
+.landing-sub{color:#3f5f59;font-size:15px;font-weight:700;margin-bottom:16px}
+.landing-mission{color:#5c716d;font-size:13.5px;line-height:1.9;max-width:48ch;margin-bottom:26px}
+
+.landing-domains-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:28px}
+.landing-domain-chip{display:flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(15,71,67,.1);font-size:11.5px;font-weight:700;color:#33534d;backdrop-filter:blur(8px)}
+.ldc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.landing-stats{display:flex;justify-content:center;gap:10px;margin-bottom:18px;width:100%;max-width:320px}
+.landing-stat{flex:1;padding:14px 10px;border-radius:16px;background:rgba(255,255,255,.75);border:1px solid #dcefeb;backdrop-filter:blur(8px)}
+.landing-stat strong{display:block;font-size:24px;font-weight:900;color:#0d6b52;letter-spacing:-.03em}
+.landing-stat span{display:block;font-size:11px;font-weight:600;color:#6b7f7a;margin-top:2px}
+
+.landing-meta{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:28px}
+.landing-meta span{padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.75);border:1px solid #dcefeb;color:#42615c;font-size:12px;font-weight:700;backdrop-filter:blur(8px)}
+.landing-meta strong{color:#126b64}
+
+.landing-enter{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:220px;border:0;border-radius:16px;padding:15px 26px;background:linear-gradient(135deg,#078d81,#15ad9c);box-shadow:0 14px 28px rgba(7,141,129,.28);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.landing-enter:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(7,141,129,.36)}
+.landing-enter:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:4px}
+.landing-note{margin-top:16px;color:#8fa39e;font-size:11px}
+
 @media(max-width:600px){
-  .landing-page{padding:18px}
-  .landing-card{padding:34px 22px 28px}
-  .landing-logo-wrap{width:88px;height:88px}
-  .landing-stats{flex-wrap:wrap}
+  .landing-topbar{padding:16px 18px 0}
+  .landing-hero{padding:14px 20px 46px}
+  .landing-logo-wrap{width:132px;height:132px;border-radius:28px;margin-bottom:18px}
+  .landing-stats{max-width:100%}
   .landing-meta span{width:100%}
 }
 /* ===== VIEW NAVIGATION (page-like sections in one file) ===== */
@@ -464,37 +459,50 @@ body.landing-open{overflow:hidden}
 </head>
 <body class="landing-open">
 <section class="landing-page" id="landingPage" aria-labelledby="landingTitle">
-  <div class="landing-shell">
-    <div class="landing-visual" aria-hidden="true">
-      <div class="landing-visual-badge">🏫</div>
-      <div class="landing-visual-title">التميز المؤسسي</div>
-      <div class="landing-visual-sub">رحلة تحسين مستمرة قائمة على البيانات عبر أربعة مجالات للتقويم المدرسي</div>
-      <ul class="landing-visual-domains">
-        <li><span class="lvd-dot" style="background:#3b5bdb"></span>مجال الإدارة المدرسية</li>
-        <li><span class="lvd-dot" style="background:#22c99c"></span>مجال التعليم والتعلم</li>
-        <li><span class="lvd-dot" style="background:#af52de"></span>مجال نواتج التعلم</li>
-        <li><span class="lvd-dot" style="background:#ffcc00"></span>مجال البيئة المدرسية</li>
-      </ul>
+  <svg class="landing-skyline" viewBox="0 0 1200 160" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <g fill="#0d6b52">
+      <rect x="20" y="70" width="46" height="90"/><rect x="80" y="40" width="34" height="120"/>
+      <rect x="128" y="90" width="40" height="70"/><rect x="182" y="20" width="30" height="140"/>
+      <rect x="226" y="60" width="50" height="100"/><rect x="292" y="100" width="36" height="60"/>
+      <rect x="900" y="90" width="40" height="70"/><rect x="952" y="50" width="30" height="110"/>
+      <rect x="994" y="75" width="46" height="85"/><rect x="1052" y="30" width="34" height="130"/>
+      <rect x="1098" y="85" width="42" height="75"/><rect x="1150" y="60" width="30" height="100"/>
+    </g>
+  </svg>
+
+  <div class="landing-topbar">
+    <div class="landing-topbar-brand">
+      <img class="landing-mini-logo" src="assets/school-logo.jpeg" alt="" onerror="this.style.display='none'">
+      <span>مدرسة عبدالله بن حذافة الابتدائية</span>
     </div>
-    <div class="landing-card">
-      <div class="landing-logo-wrap">
-        <img class="landing-logo" src="assets/school-logo.jpeg" alt="شعار مدرسة عبدالله ابن حذافة الابتدائية" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <span class="landing-logo-fallback">🏫</span>
-      </div>
-      <div class="landing-eyebrow">العام الدراسي 2026-2027</div>
-      <h1 id="landingTitle">مدرسة عبدالله ابن حذافة الابتدائية</h1>
-      <p>لوحة متابعة مؤشرات التقويم المدرسي</p>
-      <div class="landing-stats">
-        <div class="landing-stat"><strong id="landingIndCount">—</strong><span>مؤشر أداء</span></div>
-        <div class="landing-stat"><strong id="landingDomCount">—</strong><span>مجالات تطويرية</span></div>
-      </div>
-      <div class="landing-meta">
-        <span>مدير المدرسة: <strong>أ. سعيد أحمد القرني</strong></span>
-        <span>إعداد: <strong>لجنة التميز</strong></span>
-      </div>
-      <button class="landing-enter" type="button" onclick="enterDashboard()">دخول إلى اللوحة <span aria-hidden="true">←</span></button>
-      <div class="landing-note">منصة متابعة داخلية للمدرسة</div>
+    <div class="landing-vision-badge">🇸🇦 رؤية 2030</div>
+  </div>
+
+  <div class="landing-hero">
+    <div class="landing-logo-wrap">
+      <img class="landing-logo" src="assets/school-logo-2030.jpeg" alt="شعار مدرسة عبدالله بن حذافة الابتدائية" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="landing-logo-fallback">🏫</span>
     </div>
+    <div class="landing-eyebrow">العام الدراسي 2026-2027</div>
+    <h1 id="landingTitle">مدرسة عبدالله بن حذافة الابتدائية</h1>
+    <p class="landing-sub">لوحة متابعة مؤشرات التقويم المدرسي</p>
+    <p class="landing-mission">منصة رقمية داخلية تتيح للجنة التميز متابعة مؤشرات التقويم الذاتي المدرسي أولاً بأول، وتوثيق آليات التحقق والشواهد لكل مؤشر، بما يدعم قرارات التطوير المبنية على بيانات دقيقة ومحدثة، ويواكب مستهدفات التميز المؤسسي في رؤية المملكة 2030.</p>
+    <div class="landing-domains-row">
+      <span class="landing-domain-chip"><span class="ldc-dot" style="background:#3b5bdb"></span>الإدارة المدرسية</span>
+      <span class="landing-domain-chip"><span class="ldc-dot" style="background:#22c99c"></span>التعليم والتعلم</span>
+      <span class="landing-domain-chip"><span class="ldc-dot" style="background:#af52de"></span>نواتج التعلم</span>
+      <span class="landing-domain-chip"><span class="ldc-dot" style="background:#ffcc00"></span>البيئة المدرسية</span>
+    </div>
+    <div class="landing-stats">
+      <div class="landing-stat"><strong id="landingIndCount">—</strong><span>مؤشر أداء</span></div>
+      <div class="landing-stat"><strong id="landingDomCount">—</strong><span>مجالات تطويرية</span></div>
+    </div>
+    <div class="landing-meta">
+      <span>مدير المدرسة: <strong>أ. سعيد أحمد القرني</strong></span>
+      <span>إعداد: <strong>لجنة التميز</strong></span>
+    </div>
+    <button class="landing-enter" type="button" onclick="enterDashboard()">دخول إلى اللوحة <span aria-hidden="true">←</span></button>
+    <div class="landing-note">منصة متابعة داخلية للمدرسة</div>
   </div>
 </section>
 
