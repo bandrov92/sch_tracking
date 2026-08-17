@@ -397,6 +397,10 @@ body.landing-open{overflow:hidden}
 .landing-topbar-brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#0d3b34}
 .landing-mini-logo{width:30px;height:30px;border-radius:9px;object-fit:cover;box-shadow:0 4px 10px rgba(0,0,0,.12)}
 .landing-vision-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.72);border:1px solid rgba(15,71,67,.12);font-size:11.5px;font-weight:800;color:#0d6b52;backdrop-filter:blur(10px);box-shadow:0 4px 14px rgba(15,71,67,.06)}
+.eval-bar-row+.eval-bar-row{margin-top:12px}
+.eval-bar-head{display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:5px}
+.eval-year-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.eval-year-bar{width:100%;border-radius:8px 8px 0 0}
 
 .landing-hero{
   position:relative;z-index:2;max-width:600px;margin:0 auto;padding:22px 28px 64px;
@@ -432,6 +436,8 @@ body.landing-open{overflow:hidden}
 .landing-enter{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:220px;border:0;border-radius:16px;padding:15px 26px;background:linear-gradient(135deg,#078d81,#15ad9c);box-shadow:0 14px 28px rgba(7,141,129,.28);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
 .landing-enter:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(7,141,129,.36)}
 .landing-enter:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:4px}
+.landing-enter-eval{background:linear-gradient(135deg,#0a5cd6,#1d84ff);box-shadow:0 12px 24px rgba(10,92,214,.26)}
+.landing-enter-eval:hover{box-shadow:0 16px 30px rgba(10,92,214,.34)}
 .landing-note{margin-top:16px;color:#8fa39e;font-size:11px}
 
 @media(max-width:600px){
@@ -501,8 +507,98 @@ body.landing-open{overflow:hidden}
       <span>مدير المدرسة: <strong>أ. سعيد أحمد القرني</strong></span>
       <span>إعداد: <strong>لجنة التميز</strong></span>
     </div>
-    <button class="landing-enter" type="button" onclick="enterDashboard()">دخول إلى اللوحة <span aria-hidden="true">←</span></button>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <button class="landing-enter landing-enter-eval" type="button" onclick="showOfficialEvalModal()">📊 الواقع الحالي للمدرسة</button>
+      <button class="landing-enter" type="button" onclick="enterDashboard()">دخول إلى اللوحة <span aria-hidden="true">←</span></button>
+    </div>
     <div class="landing-note">منصة متابعة داخلية للمدرسة</div>
+  </div>
+
+  <!-- OFFICIAL EXTERNAL EVALUATION OVERVIEW -->
+  <div class="modal-overlay" id="officialEvalModal" style="z-index:100001">
+    <div class="modal" style="max-width:620px">
+      <button class="modal-close" onclick="closeModal('officialEvalModal')">✕</button>
+      <h2>📊 الواقع الحالي للمدرسة</h2>
+      <p style="font-size:12px;color:var(--slate);margin-top:-8px;line-height:1.7">وفق أحدث تقرير تقويم مدرسي خارجي صادر عن هيئة تقويم التعليم والتدريب</p>
+
+      <div class="modal-section">
+        <h3>الأداء العام</h3>
+        <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:8px">
+          <div style="font-size:42px;font-weight:900;color:#0d6b52;line-height:1">76%</div>
+          <div style="font-size:12.5px;color:var(--slate);line-height:1.9;flex:1;min-width:220px">
+            مستوى <strong style="color:#0d6b52">التقدم</strong> — أداء جيد يحتاج إلى استمرار المتابعة والتحسين والتطوير.<br>
+            تاريخ آخر تطبيق للتقويم: <strong>2024/10/07</strong> (تقرير محدَّث لعام 2025)
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h3>الأداء حسب المجالات الأربعة</h3>
+        <div style="margin-top:10px">
+          <div class="eval-bar-row">
+            <div class="eval-bar-head"><span>الإدارة المدرسية</span><span>78.75%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:78.75%;--c1:#1d2e5a;--c2:#3b5bdb"></div></div>
+          </div>
+          <div class="eval-bar-row">
+            <div class="eval-bar-head"><span>التعليم والتعلم</span><span>67.75%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:67.75%;--c1:#0d6b52;--c2:#22c99c"></div></div>
+          </div>
+          <div class="eval-bar-row">
+            <div class="eval-bar-head"><span>نواتج التعلم</span><span>80.25%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:80.25%;--c1:#4c1d95;--c2:#af52de"></div></div>
+          </div>
+          <div class="eval-bar-row">
+            <div class="eval-bar-head"><span>البيئة المدرسية</span><span>76.25%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:76.25%;--c1:#92400e;--c2:#ffcc00"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <h3>تطور الأداء العام عبر السنوات</h3>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:14px;padding:0 2px">
+          <div class="eval-year-col">
+            <span style="font-size:11px;font-weight:800;color:#0d6b52">74%</span>
+            <div class="eval-year-bar" style="height:67px;background:linear-gradient(180deg,#22c99c,#0d6b52)"></div>
+            <span style="font-size:10px;color:var(--slate);font-weight:700">2024</span>
+          </div>
+          <div class="eval-year-col">
+            <span style="font-size:11px;font-weight:800;color:#0d6b52">76%</span>
+            <div class="eval-year-bar" style="height:68px;background:linear-gradient(180deg,#22c99c,#0d6b52)"></div>
+            <span style="font-size:10px;color:var(--slate);font-weight:700">2025</span>
+          </div>
+          <div class="eval-year-col" title="لم تُرصد نتيجة بعد">
+            <span style="font-size:11px;color:#c7d2cd">—</span>
+            <div class="eval-year-bar" style="height:8px;border:1.5px dashed #c7d2cd"></div>
+            <span style="font-size:10px;color:#c7d2cd;font-weight:700">2026</span>
+          </div>
+          <div class="eval-year-col" title="لم تُرصد نتيجة بعد">
+            <span style="font-size:11px;color:#c7d2cd">—</span>
+            <div class="eval-year-bar" style="height:8px;border:1.5px dashed #c7d2cd"></div>
+            <span style="font-size:10px;color:#c7d2cd;font-weight:700">2027</span>
+          </div>
+          <div class="eval-year-col" title="لم تُرصد نتيجة بعد">
+            <span style="font-size:11px;color:#c7d2cd">—</span>
+            <div class="eval-year-bar" style="height:8px;border:1.5px dashed #c7d2cd"></div>
+            <span style="font-size:10px;color:#c7d2cd;font-weight:700">2028</span>
+          </div>
+          <div class="eval-year-col" title="لم تُرصد نتيجة بعد">
+            <span style="font-size:11px;color:#c7d2cd">—</span>
+            <div class="eval-year-bar" style="height:8px;border:1.5px dashed #c7d2cd"></div>
+            <span style="font-size:10px;color:#c7d2cd;font-weight:700">2029</span>
+          </div>
+          <div class="eval-year-col" title="لم تُرصد نتيجة بعد">
+            <span style="font-size:11px;color:#c7d2cd">—</span>
+            <div class="eval-year-bar" style="height:8px;border:1.5px dashed #c7d2cd"></div>
+            <span style="font-size:10px;color:#c7d2cd;font-weight:700">2030</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <p style="font-size:11px;color:var(--slate);line-height:1.8">البيانات أعلاه من التقرير الرسمي الصادر عن هيئة تقويم التعليم والتدريب، وهي منفصلة عن نسب الإنجاز اليومية المتابَعة داخلياً في هذه اللوحة.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -520,6 +616,9 @@ function goToLanding(){
   window.requestAnimationFrame(function(){
     window.requestAnimationFrame(function(){ landing.classList.remove('is-leaving'); });
   });
+}
+function showOfficialEvalModal(){
+  document.getElementById('officialEvalModal').classList.add('open');
 }
 </script>
 
