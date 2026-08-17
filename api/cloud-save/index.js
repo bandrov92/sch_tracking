@@ -1,25 +1,36 @@
-// وسيط بسيط: يستقبل حالة الموقع الكاملة من المتصفح (نفس النطاق، بلا مشاكل CORS)
-// ويمررها لتدفق الحفظ في Power Automate من جهة الخادم.
-// رابط التدفق يُقرأ من متغير بيئة (Application Settings في Azure) — لا يظهر في الكود أو المتصفح أبداً.
+// يستقبل حالة الموقع الكاملة من المتصفح (نفس النطاق، بلا مشاكل CORS)
+// ويحفظها مباشرة في Azure Blob Storage (حساب Azure الشخصي للمستخدم) — بلا وسيط Power Automate.
+// سلسلة الاتصال تُقرأ من متغير بيئة AZURE_STORAGE_CONNECTION_STRING (Application Settings في Azure)
+// — لا تظهر في الكود أو المتصفح أبداً.
+const { BlobServiceClient } = require('@azure/storage-blob');
+
+const CONTAINER_NAME = 'platform-data';
+const BLOB_NAME = 'progress.json';
+
 module.exports = async function (context, req) {
-  const url = process.env.POWER_AUTOMATE_SAVE_URL;
-  if (!url) {
-    context.res = { status: 500, headers: { 'Content-Type': 'application/json' }, body: { error: 'POWER_AUTOMATE_SAVE_URL غير مضبوط في إعدادات Azure' } };
+  const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+  if (!connectionString) {
+    context.res = { status: 500, headers: { 'Content-Type': 'application/json' }, body: { error: 'AZURE_STORAGE_CONNECTION_STRING غير مضبوط في إعدادات Azure' } };
     return;
   }
   try {
-    const upstream = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body || {})
+    const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+    const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME);
+    await containerClient.createIfNotExists();
+    const blockBlobClient = containerClient.getBlockBlobClient(BLOB_NAME);
+
+    const payload = JSON.stringify(req.body || {});
+    await blockBlobClient.upload(payload, Buffer.byteLength(payload), {
+      blobHTTPHeaders: { blobContentType: 'application/json' }
     });
-    const text = await upstream.text();
+
     context.res = {
-      status: upstream.status,
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: text || JSON.stringify({ status: upstream.ok ? 'ok' : 'error' })
+      body: { status: 'ok' }
     };
   } catch (err) {
-    context.res = { status: 502, headers: { 'Content-Type': 'application/json' }, body: { error: 'تعذر الاتصال بتدفق الحفظ' } };
+    context.log.error(err);
+    context.res = { status: 502, headers: { 'Content-Type': 'application/json' }, body: { error: 'تعذر الحفظ في التخزين السحابي' } };
   }
 };
