@@ -390,19 +390,13 @@ function enterDashboard(){
       <div class="logo-icon">🏫</div>
       <div class="logo-text">
         <h1>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</h1>
-        <p style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-          <span id="schoolNameDisplay" style="color:#22c99c;font-weight:700;cursor:pointer" onclick="editSchoolName()" title="انقر لتعديل اسم المدرسة">اسم المدرسة</span>
-          <button onclick="editSchoolName()" style="background:rgba(34,201,156,0.15);color:#22c99c;border:1px solid rgba(34,201,156,0.3);border-radius:5px;padding:1px 7px;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;line-height:1.6" title="تعديل اسم المدرسة">✏️</button>
-        </p>
       </div>
     </div>
     <div class="topbar-actions">
+      <span id="saveStatusBadge" style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;transition:background .3s,color .3s;white-space:nowrap;min-width:0"></span>
       <div class="topbar-date" id="topDate"></div>
-      <button class="btn-update" onclick="exportData()" style="background:#1d4ed8" title="تصدير النسب فقط (سريع)">📤 تصدير</button>
-      <button class="btn-update" onclick="document.getElementById('importFile').click()" style="background:#7c3aed" title="استيراد النسب فقط">📥 استيراد</button>
-      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
-      <button class="btn-update" onclick="exportFullBackup()" style="background:#0d6b52" title="نسخة كاملة تشمل المهام والشواهد — يُنصح بها للحفظ الدوري">💾 نسخة احتياطية كاملة</button>
-      <button class="btn-update" onclick="document.getElementById('importFullBackupFile').click()" style="background:#92400e" title="استعادة من نسخة احتياطية كاملة">♻️ استعادة</button>
+      <button class="btn-update" onclick="exportFullBackup()" style="background:#0d6b52" title="يحفظ كل شيء: النسب، المهام، والشواهد">💾 نسخة احتياطية</button>
+      <button class="btn-update" onclick="document.getElementById('importFullBackupFile').click()" style="background:#92400e" title="استعادة من نسخة احتياطية محفوظة">♻️ استعادة</button>
       <input type="file" id="importFullBackupFile" accept=".json" style="display:none" onchange="importFullBackup(this)">
       <button class="btn-update" onclick="printReport()" style="background:#059669">🖨️ طباعة</button>
       <button class="btn-update" onclick="showUpdateModal()">🔄 دليل التحديث</button>
@@ -718,6 +712,34 @@ function generateId(prefix){
   return prefix+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,10);
 }
 
+// ===================== SAVE STATUS INDICATOR =====================
+// مؤشر مرئي دائم (في الشريط العلوي الثابت) يوضح حالة الحفظ لحظياً.
+// ضروري لأن الحفظ سيصبح عبر الشبكة لاحقاً (تأخير حقيقي بالثواني)، لا فورياً كما الآن.
+// يُحدَّث من داخل DataStore حصراً — لا حاجة لتعديل toggleStep/addTask/... إطلاقاً.
+var saveStatusTimer = null;
+function setSaveStatus(state){
+  var el = document.getElementById('saveStatusBadge');
+  if(!el) return;
+  clearTimeout(saveStatusTimer);
+  if(state==='saving'){
+    el.textContent = '⏳ جارٍ الحفظ...';
+    el.style.background = 'rgba(255,255,255,0.14)';
+    el.style.color = '#fbbf24';
+  } else if(state==='saved'){
+    el.textContent = '✅ تم الحفظ';
+    el.style.background = 'rgba(34,201,156,0.2)';
+    el.style.color = '#6ee7b7';
+    saveStatusTimer = setTimeout(function(){
+      el.textContent = '';
+      el.style.background = 'transparent';
+    }, 2200);
+  } else if(state==='error'){
+    el.textContent = '❌ تعذّر الحفظ';
+    el.style.background = 'rgba(239,68,68,0.2)';
+    el.style.color = '#fca5a5';
+  }
+}
+
 // ===================== DATA ACCESS LAYER (DataStore) =====================
 // هذه الطبقة هي الحد الفاصل الوحيد المسموح لأي دالة عرض أو تفاعل بالتعامل معه
 // عند القراءة/الكتابة. المرحلة 1: التنفيذ محلي (localStorage) لكن بواجهة async
@@ -728,25 +750,46 @@ const DataStore = {
     return loadChecks(indId, total);
   },
   async setChecks(indId, arr){
-    saveChecks(indId, arr); // قد يرمي استثناء (مساحة تخزين ممتلئة) — يُلتقط تلقائياً كـ Promise مرفوض
-    localStorage.setItem('meta_checks_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
-    return {ok:true};
+    setSaveStatus('saving');
+    try{
+      saveChecks(indId, arr); // قد يرمي استثناء (مساحة تخزين ممتلئة)
+      localStorage.setItem('meta_checks_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
+      setSaveStatus('saved');
+      return {ok:true};
+    }catch(e){
+      setSaveStatus('error');
+      throw e;
+    }
   },
   async getTasks(indId){
     return loadTasks(indId);
   },
   async saveTasks(indId, tasks){
-    saveTasks(indId, tasks);
-    localStorage.setItem('meta_tasks_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
-    return {ok:true};
+    setSaveStatus('saving');
+    try{
+      saveTasks(indId, tasks);
+      localStorage.setItem('meta_tasks_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
+      setSaveStatus('saved');
+      return {ok:true};
+    }catch(e){
+      setSaveStatus('error');
+      throw e;
+    }
   },
   async getEvidence(indId){
     return loadEvidence(indId);
   },
   async saveEvidence(indId, list){
-    saveEvidence(indId, list); // مُعدَّلة لترمي استثناءً حقيقياً بدل alert — انظر تعريفها أدناه
-    localStorage.setItem('meta_evid_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
-    return {ok:true};
+    setSaveStatus('saving');
+    try{
+      saveEvidence(indId, list); // مُعدَّلة لترمي استثناءً حقيقياً بدل alert
+      localStorage.setItem('meta_evid_'+indId, JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
+      setSaveStatus('saved');
+      return {ok:true};
+    }catch(e){
+      setSaveStatus('error');
+      throw e;
+    }
   }
 };
 
@@ -788,12 +831,6 @@ function pctToChecksArray(total, pct){
   for(var i=0;i<n;i++) arr[i]=true;
   return arr;
 }
-function savePct(id, v){
-  // للاستيراد فقط: نحوّل النسبة إلى عدد خطوات محققة
-  var ind = INDICATORS.find(function(x){return x.id===id;});
-  if(!ind) return;
-  saveChecks(id, pctToChecksArray(ind.steps.length, v));
-}
 async function toggleStep(indId, stepIdx){
   var ind = INDICATORS.find(function(x){return x.id===indId;});
   if(!ind) return;
@@ -805,7 +842,7 @@ async function toggleStep(indId, stepIdx){
     showToast('❌ تعذّر حفظ التحديث — حاول مرة أخرى','error');
     return;
   }
-  setLastUpdate(indId);
+  // ملاحظة: توقيت آخر تحديث يُسجَّل تلقائياً عبر meta_checks_ داخل DataStore.setChecks أعلاه
   // تحديث واجهة البطاقة
   var li = document.getElementById('step_'+indId+'_'+stepIdx);
   if(li){ li.classList.toggle('checked', arr[stepIdx]); }
@@ -1011,6 +1048,7 @@ async function addTask(indId){
     showToast('❌ تعذّر حفظ المهمة — حاول مرة أخرى','error');
     return;
   }
+  showToast('✅ تم حفظ المهمة');
   refreshTasks(indId);
 }
 async function toggleTaskDone(indId,taskId){
@@ -1035,6 +1073,7 @@ async function deleteTask(indId,taskId){
     showToast('❌ تعذّر حذف المهمة','error');
     return;
   }
+  showToast('🗑 تم حذف المهمة');
   refreshTasks(indId);
 }
 
@@ -1166,6 +1205,8 @@ function saveEvidenceForm(indId){
         showToast('❌ تعذّر الحفظ — قد تكون مساحة التخزين ممتلئة. جرّب رابط ملف خارجي بدلاً من رفع الصور.','error');
         return;
       }
+      showToast('✅ تم حفظ الشاهد');
+      hideEvidenceForm(indId);
       refreshEvidence(indId);
     };
     r.readAsDataURL(f);
@@ -1181,6 +1222,8 @@ function saveEvidenceForm(indId){
         showToast('❌ تعذّر الحفظ','error');
         return;
       }
+      showToast('✅ تم حفظ الشاهد');
+      hideEvidenceForm(indId);
       refreshEvidence(indId);
     })();
   }
@@ -1194,6 +1237,7 @@ async function deleteEvidence(indId, evId){
     showToast('❌ تعذّر حذف الشاهد','error');
     return;
   }
+  showToast('🗑 تم حذف الشاهد');
   refreshEvidence(indId);
 }
 function viewEvidenceImage(evId, indId){
@@ -1204,17 +1248,6 @@ function viewEvidenceImage(evId, indId){
 }
 
 // ===================== SMART ANALYSIS =====================
-function getLastUpdate(id){
-  var ts = localStorage.getItem('lastUpdate_'+id);
-  return ts ? parseInt(ts) : null;
-}
-function setLastUpdate(id){
-  localStorage.setItem('lastUpdate_'+id, Date.now().toString());
-}
-function daysSince(ts){
-  if(!ts) return null;
-  return Math.floor((Date.now()-ts)/(1000*60*60*24));
-}
 
 function getRecommendations(ind, pct){
   var domain = ind.domain;
@@ -1277,26 +1310,6 @@ function refreshAnalysis(indId){
 function toggleCard(id){
   var card=document.getElementById('card_'+id);
   card.classList.toggle('expanded');
-}
-
-function updatePct(id){
-  var inp=document.getElementById('input_'+id);
-  var v=Math.max(0,Math.min(100,parseInt(inp.value)||0));
-  inp.value=v;
-  savePct(id,v);
-  var bar=document.getElementById('bar_'+id);
-  var lbl=document.getElementById('pctlabel_'+id);
-  var col=getBarColor(v,id);
-  if(bar){ bar.style.width=v+'%'; bar.style.background=col; }
-  if(lbl){ lbl.textContent=v+'%'; lbl.style.color=col; }
-  // update status badge
-  var card=document.getElementById('card_'+id);
-  if(card){
-    var st=getStatus(v);
-    var badge=card.querySelector('.ind-status');
-    if(badge){ badge.className='ind-status '+st.cls; badge.textContent=st.label; }
-  }
-  updateStats();
 }
 
 function updateStats(){
@@ -1484,78 +1497,12 @@ async function confirmReset(){
 
 // INIT
 render();
-loadSchoolName();
 
 
-// ===== SCHOOL NAME =====
-function loadSchoolName(){
-  var name = localStorage.getItem('schoolName') || '';
-  var el = document.getElementById('schoolNameDisplay');
-  if(el) el.textContent = name || 'اسم المدرسة';
-}
-function editSchoolName(){
-  var current = localStorage.getItem('schoolName') || '';
-  var inp = document.getElementById('schoolNameInput');
-  if(inp) inp.value = current;
-  document.getElementById('schoolModal').classList.add('open');
-  setTimeout(function(){ if(inp) inp.focus(); }, 200);
-}
-function saveSchoolName(){
-  var val = (document.getElementById('schoolNameInput').value || '').trim();
-  if(val){
-    localStorage.setItem('schoolName', val);
-    var el = document.getElementById('schoolNameDisplay');
-    if(el) el.textContent = val;
-    showToast('✅ تم حفظ اسم المدرسة');
-  }
-  closeModal('schoolModal');
-}
-
-// ===== EXPORT DATA =====
-function exportData(){
-  var data={version:'1.0',date:new Date().toISOString(),indicators:{}};
-  INDICATORS.forEach(function(i){data.indicators[i.id]=loadPct(i.id);});
-  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  var d=new Date();
-  a.download='تقويم-مدرسي-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()+'.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showToast('✅ تم تصدير البيانات بنجاح');
-}
-
-// ===== IMPORT DATA =====
-function importData(input){
-  var file=input.files[0];
-  if(!file) return;
-  var reader=new FileReader();
-  reader.onload=async function(e){
-    try{
-      var data=JSON.parse(e.target.result);
-      if(!data.indicators) throw new Error('ملف غير صالح');
-      var count=0;
-      for(var idx=0; idx<INDICATORS.length; idx++){
-        var i = INDICATORS[idx];
-        if(data.indicators[i.id]!==undefined){
-          var arr = pctToChecksArray(i.steps.length, parseInt(data.indicators[i.id])||0);
-          try{ await DataStore.setChecks(i.id, arr); count++; }catch(err){ /* تجاوز هذا المؤشر والاستمرار */ }
-        }
-      }
-      render();
-      setTimeout(function(){
-        document.querySelectorAll('.ind-bar-fill').forEach(function(b){
-          var w=b.style.width;b.style.width='0';setTimeout(function(){b.style.width=w;},50);
-        });
-      },100);
-      showToast('✅ تم استيراد '+count+' مؤشر بنجاح');
-    }catch(err){
-      showToast('❌ خطأ: تأكد من صحة الملف','error');
-    }
-    input.value='';
-  };
-  reader.readAsText(file);
-}
+// ===== EXPORT/IMPORT للنسب فقط: أُزيلت (المرحلة الحالية) =====
+// استُبدلت بزري "نسخة احتياطية" و"استعادة" في الشريط العلوي، وهما يغطيان
+// نفس الوظيفة وأكثر (يشملان المهام والشواهد أيضاً)، ودالة importFullBackup أدناه
+// متوافقة تلقائياً مع أي ملف مُصدَّر سابقاً بالنظام القديم.
 
 // ===== نسخة احتياطية شاملة (تشمل المهام والشواهد، لا النسب فقط) =====
 // هذه الدالة تخدم غرضين: (1) نسخة احتياطية حقيقية للمدرسة اليوم،
@@ -1590,7 +1537,10 @@ function importFullBackup(input){
       for(var idx=0; idx<INDICATORS.length; idx++){
         var i = INDICATORS[idx];
         if(data.indicators[i.id]!==undefined){
-          try{ await DataStore.setChecks(i.id, data.indicators[i.id]); count++; }catch(err){}
+          var raw = data.indicators[i.id];
+          // توافق تلقائي مع الملفات القديمة: قيمة رقمية (نسبة%) أو مصفوفة خطوات
+          var arr = Array.isArray(raw) ? raw : pctToChecksArray(i.steps.length, parseInt(raw)||0);
+          try{ await DataStore.setChecks(i.id, arr); count++; }catch(err){}
         }
         if(data.tasks && data.tasks[i.id]!==undefined){
           try{ await DataStore.saveTasks(i.id, data.tasks[i.id]); }catch(err){}
@@ -1674,22 +1624,6 @@ setTimeout(function(){
 },100);
 </script>
 
-
-<!-- SCHOOL NAME MODAL -->
-<div class="modal-overlay" id="schoolModal">
-  <div class="modal" style="max-width:400px">
-    <button class="modal-close" onclick="closeModal('schoolModal')">✕</button>
-    <h2 style="margin-bottom:16px;font-size:16px">🏫 اسم المدرسة</h2>
-    <p style="font-size:12px;color:#64748b;margin-bottom:14px;line-height:1.7">أدخل اسم مدرستك ليظهر في لوحة المتابعة ويُحفظ تلقائياً.</p>
-    <input id="schoolNameInput" type="text" placeholder="مثال: مدرسة الملك فهد الابتدائية"
-      style="width:100%;padding:12px 14px;border:1.5px solid rgba(0,0,0,0.12);border-radius:10px;font-family:Cairo,sans-serif;font-size:14px;font-weight:600;color:#0f1b35;outline:none;margin-bottom:14px;direction:rtl"
-      onkeydown="if(event.key==='Enter')saveSchoolName()">
-    <div style="display:flex;gap:8px">
-      <button onclick="saveSchoolName()" style="flex:1;background:#0f1b35;color:white;border:none;border-radius:10px;padding:11px;font-family:Cairo,sans-serif;font-size:13px;font-weight:800;cursor:pointer">💾 حفظ</button>
-      <button onclick="closeModal('schoolModal')" style="background:#f0f4f8;color:#0f1b35;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;padding:11px 18px;font-family:Cairo,sans-serif;font-size:13px;font-weight:700;cursor:pointer">إلغاء</button>
-    </div>
-  </div>
-</div>
 
 <!-- RESET CONFIRM MODAL -->
 <div class="modal-overlay" id="resetModal">
