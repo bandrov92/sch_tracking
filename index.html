@@ -385,14 +385,20 @@ button,input{font-family:inherit !important}
 @media(max-width:768px){.topbar-inner,.stats-row,.main{padding-left:16px;padding-right:16px}.stats-row{padding-top:16px}.kpi-panel,.chart-section{margin-left:16px;margin-right:16px;border-radius:22px}.kpi-panel{padding:20px}.chart-section{padding:20px}.domain-title{font-size:18px}.indicators-grid{gap:14px}}
 .site-footer{max-width:1376px;margin:0 auto 28px;padding:0 2px;color:#6e6e73}.site-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 22px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);box-shadow:0 8px 24px rgba(0,0,0,.04);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}.site-footer-school{font-size:13px;font-weight:750;color:#1d1d1f;letter-spacing:-.015em}.site-footer-credit{font-size:12px;font-weight:600;color:#6e6e73}.site-footer-credit strong{color:#007aff;font-weight:750}@media(max-width:768px){.site-footer{margin:0 16px 20px}.site-footer-inner{padding:15px 16px;align-items:flex-start;flex-direction:column;gap:6px}.site-footer-school{font-size:12px}.site-footer-credit{font-size:11px}}
 /* Landing page */
-body.landing-open{overflow:hidden}.landing-page{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 16% 16%,rgba(34,201,156,.13),transparent 28%),radial-gradient(circle at 88% 84%,rgba(0,122,255,.1),transparent 30%),#fff;transition:opacity .42s ease,visibility .42s ease}.landing-page::before,.landing-page::after{content:"";position:absolute;border:1px solid rgba(26,158,122,.13);border-radius:50%;pointer-events:none}.landing-page::before{width:min(52vw,620px);height:min(52vw,620px);top:-28vw;right:-14vw}.landing-page::after{width:min(42vw,470px);height:min(42vw,470px);bottom:-24vw;left:-10vw}.landing-page.is-leaving{opacity:0;visibility:hidden}.landing-card{position:relative;z-index:1;width:min(100%,640px);padding:44px 48px 38px;text-align:center;border:1px solid rgba(26,158,122,.17);border-radius:32px;background:rgba(255,255,255,.86);box-shadow:0 24px 70px rgba(15,71,67,.13);backdrop-filter:blur(16px)}.landing-logo{width:160px;height:160px;object-fit:contain;margin:0 auto 22px;border-radius:24px;filter:drop-shadow(0 10px 16px rgba(0,132,120,.12))}.landing-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#e8f8f5;color:#087f74;font-size:12px;font-weight:700}.landing-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#16a394;box-shadow:0 0 0 4px rgba(22,163,148,.13)}.landing-card h1{margin:18px 0 10px;color:#164b49;font-size:clamp(24px,4vw,34px);font-weight:800;line-height:1.25;letter-spacing:-.025em}.landing-card p{color:#65726f;font-size:16px;line-height:1.7}.landing-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:24px 0}.landing-meta span{padding:8px 12px;border-radius:12px;background:#f5faf9;border:1px solid #dcefeb;color:#42615c;font-size:13px;font-weight:700}.landing-meta strong{color:#126b64}.landing-enter{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:190px;border:0;border-radius:15px;padding:13px 22px;background:linear-gradient(135deg,#078d81,#15ad9c);box-shadow:0 12px 22px rgba(7,141,129,.24);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.landing-enter:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(7,141,129,.32)}.landing-enter:focus-visible{outline:3px solid rgba(0,122,255,.35);outline-offset:4px}.landing-note{margin-top:16px;color:#94a5a1;font-size:11px}@media(max-width:600px){.landing-page{padding:18px}.landing-card{padding:34px 23px 28px;border-radius:26px}.landing-logo{width:132px;height:132px;margin-bottom:16px}.landing-card p{font-size:14px}.landing-meta{margin:19px 0}.landing-meta span{width:100%}}
+body.landing-open{overflow:hidden}.landing-page{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:28px;background:radial-gradient(circle at 16% 16%,rgba(37,99,235,.16),transparent 30%),radial-gradient(circle at 88% 84%,rgba(99,102,241,.14),transparent 32%),radial-gradient(circle at 50% 100%,rgba(56,189,248,.1),transparent 40%),#f7f9ff;transition:opacity .42s ease,visibility .42s ease}.landing-page::before,.landing-page::after{content:"";position:absolute;border:1px solid rgba(37,99,235,.15);border-radius:50%;pointer-events:none}.landing-page::before{width:min(52vw,620px);height:min(52vw,620px);top:-28vw;right:-14vw}.landing-page::after{width:min(42vw,470px);height:min(42vw,470px);bottom:-24vw;left:-10vw}.landing-page.is-leaving{opacity:0;visibility:hidden}.landing-card{position:relative;z-index:1;width:min(100%,640px);padding:44px 48px 38px;text-align:center;border:1px solid rgba(37,99,235,.2);border-radius:32px;background:rgba(255,255,255,.88);box-shadow:0 24px 70px rgba(15,23,73,.15);backdrop-filter:blur(16px)}
+.landing-logo-wrap{position:relative;width:160px;height:160px;margin:0 auto 22px}
+.landing-logo-wrap::before{content:"";position:absolute;inset:-18px;background:radial-gradient(circle,rgba(37,99,235,.28),rgba(99,102,241,.12) 55%,transparent 75%);filter:blur(6px);z-index:0}
+.landing-logo{position:relative;z-index:1;width:160px;height:160px;object-fit:contain;border-radius:24px;filter:drop-shadow(0 14px 22px rgba(29,78,216,.24))}
+.landing-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:#eaf1ff;color:#1d4ed8;font-size:12px;font-weight:700}.landing-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.15)}.landing-card h1{margin:18px 0 10px;color:#1e3a6e;font-size:clamp(24px,4vw,34px);font-weight:800;line-height:1.25;letter-spacing:-.025em}.landing-card p{color:#5b6b82;font-size:16px;line-height:1.7}.landing-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:24px 0}.landing-meta span{padding:8px 12px;border-radius:12px;background:#f0f5ff;border:1px solid #dbe6fd;color:#33507a;font-size:13px;font-weight:700}.landing-meta strong{color:#1d4ed8}.landing-enter{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:190px;border:0;border-radius:15px;padding:13px 22px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);box-shadow:0 12px 24px rgba(29,78,216,.3);color:#fff;font-size:15px;font-weight:800;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}.landing-enter:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(29,78,216,.38)}.landing-enter:focus-visible{outline:3px solid rgba(37,99,235,.35);outline-offset:4px}.landing-note{margin-top:16px;color:#8b97ac;font-size:11px}@media(max-width:600px){.landing-page{padding:18px}.landing-card{padding:34px 23px 28px;border-radius:26px}.landing-logo-wrap{width:132px;height:132px;margin-bottom:16px}.landing-logo{width:132px;height:132px}.landing-card p{font-size:14px}.landing-meta{margin:19px 0}.landing-meta span{width:100%}}
 
 </style>
 </head>
 <body class="landing-open">
 <section class="landing-page" id="landingPage" aria-labelledby="landingTitle">
   <div class="landing-card">
-    <img class="landing-logo" src="assets/school-logo.jpeg" alt="شعار مدرسة عبدالله ابن حذافة الابتدائية">
+    <div class="landing-logo-wrap">
+      <img class="landing-logo" src="assets/school-logo.jpeg" alt="شعار مدرسة عبدالله ابن حذافة الابتدائية">
+    </div>
     <div class="landing-eyebrow">العام الدراسي 2026-2027</div>
     <h1 id="landingTitle">مدرسة عبدالله ابن حذافة الابتدائية</h1>
     <p>لوحة متابعة مؤشرات التقويم المدرسي</p>
@@ -413,6 +419,12 @@ function enterDashboard(){
   window.setTimeout(function(){ landing.hidden=true; },420);
   showPage('hub');
 }
+function returnToSplash(){
+  var landing=document.getElementById('landingPage');
+  landing.hidden=false;
+  landing.classList.remove('is-leaving');
+  document.body.classList.add('landing-open');
+}
 function showPage(pageId){
   document.querySelectorAll('[data-page]').forEach(function(el){
     el.classList.toggle('page-active', el.dataset.page===pageId);
@@ -428,7 +440,7 @@ function showPage(pageId){
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="topbar-logo" onclick="showPage('hub')" style="cursor:pointer" title="العودة إلى الصفحة الرئيسية" role="link">
+    <div class="topbar-logo" onclick="returnToSplash()" style="cursor:pointer" title="العودة إلى صفحة الترحيب" role="link">
       <div class="logo-icon">🏫</div>
       <div class="logo-text">
         <h1>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</h1>
