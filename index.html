@@ -32,7 +32,8 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--navy);min-h
 /* TOP BAR */
 .topbar{background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 60%,#1a3070 100%);color:white;padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.3)}
 .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:16px}
-.topbar-logo{display:flex;align-items:center;gap:12px}
+.topbar-logo{display:flex;align-items:center;gap:12px;transition:opacity .15s}
+.topbar-logo:hover{opacity:.8}
 .logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--teal),var(--teal2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .logo-text h1{font-size:16px;font-weight:800;line-height:1.2}
 .logo-text p{font-size:11px;opacity:0.7;margin-top:1px}
@@ -42,6 +43,36 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--navy);min-h
 .topbar-date{font-size:11px;opacity:0.65;text-align:center}
 
 /* SUMMARY STATS */
+[data-page]{display:none}
+[data-page].page-active{display:block}
+.hub-wrap{max-width:1000px;margin:40px auto;padding:0 24px}
+.hub-school-card{background:rgba(255,255,255,.85);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.9);border-radius:26px;padding:28px 32px;box-shadow:var(--card-shadow);text-align:center;margin-bottom:28px}
+.hub-school-card h2{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.hub-school-card p{font-size:13px;color:var(--slate)}
+.hub-meta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:16px}
+.hub-meta-row span{background:#f2f2f7;border-radius:12px;padding:7px 14px;font-size:12px;font-weight:700;color:#3a3a3c}
+.hub-meta-row span strong{color:var(--navy)}
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.hub-btn{background:rgba(255,255,255,.85);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.9);border-radius:22px;padding:22px 24px;box-shadow:var(--card-shadow);cursor:pointer;text-align:right;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;gap:8px}
+.hub-btn:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(0,0,0,.1)}
+.hub-btn-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:inset 0 1px rgba(255,255,255,.25)}
+.hub-btn-title{font-size:15px;font-weight:800;color:var(--navy)}
+.hub-btn-desc{font-size:12px;color:var(--slate);line-height:1.6}
+.hub-btn-stat{font-size:12px;font-weight:800;margin-top:2px}
+.page-back-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.8);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-family:Cairo,sans-serif;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;margin:20px 32px 0}
+.page-back-btn:hover{background:#fff}
+@media(max-width:640px){.hub-grid{grid-template-columns:1fr}.hub-wrap{margin:24px auto;padding:0 16px}}
+
+/* زر العودة للأعلى العائم */
+#backToTopBtn{position:fixed;left:22px;bottom:22px;width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;border:none;box-shadow:0 8px 22px rgba(0,0,0,.28);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .25s,transform .25s,visibility .25s;z-index:150}
+#backToTopBtn.visible{opacity:1;visibility:visible;transform:translateY(0)}
+#backToTopBtn:hover{background:var(--teal)}
+
+/* شريط القفز السريع بين أقسام صفحة التقويم الذاتي */
+.jump-bar{position:sticky;top:var(--topbar-h,72px);z-index:90;display:flex;gap:8px;padding:9px 32px;background:rgba(240,244,248,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.jump-bar button{background:white;border:1px solid var(--border);border-radius:999px;padding:6px 15px;font-family:Cairo,sans-serif;font-size:11.5px;font-weight:700;color:var(--navy);cursor:pointer;white-space:nowrap;transition:all .15s}
+.jump-bar button:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+@media(max-width:768px){.jump-bar{padding:9px 16px;overflow-x:auto}}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:20px 28px 0}
 .stat-card{background:white;border-radius:14px;padding:18px 20px;box-shadow:var(--card-shadow);border:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:transform .2s}
 .stat-card:hover{transform:translateY(-2px)}
@@ -380,13 +411,24 @@ function enterDashboard(){
   landing.classList.add('is-leaving');
   document.body.classList.remove('landing-open');
   window.setTimeout(function(){ landing.hidden=true; },420);
+  showPage('hub');
+}
+function showPage(pageId){
+  document.querySelectorAll('[data-page]').forEach(function(el){
+    el.classList.toggle('page-active', el.dataset.page===pageId);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(pageId==='selfeval'){ render(); }
+  if(pageId==='programs'){ renderPrograms(); }
+  if(pageId==='tracking'){ renderTracking(); }
+  if(pageId==='hub'){ renderHubSummary(); }
 }
 </script>
 
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="topbar-logo">
+    <div class="topbar-logo" onclick="showPage('hub')" style="cursor:pointer" title="العودة إلى الصفحة الرئيسية" role="link">
       <div class="logo-icon">🏫</div>
       <div class="logo-text">
         <h1>لوحة متابعة مؤشرات التقويم المدرسي للعام الدراسي 2026-2027</h1>
@@ -413,7 +455,55 @@ function enterDashboard(){
   </div>
 </div>
 
+<!-- HUB / مركز القيادة -->
+<div data-page="hub" class="page-active">
+  <div class="hub-wrap">
+    <div class="hub-school-card">
+      <h2>مدرسة عبدالله ابن حذافة الابتدائية</h2>
+      <p>لوحة متابعة مؤشرات التقويم المدرسي — العام الدراسي 2026-2027</p>
+      <div class="hub-meta-row">
+        <span>مدير المدرسة: <strong>أ. سعيد أحمد القرني</strong></span>
+        <span>اللجنة المشرفة: <strong>لجنة التميز</strong></span>
+        <span>المعلم المنفذ: <strong>أ. بندر بن عايض الأسمري</strong></span>
+      </div>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-btn" onclick="showPage('selfeval')">
+        <div class="hub-btn-icon" style="background:linear-gradient(135deg,#162347,#1d2e5a)">📊</div>
+        <div class="hub-btn-title">١) التقويم الذاتي</div>
+        <div class="hub-btn-desc">مؤشرات مجالات التقويم المدرسي، آليات التحقق، والتحليل الذكي.</div>
+        <div class="hub-btn-stat" id="hubStatSelfeval" style="color:#0d6b52"></div>
+      </div>
+      <div class="hub-btn" onclick="showPage('programs')">
+        <div class="hub-btn-icon" style="background:linear-gradient(135deg,#0d6b52,#22c99c)">📋</div>
+        <div class="hub-btn-title">٢) برامج الخطة التشغيلية</div>
+        <div class="hub-btn-desc">برامج العام الدراسي الحالي وربطها بمؤشرات التقويم الذاتي.</div>
+        <div class="hub-btn-stat" id="hubStatPrograms" style="color:#0d6b52"></div>
+      </div>
+      <div class="hub-btn" onclick="showPage('tracking')">
+        <div class="hub-btn-icon" style="background:linear-gradient(135deg,#92400e,#f59e0b)">📈</div>
+        <div class="hub-btn-title">٣) متابعة التنفيذ</div>
+        <div class="hub-btn-desc">تتحدّث تلقائياً من بيانات البرامج — حالة وزمن التنفيذ فقط.</div>
+        <div class="hub-btn-stat" id="hubStatTracking" style="color:#92400e"></div>
+      </div>
+      <div class="hub-btn" onclick="showPage('nafes')">
+        <div class="hub-btn-icon" style="background:linear-gradient(135deg,#4c1d95,#8b5cf6)">🎯</div>
+        <div class="hub-btn-title">٤) الاختبارات الوطنية (نافس)</div>
+        <div class="hub-btn-desc">الخطة الزمنية للاختبارات المحاكية الأسبوعية.</div>
+        <div class="hub-btn-stat" id="hubStatNafes" style="color:#8b5cf6">بانتظار البيانات</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- SUMMARY STATS -->
+<div data-page="selfeval">
+<div class="jump-bar">
+  <span style="font-size:11px;font-weight:700;color:var(--slate);align-self:center;margin-left:2px">قفز سريع:</span>
+  <button onclick="jumpToSection('statsRow')">📊 إحصائيات</button>
+  <button onclick="jumpToSection('indicatorsSection')">🎯 المؤشرات</button>
+  <button onclick="jumpToSection('recordsSection')">📚 السجلات</button>
+</div>
 <div class="stats-row" id="statsRow">
   <div class="stat-card">
     <div class="stat-icon navy">📋</div>
@@ -474,7 +564,7 @@ function enterDashboard(){
 </section>
 
 <!-- MAIN -->
-<div class="main">
+<div class="main" id="indicatorsSection">
 
   <!-- FILTER BAR -->
   <div class="filter-bar" style="margin-bottom:20px">
@@ -492,6 +582,84 @@ function enterDashboard(){
 
   <div id="mainContent"></div>
 </div>
+<button class="page-back-btn" onclick="showPage('hub')">← العودة لمركز القيادة</button>
+</div>
+<!-- END selfeval -->
+
+<!-- OPERATIONAL PLAN (البرامج) -->
+<div data-page="programs">
+<button class="page-back-btn" onclick="showPage('hub')">← العودة لمركز القيادة</button>
+<section style="max-width:1440px;margin:24px auto 0;padding:0 32px">
+  <div class="domain-header" style="border-color:rgba(0,0,0,.08)">
+    <div class="domain-dot" style="background:#334155"></div>
+    <div class="domain-title">📋 الخطة التشغيلية — البرامج والمبادرات</div>
+    <div class="domain-count" id="programsCount"></div>
+    <button class="task-add-btn" onclick="showProgramForm(null)" style="background:#0d6b52;margin-right:8px">＋ إضافة برنامج</button>
+  </div>
+  <div class="filter-bar" style="margin-bottom:16px">
+    <span class="filter-label">عرض:</span>
+    <span id="programAxisFilters" style="display:contents"><button class="filter-btn active" onclick="filterProgramAxis('all',this)">الكل</button></span>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" placeholder="ابحث عن برنامج..." oninput="searchPrograms(this.value)">
+    </div>
+  </div>
+  <div id="programFormHolder"></div>
+  <div class="indicators-grid" id="programsGrid"></div>
+</section>
+</div>
+<!-- END programs -->
+
+<!-- TRACKING / متابعة التنفيذ -->
+<div data-page="tracking">
+<button class="page-back-btn" onclick="showPage('hub')">← العودة لمركز القيادة</button>
+<section style="max-width:1200px;margin:24px auto 0;padding:0 32px 40px">
+  <div class="domain-header" style="border-color:rgba(0,0,0,.08)">
+    <div class="domain-dot" style="background:#92400e"></div>
+    <div class="domain-title">📈 متابعة التنفيذ</div>
+    <div class="domain-count" id="trackingCount"></div>
+  </div>
+  <p style="font-size:12px;color:var(--slate);margin-bottom:16px;line-height:1.7">
+    هذه الصفحة لا تحتوي إدخال بيانات مستقل — تُحدَّث تلقائياً من بيانات "برامج الخطة التشغيلية".
+    عدّل الحالة أو أضف برنامجاً من هناك، وستظهر التغييرات هنا فوراً.
+  </p>
+  <div style="overflow-x:auto;border-radius:14px;border:1px solid var(--border);background:white;box-shadow:var(--card-shadow)">
+    <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+      <thead>
+        <tr style="background:#f8fafc">
+          <th style="padding:11px 14px;text-align:right;font-weight:800;color:var(--navy);border-bottom:1px solid var(--border)">البرنامج</th>
+          <th style="padding:11px 14px;text-align:right;font-weight:800;color:var(--navy);border-bottom:1px solid var(--border)">المحور</th>
+          <th style="padding:11px 14px;text-align:right;font-weight:800;color:var(--navy);border-bottom:1px solid var(--border)">زمن التنفيذ</th>
+          <th style="padding:11px 14px;text-align:right;font-weight:800;color:var(--navy);border-bottom:1px solid var(--border)">نسبة الإنجاز</th>
+          <th style="padding:11px 14px;text-align:right;font-weight:800;color:var(--navy);border-bottom:1px solid var(--border)">الحالة</th>
+        </tr>
+      </thead>
+      <tbody id="trackingTableBody"></tbody>
+    </table>
+  </div>
+</section>
+</div>
+<!-- END tracking -->
+
+<!-- NAFES / الاختبارات الوطنية -->
+<div data-page="nafes">
+<button class="page-back-btn" onclick="showPage('hub')">← العودة لمركز القيادة</button>
+<section style="max-width:900px;margin:24px auto 0;padding:0 32px 40px">
+  <div class="domain-header" style="border-color:rgba(0,0,0,.08)">
+    <div class="domain-dot" style="background:#8b5cf6"></div>
+    <div class="domain-title">🎯 الاختبارات الوطنية والمحاكية (نافس)</div>
+  </div>
+  <div style="background:white;border-radius:16px;padding:40px 24px;text-align:center;border:1.5px dashed #d8b4fe;box-shadow:var(--card-shadow)">
+    <div style="font-size:38px;margin-bottom:10px">📅</div>
+    <div style="font-weight:800;color:var(--navy);font-size:14px;margin-bottom:6px">بانتظار بيانات الخطة الزمنية</div>
+    <div style="font-size:12.5px;color:var(--slate);line-height:1.7">
+      هذه الصفحة جاهزة معمارياً، وستُبنى فور تزويدنا بجدول الخطة الزمنية<br>
+      للاختبارات المحاكية الأسبوعية لاختبارات نافس.
+    </div>
+  </div>
+</section>
+</div>
+<!-- END nafes -->
 
 <!-- UPDATE MODAL -->
 <div class="modal-overlay" id="updateModal">
@@ -696,6 +864,14 @@ var INDICATORS = [
     steps:['متابعة نظافة الفصول والممرات والساحات','نظافة دورات المياه وتقييمها بانتظام','توزيع حاويات النفايات في مختلف أماكن المدرسة','استمارة متابعة وتقييم مستمرة للنظافة'] }
 ];
 
+// ===================== PROGRAMS SEED (بيانات حقيقية من الخطة التشغيلية 1447هـ) =====================
+// هذه القيم الأولية فقط — تُستخدم لتهيئة التخزين المحلي عند أول تشغيل إذا لم توجد
+// بيانات محفوظة مسبقاً. بعد ذلك، النسخة الحيّة في localStorage (عبر DataStore) هي
+// المرجع الفعلي، وتشمل أي برامج يضيفها المستخدم أو تعديلات يجريها لاحقاً.
+// ربط linkedIndicatorIds تم حسابه بمطابقة نصوص "مؤشر التقويم المدرسي" في الخطة
+// الأصلية مع عناوين INDICATORS أعلاه (مطابقة ضبابية بعتبة تشابه ≥55%، تحقّقت يدوياً).
+var PROGRAMS_SEED = [{"id": "prog_ax1_01", "name": "برنامج تطوير المهارات التدريسية - ورشة عمل (مؤشرات أداء الملاحظة الصفية)", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المعلمون", "timing": "بداية العام الدراسي", "committee": "", "officer": "", "requirements": [{"text": "تصميم حقيبة مؤشرات أداء الملاحظة الصفية", "done": false}, {"text": "تحديد موعد التنفيذ والتعميم على المعلمين", "done": false}, {"text": "تهيئة المقر", "done": false}, {"text": "التوثيق", "done": false}], "kpiTargets": ["حضور 20 معلم"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_02", "name": "إجراء زيارات صفية لجميع المعلمين", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المعلمون", "timing": "خلال عشرة أيام عمل", "committee": "لجنة التميز", "officer": "مدير المدرسة، وكيل شؤون الطلاب، وكيل الشؤون التعليمية، وكيل الشؤون المدرسية، معلم خبير", "requirements": [{"text": "نموذج زيارة صفية وفق مؤشرات أداء الملاحظة الصفية", "done": false}, {"text": "خطة زمنية لتنفيذ الزيارات الصفية", "done": false}, {"text": "تقديم توصيات الزيارة لكل معلم للتحسين والتطوير", "done": false}], "kpiTargets": ["تنفيذ 5 أعضاء للزيارة الصفية", "تنفيذ 60 زيارة صفية"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_03", "name": "تحديد الاحتياجات التدريبية لتطوير الممارسات التدريسية", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المعلمون", "timing": "بعد إجراء الزيارات الصفية", "committee": "لجنة التميز", "officer": "", "requirements": [{"text": "تحديد نقاط القوة والضعف في أداء المعلمين", "done": false}, {"text": "إعداد خطة زمنية للتطوير المهني", "done": false}], "kpiTargets": ["تنفيذ 6 دروس تطبيقية خلال العام الدراسي", "تنفيذ 10 ورش عمل للمعلمين", "تنفيذ 14 تبادل زيارات"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_04", "name": "تصميم آلية تحفيز المعلمين المتميزين في تنفيذ مؤشرات الملاحظة الصفية", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المعلمون", "timing": "مرة في كل شهر على الأقل", "committee": "اللجنة الإدارية", "officer": "", "requirements": [{"text": "استمرار الزيارة الصفية وقياس تحسن أداء المعلمين", "done": false}, {"text": "نشر الدروس المتميزة في حسابات المدرسة", "done": false}, {"text": "تكريم المعلمين المتميزين باستمرار", "done": false}], "kpiTargets": ["تكريم 20 معلماً"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_05", "name": "تصميم آلية متابعة المعلمين في تنفيذ مؤشرات الملاحظة الصفية", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المعلمون", "timing": "مستمر", "committee": "لجنة التميز", "officer": "اللجنة الإدارية", "requirements": [{"text": "تكثيف الزيارات للمعلمين منخفضي الأداء في مؤشرات الملاحظة الصفية والاجتماع معهم لمعرفة احتياجاتهم", "done": false}], "kpiTargets": ["تنفيذ زيارات صفية لـ 3 من منخفضي الأداء"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_06", "name": "متابعة تفعيل المعلمين لمنصات التعلم الرقمية", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المتعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التحصيل الدراسي", "officer": "لجنة التميز", "requirements": [{"text": "متابعة مؤشرات الأداء التعليمية في منصة مدرستي", "done": false}, {"text": "تحسين نسب الدخول والأنشطة التعليمية والواجبات والأنشطة الإثرائية", "done": false}], "kpiTargets": ["تفعيل 100%"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_07", "name": "برنامج رعاية الطالب الموهوب", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "الطلاب الموهوبون", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "معلم الموهوبين أو من ينوب عنه", "requirements": [{"text": "متابعة خطة برامج الموهوبين الوزارية", "done": false}, {"text": "حصر الطلاب الموهوبين بالمدرسة", "done": false}, {"text": "تعريف أولياء أمور الطلاب المستهدفين ببرامج الموهوبين الوزارية", "done": false}, {"text": "تنفيذ برامج تدريبية للموهوبين", "done": false}, {"text": "تكثيف البرامج الإثرائية للموهوبين (أنشطة صفية ولا صفية)", "done": false}], "kpiTargets": ["اكتشاف 50 طالباً موهوباً في مجالات متنوعة", "إجراء اختبار قياس موهبة لـ 70 طالباً متفوقاً دراسياً", "تمثيل 10 طلاب موهوبين للمدرسة في مسابقات إدارة/وزارة التعليم"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax1_08", "name": "برنامج الباحث المبدع", "axis": "التعليم للجميع", "goal": "ضمان وصول التعليم للجميع", "targetGroup": "المتعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التحصيل الدراسي", "officer": "المعلمون", "requirements": [{"text": "تدريب المتعلمين على مهارات البحث العلمي والتعلم الذاتي", "done": false}], "kpiTargets": ["تنفيذ 6 ورش عمل في مهارات البحث العلمي", "تقديم المتعلمين 50 بحثاً علمياً عن طريق تكليفات المعلمين", "إظهار 90% من المتعلمين دافعية ذاتية للتعلم", "توظيف 90% من المتعلمين التقنية الرقمية في البحث والتعلم"], "linkedIndicatorIds": ["5-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_01", "name": "برنامج تعزيز الهوية الوطنية", "axis": "رحلة التعليم", "goal": "تعزيز القيم والهوية الوطنية", "targetGroup": "المجتمع المدرسي", "timing": "طوال العام", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط، المعلمون", "requirements": [{"text": "إعداد خطط المشاركة في المناسبات الوطنية والأيام العالمية", "done": false}, {"text": "استثمار الأحداث الوطنية لتنمية الاعتزاز بالوطن لدى المتعلمين", "done": false}, {"text": "تضمين المنهج الدراسي للحديث عن الانتماء وذكر جهود الوطن", "done": false}, {"text": "تحديد احتياجات المدرسة لتعزيز الشراكات المجتمعية والأعمال التطوعية", "done": false}], "kpiTargets": ["تنفيذ 15 إذاعة مدرسية", "إقامة 8 أنشطة وطنية", "إقامة 2 معرض وطني", "مشاركة 264 طالباً في الأنشطة الصفية واللاصفية", "تنفيذ 10 مشاركات تطوعية"], "linkedIndicatorIds": ["1-1-2-1", "4-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_02", "name": "برنامج السلوك الإيجابي", "axis": "رحلة التعليم", "goal": "تعزيز القيم والهوية الوطنية", "targetGroup": "المتعلمون", "timing": "طوال العام", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط، المعلمون", "requirements": [{"text": "إعداد خطة زمنية لتنفيذ البرامج الداعمة للسلوك الإيجابي", "done": false}, {"text": "تقديم برامج وأنشطة متنوعة", "done": false}], "kpiTargets": ["تنفيذ 8 إذاعات مدرسية", "تنفيذ 3 مشاركات تطوعية"], "linkedIndicatorIds": ["1-1-2-1", "4-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_03", "name": "برنامج القيم الإسلامية والاجتماعية", "axis": "رحلة التعليم", "goal": "تعزيز القيم والهوية الوطنية", "targetGroup": "المتعلمون", "timing": "طوال العام", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط، المعلمون", "requirements": [{"text": "تحديد القيم المستهدفة", "done": false}, {"text": "تكليف المتعلمين بمهام أدائية في التدريس لتعزيز القيم", "done": false}, {"text": "الأنشطة اللاصفية المعززة للقيم", "done": false}, {"text": "تضمين القيم الإسلامية والاجتماعية في المناهج الدراسية", "done": false}, {"text": "تخصيص إذاعات مدرسية للحديث عن القيم", "done": false}, {"text": "إجراء مسابقات قيمية", "done": false}, {"text": "توعية المجتمع المحلي", "done": false}], "kpiTargets": ["تنفيذ 8 إذاعات مدرسية", "إقامة 3 مسابقات قيمية", "تنفيذ 3 مشاركات تطوعية"], "linkedIndicatorIds": ["1-1-2-1", "4-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_04", "name": "معرض التراث الوطني الدائم", "axis": "رحلة التعليم", "goal": "تعزيز القيم والهوية الوطنية", "targetGroup": "المتعلمون", "timing": "طوال العام", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط", "requirements": [{"text": "إشراك جميع المتعلمين في تقديم محتويات المعرض", "done": false}, {"text": "تجهيز مقر المعرض", "done": false}], "kpiTargets": ["إتاحة الفرصة لـ 264 طالباً للمشاركة في المعرض", "مشاركة 30 طالباً في المعرض", "دعوة 264 زائراً للمعرض"], "linkedIndicatorIds": ["1-1-2-1", "4-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_05", "name": "برنامج أهلاً بالعالم", "axis": "رحلة التعليم", "goal": "تعزيز القيم والهوية الوطنية", "targetGroup": "المتعلمون", "timing": "طوال العام", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط", "requirements": [{"text": "تخصيص الإذاعة المدرسية للحديث عن ثقافات الشعوب", "done": false}, {"text": "توعية المتعلمين بآداب التعامل مع العمالة المدرسية", "done": false}, {"text": "تنفيذ ركن مدرسي لعرض الثقافات الأخرى", "done": false}], "kpiTargets": ["تنفيذ 10 إذاعات مدرسية عن الثقافات المتنوعة", "تقديم 20 مشاركة في ركن ثقافات الشعوب", "إظهار 90% من المتعلمين احترامهم للثقافات الأخرى"], "linkedIndicatorIds": ["1-1-2-1", "4-1-2-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_06", "name": "برنامج رفق لخفض العنف", "axis": "رحلة التعليم", "goal": "تطوير بيئة مدرسية آمنة وابتكارية", "targetGroup": "المتعلمون", "timing": "طوال العام الدراسي", "committee": "فريق الأمن والسلامة، لجنة التوجيه الطلابي", "officer": "الوكيل للشؤون المدرسية، الوكيل لشؤون الطلاب، الموجه الصحي، الموجه الطلابي", "requirements": [{"text": "تنفيذ برامج توعوية ووقائية للحد من ظاهرة العنف", "done": false}, {"text": "تشخيص المشكلات السلوكية للطلاب وتقديم برامج توعوية بناءً عليها", "done": false}, {"text": "تفعيل برامج التدخل المبكر وتعديل السلوك والتوجيه والإرشاد", "done": false}, {"text": "إشراك الأسرة وتحقيق الأثر في البيئة المحيطة للمدرسة", "done": false}], "kpiTargets": ["تنفيذ 6 برامج متنوعة للحد من ظاهرة العنف والتنمر", "خفض نسبة التنمر في المدرسة بنسبة 70%", "تنفيذ 6 برامج حوارية لتشجيع المناقشة وتقبل الرأي الآخر", "تنفيذ 4 إذاعات مدرسية عن خطورة العنف والتنمر"], "linkedIndicatorIds": ["2-1-5-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_07", "name": "برنامج تعزيز الانضباط المدرسي", "axis": "رحلة التعليم", "goal": "تطوير بيئة مدرسية آمنة وابتكارية", "targetGroup": "المتعلمون، أولياء الأمور", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل للشؤون المدرسية، الوكيل لشؤون الطلاب، الموجه الطلابي", "requirements": [{"text": "تفعيل مجالس أولياء الأمور", "done": false}, {"text": "تفعيل حسابات المدرسة الإلكترونية والإذاعة المدرسية", "done": false}, {"text": "اللوحات الإرشادية وورش العمل للمتعلمين", "done": false}], "kpiTargets": ["تنفيذ 5 مجالس لأولياء الأمور", "نشر 50 منشوراً", "تنفيذ 7 إذاعات مدرسية عن قواعد السلوك", "تكريم 20 طالباً متميزاً في السلوك والمواظبة", "90% من المتعلمين يظهرون السلوك المنضبط"], "linkedIndicatorIds": ["2-1-5-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_08", "name": "تهيئة المبنى المدرسي للعملية التعليمية", "axis": "رحلة التعليم", "goal": "تطوير بيئة مدرسية آمنة وابتكارية", "targetGroup": "المتعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "فريق الأمن والسلامة", "requirements": [{"text": "دراسة معدل الطلاب مقابل الفصول الدراسية", "done": false}, {"text": "وضع الحلول الممكنة لتخفيف كثافة الطلاب", "done": false}, {"text": "التواصل مع الجهات ذات العلاقة لتطوير المبنى المدرسي", "done": false}, {"text": "تهيئة الساحات للأنشطة الصفية واللاصفية", "done": false}], "kpiTargets": ["تحقيق معدل 30 طالباً فأقل في الفصل الواحد", "تأمين 3 ممرات لذوي الإعاقة", "تأمين 6 مواقف سيارات لذوي الإعاقة", "تأمين 20 بروجكتر للفصول الدراسية", "تأمين زيارة 300 طالب لمعامل المدرسة والملعب بشكل مستمر"], "linkedIndicatorIds": ["2-1-5-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_09", "name": "برنامج المعايير الصحية للمدرسة", "axis": "رحلة التعليم", "goal": "تطوير بيئة مدرسية آمنة وابتكارية", "targetGroup": "المتعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "فريق الأمن والسلامة", "requirements": [{"text": "متابعة الفحوصات الطبية للمتعلمين والوقاية من الأمراض", "done": false}, {"text": "متابعة النظافة العامة وإدارة المخلفات", "done": false}, {"text": "التغذية الصحية والتوعية الصحية", "done": false}, {"text": "خدمات الإرشاد النفسي", "done": false}], "kpiTargets": ["نسبة نظافة البيئة المدرسية", "تنفيذ 4 حملات صحية", "تنفيذ 6 ندوات صحية طوال العام", "الجلسات الإرشادية للطلاب"], "linkedIndicatorIds": ["2-1-5-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax2_10", "name": "برنامج بيئة آمنة مبتكرة", "axis": "رحلة التعليم", "goal": "تطوير بيئة مدرسية آمنة وابتكارية", "targetGroup": "المجتمع المدرسي", "timing": "طوال العام الدراسي", "committee": "فريق الأمن والسلامة", "officer": "اللجنة الإدارية، المعلمون", "requirements": [{"text": "تكليف فريق الأمن والسلامة بالمتابعة الدورية للصيانة", "done": false}, {"text": "تهيئة مرافق المدرسة لتلبية احتياجات المتعلمين وذوي الإعاقة", "done": false}, {"text": "تأمين متطلبات الأمن والسلامة", "done": false}, {"text": "المحافظة على نظافة المبنى المدرسي", "done": false}, {"text": "عقد شراكات مجتمعية لتقديم الخدمات للمجتمع المدرسي", "done": false}, {"text": "تأمين أدوات النظافة في دورات المياه", "done": false}, {"text": "تجهيزات الإسعافات الأولية", "done": false}, {"text": "تهوية ساحة الاصطفاف الصباحي", "done": false}, {"text": "تهيئة ساحة المقصف وأماكن تناول الطعام", "done": false}], "kpiTargets": ["تخصيص موقع لحافلات المدرسة", "تخصيص غرفة للرعاية الصحية", "إجراء 10 جولات صيانة للمبنى كحد أدنى", "تنفيذ 5 حملات توعوية عن النظافة", "توزيع 25 حاوية على المبنى المدرسي", "تنفيذ 15 خطة إخلاء افتراضية", "تخصيص 4 مخارج طوارئ"], "linkedIndicatorIds": ["2-1-5-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax3_01", "name": "برنامج مشاركة الأسرة في تعلم الأبناء", "axis": "جودة التعليم", "goal": "تعزيز شراكة المدارس مع المجتمع", "targetGroup": "أولياء الأمور", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "رائد النشاط أو من ينوب عنه", "requirements": [{"text": "مشاركة الأسرة في الأنشطة الصفية واللاصفية", "done": false}, {"text": "برامج توعية المجتمع المدرسي بدور الأسرة", "done": false}, {"text": "استطلاع رأي أولياء الأمور في تطوير خدمات المدرسة", "done": false}], "kpiTargets": ["إشراك 20 ولي أمر في الأنشطة", "تنفيذ 5 مجالس أولياء أمور", "تقديم 4 استطلاعات رأي لأولياء الأمور", "إرسال تقرير شهري لولي الأمر عن تقدم ابنه", "إرسال الخطط التعليمية أسبوعياً"], "linkedIndicatorIds": ["1-1-3-1", "2-1-3-1", "3-1-3-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax3_02", "name": "برنامج مشاركة أولياء الأمور في نافس", "axis": "جودة التعليم", "goal": "تعزيز شراكة المدارس مع المجتمع", "targetGroup": "أولياء الأمور", "timing": "طوال العام الدراسي", "committee": "لجنة التحصيل الدراسي", "officer": "لجنة التوجيه الطلابي", "requirements": [{"text": "عقد مجالس أولياء أمور", "done": false}, {"text": "إرسال تقارير دورية بعد كل اختبار محاكي", "done": false}, {"text": "دعوة ولي الأمر للمشاركة في تكريم ابنه المتفوق", "done": false}, {"text": "تحفيز المتعلمين وإشعار أولياء أمورهم", "done": false}, {"text": "نشر استطلاع لأولياء الأمور عن اختبارات نافس", "done": false}], "kpiTargets": [], "linkedIndicatorIds": ["1-1-3-1", "2-1-3-1", "3-1-3-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax3_03", "name": "برنامج بذرة خير", "axis": "جودة التعليم", "goal": "تعزيز شراكة المدارس مع المجتمع", "targetGroup": "المجتمع المحلي", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط، المعلمون", "requirements": [{"text": "بناء خطة خاصة بالتطوع", "done": false}, {"text": "تحليل احتياجات المجتمع المحيط بالمدرسة", "done": false}, {"text": "إشراك جميع المتعلمين في الأنشطة التطوعية", "done": false}], "kpiTargets": ["عدد البرامج التطوعية", "عدد المتعلمين المشاركين في الأنشطة التطوعية"], "linkedIndicatorIds": ["1-1-3-1", "2-1-3-1", "3-1-3-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax3_04", "name": "برنامج الأيام العالمية", "axis": "جودة التعليم", "goal": "تعزيز شراكة المدارس مع المجتمع", "targetGroup": "المجتمع المحلي", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "الوكيل لشؤون الطلاب، الموجه الطلابي، رائد النشاط، المعلمون", "requirements": [{"text": "تحديد الأيام التوعوية والعالمية المستهدفة", "done": false}, {"text": "تحديد البرامج المراد تنفيذها", "done": false}, {"text": "عقد الشراكات المجتمعية اللازمة", "done": false}, {"text": "دعوة المجتمع المحلي للحضور والتفاعل", "done": false}, {"text": "توعية المجتمع المحلي", "done": false}], "kpiTargets": ["مشاركة 260 طالباً في الأنشطة التطوعية", "تنفيذ 5 ندوات توعوية", "التعاون مع 5 مؤسسات وطنية"], "linkedIndicatorIds": ["1-1-3-1", "2-1-3-1", "3-1-3-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax3_05", "name": "برنامج متابعة أداء المدرسة في التقويم المدرسي", "axis": "جودة التعليم", "goal": "دعم وتحسين أداء المدارس", "targetGroup": "المجتمع المدرسي", "timing": "طوال العام الدراسي", "committee": "اللجنة الإدارية، لجنة التميز", "officer": "جميع اللجان المدرسية", "requirements": [{"text": "إعداد خطة لمتابعة تنفيذ الخطة التشغيلية", "done": false}, {"text": "عمل استبانات شهرية لقياس رضا أصحاب المصلحة", "done": false}, {"text": "عقد ورش عمل باللجان المدرسية لمناقشة البرامج المنفذة", "done": false}, {"text": "إعداد محاضر اجتماعات المدرسة بشأن المتابعة", "done": false}, {"text": "دراسة نتائج برنامج المتابعة وإجراء التحسينات اللازمة", "done": false}], "kpiTargets": ["تنفيذ 6 تقييمات لمتابعة الخطة التشغيلية", "إجراء 4 استطلاعات لرأي أصحاب المصلحة", "مشاركة 90% من المجتمع المدرسي في تقييم تنفيذ البرامج", "إعداد 6 محاضر اجتماع", "تنفيذ 3 ورش عمل بمنسوبي المدرسة وأولياء الأمور"], "linkedIndicatorIds": [], "status": "not_started", "notes": ""}, {"id": "prog_ax3_06", "name": "برنامج تهيئة المتعلمين للاختبارات الوطنية", "axis": "جودة التعليم", "goal": "تحسين نواتج التعلم", "targetGroup": "طلاب الصف الثالث والسادس ابتدائي", "timing": "طوال العام الدراسي", "committee": "لجنة التحصيل الدراسي", "officer": "المعلمون، لجنة التوجيه الطلابي", "requirements": [{"text": "تفعيل مجتمعات التعلم المهنية وتحليل النتائج", "done": false}, {"text": "ملفات إنجاز الاختبارات الوطنية والاختبارات المحاكية", "done": false}, {"text": "ربط التدريس بالمهارات المستهدفة", "done": false}, {"text": "تدريب جميع طلاب الصفوف على المهارات المستهدفة", "done": false}], "kpiTargets": ["تنفيذ 5 ورش عمل", "تنفيذ 8 زيارات صفية وتبادل زيارات", "تنفيذ 10 اختبارات محاكية للاختبارات الوطنية", "تحسن أداء 85% كحد أدنى من المتعلمين في الاختبارات المحاكية"], "linkedIndicatorIds": [], "status": "not_started", "notes": ""}, {"id": "prog_ax3_07", "name": "البرنامج التحفيزي للطلاب في اختبارات نافس", "axis": "جودة التعليم", "goal": "تحسين نواتج التعلم", "targetGroup": "طلاب الصف الثالث والسادس ابتدائي", "timing": "طوال العام الدراسي", "committee": "لجنة التحصيل الدراسي", "officer": "معلمو المواد المستهدفة، رائد النشاط أو من ينوب عنه", "requirements": [{"text": "تحديد التوقعات العالية من المتعلمين في تنمية مهاراتهم", "done": false}, {"text": "الإعلان عن برنامج تحفيزي لمن يحققون درجات عالية في الاختبارات المحاكية", "done": false}, {"text": "تنفيذ برامج ترفيهية ومسابقات ثقافية بين الفصول", "done": false}, {"text": "تخصيص كأس وجائزة قيمية لأفضل طالب في كل صف", "done": false}, {"text": "تعزيز تقدم المتعلمين بالتكريم أو الطرق العلاجية", "done": false}], "kpiTargets": ["خطة البرنامج التحفيزي", "بيان بمتوسط درجات الاختبارات المحاكية", "عدد الطلاب الذين تم تكريمهم", "عدد المتعلمين الذين حققوا تقدماً في نتائج الاختبارات"], "linkedIndicatorIds": [], "status": "not_started", "notes": ""}, {"id": "prog_ax4_01", "name": "برنامج مجتمعات التعلم المهنية والتطوير المهني المستمر", "axis": "التميز المؤسسي", "goal": "تطوير كفاءات الموارد البشرية والثقافة المؤسسية", "targetGroup": "المعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التميز", "officer": "المعلمون الخبراء", "requirements": [{"text": "تنفيذ زيارات صفية لجميع معلمي المدرسة", "done": false}, {"text": "تشخيص نقاط القوة والضعف في المهارات التدريسية وفق مؤشرات التقويم المدرسي", "done": false}, {"text": "تحديد الاحتياجات التدريبية للمعلمين", "done": false}, {"text": "تنفيذ الأساليب الإشرافية بالمدرسة", "done": false}, {"text": "احتساب ساعات تدريبية أو تقديم شهادات حضور/تنفيذ", "done": false}], "kpiTargets": ["تنفيذ 60 زيارة صفية للمعلمين خلال العام الدراسي", "تنفيذ 20 تبادل زيارات ودرس تطبيقي", "تنفيذ 2 ورش عمل للمعلمين", "تكريم 10 معلمين منفذين لورش العمل", "حضور 20 معلم دورات تدريبية للتطوير المهني"], "linkedIndicatorIds": ["4-1-4-1", "5-1-4-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax4_02", "name": "دورة أخلاقيات مهنة التعليم وقواعد السلوك الوظيفي", "axis": "التميز المؤسسي", "goal": "تطوير كفاءات الموارد البشرية والثقافة المؤسسية", "targetGroup": "المعلمون", "timing": "الأسبوع الثاني في الفصل الأول", "committee": "لجنة التميز", "officer": "المعلمون الخبراء", "requirements": [{"text": "تصميم حقيبة تدريبية", "done": false}, {"text": "تهيئة مقر الدورة التدريبية داخل المدرسة", "done": false}, {"text": "تقديم شهادات حضور/تنفيذ حسب النظام", "done": false}], "kpiTargets": ["حضور 20 معلماً للدورة التدريبية"], "linkedIndicatorIds": ["4-1-4-1", "5-1-4-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax4_03", "name": "برنامج تهيئة المعلمين لاختبارات الرخصة", "axis": "التميز المؤسسي", "goal": "تطوير كفاءات الموارد البشرية والثقافة المؤسسية", "targetGroup": "شاغلو الوظائف التعليمية بالمدرسة", "timing": "شهر قبل موعد الرخصة المهنية", "committee": "لجنة التميز", "officer": "المعلمون الخبراء", "requirements": [{"text": "حصر المعلمين المصدرين للرخصة", "done": false}, {"text": "تقديم دورة في المعايير المهنية للمعلمين", "done": false}, {"text": "تكريم المعلمين الحاصلين على الرخصة المهنية", "done": false}, {"text": "تثقيف المجتمع المدرسي بأهمية الحصول على الرخصة", "done": false}], "kpiTargets": ["حضور 30 معلماً للدورة التدريبية", "حصول 27 على الرخصة المهنية مع نهاية العام الدراسي", "تنفيذ 3 حملات توعوية عن أهمية الرخصة المهنية"], "linkedIndicatorIds": ["4-1-4-1", "5-1-4-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax4_04", "name": "برنامج تنفيذ المعلمين لاستراتيجيات التدريس الحديثة", "axis": "التميز المؤسسي", "goal": "تطوير كفاءات الموارد البشرية والثقافة المؤسسية", "targetGroup": "المعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التميز", "officer": "المعلمون", "requirements": [{"text": "تشخيص واقع المدرسة في تنفيذ استراتيجيات التدريس المتنوعة", "done": false}, {"text": "تنفيذ ورش عمل للتدريب على 10 استراتيجيات (التعلم التعاوني، الإلكتروني، المباشر، التفكير الإبداعي والناقد، فوق المعرفي، الذاتي)", "done": false}, {"text": "متابعة تنفيذ المعلمين للاستراتيجيات والتنويع فيها", "done": false}, {"text": "تحفيز المعلمين المتميزين ونشر دروسهم", "done": false}, {"text": "متابعة إشراك جميع المتعلمين وفق احتياجاتهم", "done": false}], "kpiTargets": ["تنفيذ 21 معلماً لاستراتيجيات تدريس متنوعة", "إشراك ما لا يقل عن 19 طالباً في الدرس بشكل مستمر", "تكريم 10 معلمين متميزين", "مشاركة 21 معلماً في الأساليب الإشرافية الداعمة"], "linkedIndicatorIds": ["4-1-4-1", "5-1-4-1"], "status": "not_started", "notes": ""}, {"id": "prog_ax4_05", "name": "برنامج تنمية المهارات الرقمية لدى المتعلمين", "axis": "التميز المؤسسي", "goal": "تطوير كفاءات الموارد البشرية والثقافة المؤسسية", "targetGroup": "المعلمون، المتعلمون", "timing": "طوال العام الدراسي", "committee": "لجنة التوجيه الطلابي", "officer": "مدير المدرسة، وكيل شؤون الطلاب، الموجه الطلابي، المعلمون", "requirements": [{"text": "متابعة معلمي المدرسة في تفعيل المنصات التعليمية الوزارية", "done": false}, {"text": "تقديم ورشة عمل للمتعلمين للتعريف بمصادر ومراجع البحث الموثوقة", "done": false}, {"text": "تكليف المتعلمين بمهام أدائية مثل الواجبات والبحوث القصيرة والتجارب", "done": false}], "kpiTargets": ["حصول المدرسة على 90% فأكثر في مؤشرات الأداء في منصة مدرستي", "حضور 265 طالباً لورشة عمل مهارات البحث التقني", "تنفيذ 40 مهمة أدائية تقنية كحد أدنى"], "linkedIndicatorIds": ["4-1-4-1", "5-1-4-1"], "status": "not_started", "notes": ""}];
+
 // ===================== IDENTITY (مؤقت — المرحلة 1) =====================
 // المرحلة 1: لا يوجد نظام مستخدمين حقيقي بعد، فالقيمة ثابتة.
 // المرحلة 2: تُستبدل بمعرف حقيقي يُقرأ من /.auth/me بعد ربط Entra ID،
@@ -790,8 +966,414 @@ const DataStore = {
       setSaveStatus('error');
       throw e;
     }
+  },
+  async getPrograms(){
+    var raw = localStorage.getItem('programs');
+    if(raw){
+      try{ return JSON.parse(raw); }catch(e){ /* تجاهل وإعادة التهيئة أدناه */ }
+    }
+    // أول تشغيل: تهيئة من البيانات الأولية الحقيقية (PROGRAMS_SEED)، ثم حفظها كنسخة حيّة
+    var seed = JSON.parse(JSON.stringify(PROGRAMS_SEED)); // نسخة عميقة لمنع تعديل الأصل
+    localStorage.setItem('programs', JSON.stringify(seed));
+    return seed;
+  },
+  async savePrograms(programs){
+    setSaveStatus('saving');
+    try{
+      localStorage.setItem('programs', JSON.stringify(programs));
+      localStorage.setItem('meta_programs', JSON.stringify({updatedAt:Date.now(), updatedBy:getCurrentUserId()}));
+      setSaveStatus('saved');
+      return {ok:true};
+    }catch(e){
+      setSaveStatus('error');
+      throw e;
+    }
   }
 };
+
+// ===================== PROGRAMS: تطبيع ومطابقة نصية بالمؤشرات =====================
+function normalizeArabicText(s){
+  s = (s||'').replace(/[\u064B-\u0652]/g,'');
+  s = s.replace(/[إأآا]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه');
+  return s.replace(/\s+/g,' ').trim();
+}
+function findMatchingIndicatorIds(text, threshold){
+  threshold = threshold || 0.55;
+  var norm = normalizeArabicText(text);
+  var words = norm.split(' ').filter(function(w){return w.length>2;});
+  if(!words.length) return [];
+  var best = null;
+  INDICATORS.forEach(function(ind){
+    var it = normalizeArabicText(ind.title);
+    var overlap = words.filter(function(w){return it.indexOf(w)!==-1;}).length;
+    var ratio = overlap/words.length;
+    if(ratio>=threshold && (!best || ratio>best.ratio)) best = {id:ind.id, ratio:ratio};
+  });
+  return best ? [best.id] : [];
+}
+
+// ===================== PROGRAMS: حساب الحالة والنسبة =====================
+function computeProgramPct(prog){
+  if(!prog.requirements || !prog.requirements.length) return 0;
+  var done = prog.requirements.filter(function(r){return r.done;}).length;
+  return Math.round((done/prog.requirements.length)*100);
+}
+var PROGRAM_STATUS_LABELS = {
+  not_started:'لم يبدأ', in_progress:'قيد التنفيذ', completed:'مكتمل',
+  stalled:'متعثر', delayed:'متأخر'
+};
+
+// ===================== PROGRAMS: التخزين والحالة =====================
+var _programsCache = null; // ذاكرة مؤقتة داخل الجلسة لتفادي قراءات متكررة أثناء التفاعل السريع
+async function getProgramsList(){
+  _programsCache = await DataStore.getPrograms();
+  return _programsCache;
+}
+async function persistPrograms(list){
+  _programsCache = list;
+  await DataStore.savePrograms(list);
+}
+
+var currentProgramAxisFilter = 'all', currentProgramSearch = '';
+
+async function renderPrograms(){
+  var container = document.getElementById('programsGrid');
+  if(!container) return;
+  var list = await getProgramsList();
+  var axes = [];
+  list.forEach(function(p){ if(axes.indexOf(p.axis)===-1) axes.push(p.axis); });
+
+  var axisBar = document.getElementById('programAxisFilters');
+  if(axisBar && !axisBar.dataset.built){
+    var html = '<button class="filter-btn active" onclick="filterProgramAxis(\'all\',this)">الكل</button>';
+    axes.forEach(function(ax){
+      html += '<button class="filter-btn" onclick="filterProgramAxis(\''+escapeAttr(ax)+'\',this)">'+escapeHtml(ax)+'</button>';
+    });
+    axisBar.innerHTML = html;
+    axisBar.dataset.built = '1';
+  }
+
+  var filtered = list.filter(function(p){
+    if(currentProgramAxisFilter!=='all' && p.axis!==currentProgramAxisFilter) return false;
+    if(currentProgramSearch && p.name.indexOf(currentProgramSearch)===-1 && p.goal.indexOf(currentProgramSearch)===-1) return false;
+    return true;
+  });
+
+  container.innerHTML = filtered.map(buildProgramCard).join('');
+  var countEl = document.getElementById('programsCount');
+  if(countEl) countEl.textContent = filtered.length+' من '+list.length+' برنامجاً';
+}
+
+function filterProgramAxis(axis, btn){
+  currentProgramAxisFilter = axis;
+  document.querySelectorAll('#programAxisFilters .filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderPrograms();
+}
+function searchPrograms(q){
+  currentProgramSearch = q;
+  renderPrograms();
+}
+
+function buildProgramCard(prog){
+  var pct = computeProgramPct(prog);
+  var col = getBarColor(pct, prog.id);
+  var st = getStatus(pct);
+  var metaChips = [];
+  if(prog.targetGroup) metaChips.push('<span class="tool-badge">🎯 '+escapeHtml(prog.targetGroup)+'</span>');
+  if(prog.timing) metaChips.push('<span class="tool-badge">🗓 '+escapeHtml(prog.timing)+'</span>');
+  if(prog.committee) metaChips.push('<span class="tool-badge">👥 '+escapeHtml(prog.committee)+'</span>');
+  if(prog.officer) metaChips.push('<span class="tool-badge">🧑‍💼 '+escapeHtml(prog.officer)+'</span>');
+
+  var linkedHtml = '';
+  if(prog.linkedIndicatorIds && prog.linkedIndicatorIds.length){
+    linkedHtml = prog.linkedIndicatorIds.map(function(iid){
+      var ind = INDICATORS.find(function(x){return x.id===iid;});
+      if(!ind) return '';
+      var ipct = loadPct(iid);
+      var icol = getBarColor(ipct, iid);
+      return '<div style="display:flex;align-items:center;gap:8px;font-size:11.5px;padding:6px 9px;background:#f8fafc;border-radius:8px;margin-bottom:5px">'
+        +'<span style="font-weight:800;color:'+icol+';min-width:34px">'+ipct+'%</span>'
+        +'<span style="color:#374151;flex:1">'+escapeHtml(ind.title)+'</span>'
+        +'</div>';
+    }).join('');
+  } else {
+    linkedHtml = '<div style="font-size:11px;color:var(--slate)">لا يوجد ربط بمؤشر تقويم ذاتي بعد</div>';
+  }
+
+  var reqHtml = (prog.requirements||[]).map(function(r, idx){
+    return '<li class="step-item'+(r.done?' checked':'')+'" onclick="toggleProgramRequirement(\''+prog.id+'\','+idx+')">'
+      +'<span class="step-check">'+(r.done?'✓':'')+'</span>'
+      +'<span class="step-text">'+escapeHtml(r.text)+'</span>'
+      +'</li>';
+  }).join('');
+
+  var kpiHtml = (prog.kpiTargets||[]).map(function(k){return '<span class="tool-badge">'+escapeHtml(k)+'</span>';}).join('');
+
+  var statusOptions = Object.keys(PROGRAM_STATUS_LABELS).map(function(k){
+    return '<option value="'+k+'"'+(prog.status===k?' selected':'')+'>'+PROGRAM_STATUS_LABELS[k]+'</option>';
+  }).join('');
+
+  return '<div class="ind-card" id="progcard_'+prog.id+'">'
+    +'<div class="ind-head" onclick="toggleProgramCard(\''+prog.id+'\')">'
+      +'<div class="ind-code" style="background:#334155">'+escapeHtml(prog.axis)+'</div>'
+      +'<div class="ind-title">'+escapeHtml(prog.name)+'</div>'
+      +'<div class="ind-chevron">▼</div>'
+    +'</div>'
+    +'<div class="ind-progress-wrap">'
+      +'<div class="ind-bar-bg"><div class="ind-bar-fill" id="progbar_'+prog.id+'" style="width:'+pct+'%;background:'+col+'"></div></div>'
+      +'<div class="ind-pct" id="progpct_'+prog.id+'" style="color:'+col+'">'+pct+'%</div>'
+    +'</div>'
+    +'<div style="margin:0 18px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
+      +'<select onchange="updateProgramStatus(\''+prog.id+'\',this.value)" onclick="event.stopPropagation()" style="font-family:Cairo,sans-serif;font-size:11px;font-weight:700;border-radius:20px;padding:4px 10px;border:1.5px solid var(--border);color:var(--navy);background:white">'+statusOptions+'</select>'
+    +'</div>'
+    +'<div class="ind-body">'
+      +'<div class="ind-section"><div class="ind-section-title">الهدف</div><div style="font-size:12.5px;color:#374151;line-height:1.6">'+escapeHtml(prog.goal)+'</div></div>'
+      +'<div class="ind-section" style="margin-top:10px"><div class="ind-section-title">بيانات البرنامج</div><div class="ind-tools">'+metaChips.join('')+'</div></div>'
+      +'<div class="ind-section" style="margin-top:10px"><div class="ind-section-title">المؤشرات المرتبطة (الفجوة الحالية)</div>'+linkedHtml+'</div>'
+      +(reqHtml ? '<div class="ind-section" style="margin-top:10px"><div class="ind-section-title">متطلبات التنفيذ — انقر للتحقق</div><ul class="ind-steps">'+reqHtml+'</ul></div>' : '')
+      +(kpiHtml ? '<div class="ind-section" style="margin-top:10px"><div class="ind-section-title">مؤشرات الأداء المستهدفة</div><div class="ind-tools">'+kpiHtml+'</div></div>' : '')
+      +'<div style="display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed #e2e8f0">'
+        +'<button class="task-add-btn" onclick="event.stopPropagation();editProgram(\''+prog.id+'\')" style="background:#1d4ed8">✏️ تعديل</button>'
+        +'<button class="task-add-btn" onclick="event.stopPropagation();deleteProgram(\''+prog.id+'\')" style="background:#dc2626">🗑 حذف</button>'
+      +'</div>'
+    +'</div>'
+  +'</div>';
+}
+
+function toggleProgramCard(id){
+  var card = document.getElementById('progcard_'+id);
+  if(card) card.classList.toggle('expanded');
+}
+
+async function toggleProgramRequirement(progId, idx){
+  var list = _programsCache || await getProgramsList();
+  var prog = list.find(function(p){return p.id===progId;});
+  if(!prog) return;
+  prog.requirements[idx].done = !prog.requirements[idx].done;
+  try{
+    await persistPrograms(list);
+  }catch(e){
+    showToast('❌ تعذّر حفظ التحديث','error');
+    prog.requirements[idx].done = !prog.requirements[idx].done; // تراجع عن التغيير المحلي
+    return;
+  }
+  renderPrograms();
+}
+
+async function updateProgramStatus(progId, status){
+  var list = _programsCache || await getProgramsList();
+  var prog = list.find(function(p){return p.id===progId;});
+  if(!prog) return;
+  var old = prog.status;
+  prog.status = status;
+  try{
+    await persistPrograms(list);
+  }catch(e){
+    showToast('❌ تعذّر حفظ التحديث','error');
+    prog.status = old;
+    return;
+  }
+}
+
+async function deleteProgram(progId){
+  if(!confirm('حذف هذا البرنامج نهائياً؟')) return;
+  var list = _programsCache || await getProgramsList();
+  var newList = list.filter(function(p){return p.id!==progId;});
+  try{
+    await persistPrograms(newList);
+  }catch(e){
+    showToast('❌ تعذّر الحذف','error');
+    return;
+  }
+  showToast('🗑 تم حذف البرنامج');
+  renderPrograms();
+}
+
+// ===================== PROGRAMS: نموذج الإضافة/التعديل =====================
+function showProgramForm(editId){
+  var holder = document.getElementById('programFormHolder');
+  if(!holder) return;
+  var editing = editId ? (_programsCache||[]).find(function(p){return p.id===editId;}) : null;
+  var v = editing || {name:'',axis:'',goal:'',targetGroup:'',timing:'',committee:'',officer:'',requirements:[],kpiTargets:[],linkedIndicatorIds:[]};
+
+  var indicatorCheckboxes = INDICATORS.map(function(ind){
+    var checked = v.linkedIndicatorIds.indexOf(ind.id)!==-1;
+    return '<label class="pf-ind-row" data-search="'+escapeAttr(normalizeArabicText(ind.title))+'" style="display:flex;align-items:flex-start;gap:8px;padding:5px 7px;border-radius:7px;font-size:11.5px;cursor:pointer">'
+      +'<input type="checkbox" value="'+ind.id+'" class="pf-ind-check" '+(checked?'checked':'')+' style="margin-top:2px">'
+      +'<span>'+escapeHtml(ind.title)+' <span style="color:var(--slate)">('+ind.id+')</span></span>'
+      +'</label>';
+  }).join('');
+
+  holder.innerHTML = '<div class="task-form" style="border-color:var(--teal)">'
+    +'<input type="text" id="pf_name" placeholder="اسم البرنامج/المشروع" value="'+escapeAttr(v.name)+'">'
+    +'<div class="task-form-row">'
+      +'<input type="text" id="pf_axis" placeholder="المحور الاستراتيجي" value="'+escapeAttr(v.axis)+'">'
+      +'<input type="text" id="pf_goal" placeholder="الهدف" value="'+escapeAttr(v.goal)+'">'
+    +'</div>'
+    +'<div class="task-form-row">'
+      +'<input type="text" id="pf_target" placeholder="الفئة المستهدفة" value="'+escapeAttr(v.targetGroup)+'">'
+      +'<input type="text" id="pf_timing" placeholder="زمن التنفيذ (مثال: طوال العام الدراسي)" value="'+escapeAttr(v.timing)+'">'
+    +'</div>'
+    +'<div class="task-form-row">'
+      +'<input type="text" id="pf_committee" placeholder="اللجنة المكلفة" value="'+escapeAttr(v.committee)+'">'
+      +'<input type="text" id="pf_officer" placeholder="مسؤول التنفيذ" value="'+escapeAttr(v.officer)+'">'
+    +'</div>'
+    +'<textarea id="pf_requirements" placeholder="متطلبات التنفيذ — كل بند في سطر منفصل" rows="3" style="width:100%;font-family:Cairo,sans-serif;font-size:12px;padding:8px 10px;border:1px solid var(--border);border-radius:7px;outline:none">'+escapeHtml((v.requirements||[]).map(function(r){return r.text||r;}).join('\n'))+'</textarea>'
+    +'<textarea id="pf_kpis" placeholder="مؤشرات الأداء المستهدفة — كل بند في سطر منفصل" rows="2" style="width:100%;font-family:Cairo,sans-serif;font-size:12px;padding:8px 10px;border:1px solid var(--border);border-radius:7px;outline:none">'+escapeHtml((v.kpiTargets||[]).join('\n'))+'</textarea>'
+    +'<div style="border:1px solid var(--border);border-radius:8px;padding:8px">'
+      +'<div style="display:flex;gap:6px;margin-bottom:6px">'
+        +'<input type="text" id="pf_ind_search" placeholder="🔍 ابحث لتصفية قائمة المؤشرات..." oninput="filterProgramIndicatorPicker(this.value)" style="flex:1;font-family:Cairo,sans-serif;font-size:12px;padding:6px 9px;border:1px solid var(--border);border-radius:7px;outline:none">'
+        +'<button type="button" onclick="suggestProgramIndicators()" title="اقتراح تلقائي بناءً على اسم البرنامج والهدف" style="background:#f0f4f8;border:1px solid var(--border);border-radius:7px;padding:6px 10px;font-family:Cairo,sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">🔎 اقتراح تلقائي</button>'
+      +'</div>'
+      +'<div id="pf_ind_list" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:2px">'+indicatorCheckboxes+'</div>'
+    +'</div>'
+    +'<div class="task-form-actions">'
+      +'<button class="task-cancel" onclick="hideProgramForm()">إلغاء</button>'
+      +'<button class="task-save" onclick="saveProgramForm(\''+(editId||'')+'\')">💾 حفظ البرنامج</button>'
+    +'</div>'
+  +'</div>';
+}
+function filterProgramIndicatorPicker(q){
+  var norm = normalizeArabicText(q);
+  document.querySelectorAll('.pf-ind-row').forEach(function(row){
+    row.style.display = (!norm || row.dataset.search.indexOf(norm)!==-1) ? 'flex' : 'none';
+  });
+}
+function suggestProgramIndicators(){
+  var name = document.getElementById('pf_name').value||'';
+  var goal = document.getElementById('pf_goal').value||'';
+  var text = name+' '+goal;
+  if(!text.trim()){ showToast('اكتب اسم البرنامج أو الهدف أولاً','error'); return; }
+  var suggestedIds = findMatchingIndicatorIds(text, 0.4); // عتبة أخف هنا لأن النص أقصر من نص الخطة الأصلية
+  if(!suggestedIds.length){ showToast('لم يتم العثور على مؤشر مطابق — اختر يدوياً'); return; }
+  suggestedIds.forEach(function(id){
+    var cb = document.querySelector('.pf-ind-check[value="'+id+'"]');
+    if(cb) cb.checked = true;
+  });
+  showToast('✅ تم اقتراح '+suggestedIds.length+' مؤشر — راجعها قبل الحفظ');
+}
+function hideProgramForm(){
+  var holder = document.getElementById('programFormHolder');
+  if(holder) holder.innerHTML = '';
+}
+function editProgram(id){
+  showProgramForm(id);
+  var holder = document.getElementById('programFormHolder');
+  if(holder) holder.scrollIntoView({behavior:'smooth', block:'center'});
+}
+async function saveProgramForm(editId){
+  var name = (document.getElementById('pf_name').value||'').trim();
+  if(!name){ alert('يرجى إدخال اسم البرنامج'); return; }
+  var reqLines = (document.getElementById('pf_requirements').value||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  var kpiLines = (document.getElementById('pf_kpis').value||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  var linkedIds = Array.prototype.slice.call(document.querySelectorAll('.pf-ind-check:checked')).map(function(el){return el.value;});
+
+  var list = _programsCache || await getProgramsList();
+  var existing = editId ? list.find(function(p){return p.id===editId;}) : null;
+
+  // الحفاظ على حالة "تحقّق" البنود المتطابقة نصياً عند التعديل، بدل تصفيرها كلها
+  var oldDoneMap = {};
+  if(existing){ (existing.requirements||[]).forEach(function(r){ oldDoneMap[r.text] = r.done; }); }
+
+  var progData = {
+    id: editId || generateId('prog'),
+    name: name,
+    axis: (document.getElementById('pf_axis').value||'').trim(),
+    goal: (document.getElementById('pf_goal').value||'').trim(),
+    targetGroup: (document.getElementById('pf_target').value||'').trim(),
+    timing: (document.getElementById('pf_timing').value||'').trim(),
+    committee: (document.getElementById('pf_committee').value||'').trim(),
+    officer: (document.getElementById('pf_officer').value||'').trim(),
+    requirements: reqLines.map(function(t){return {text:t, done: oldDoneMap[t]||false};}),
+    kpiTargets: kpiLines,
+    linkedIndicatorIds: linkedIds,
+    status: existing ? existing.status : 'not_started',
+    notes: existing ? existing.notes : ''
+  };
+
+  if(existing){
+    var idx = list.indexOf(existing);
+    list[idx] = progData;
+  } else {
+    list.push(progData);
+  }
+
+  try{
+    await persistPrograms(list);
+  }catch(e){
+    showToast('❌ تعذّر حفظ البرنامج','error');
+    return;
+  }
+  showToast(existing ? '✅ تم تحديث البرنامج' : '✅ تم إضافة البرنامج');
+  hideProgramForm();
+  document.getElementById('programAxisFilters').dataset.built=''; // إعادة بناء أزرار المحاور لو أُضيف محور جديد
+  document.getElementById('programAxisFilters').innerHTML='';
+  renderPrograms();
+}
+
+// ===================== TRACKING: مشتقة بالكامل من بيانات البرامج =====================
+async function renderTracking(){
+  var tbody = document.getElementById('trackingTableBody');
+  if(!tbody) return;
+  var list = await getProgramsList();
+  var statusColors = {not_started:'#94a3b8', in_progress:'#3b82f6', completed:'#10b981', stalled:'#f59e0b', delayed:'#ef4444'};
+
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:20px;text-align:center;color:var(--slate)">لا توجد برامج بعد — أضفها من صفحة الخطة التشغيلية</td></tr>';
+  } else {
+    tbody.innerHTML = list.map(function(p){
+      var pct = computeProgramPct(p);
+      var col = getBarColor(pct, p.id);
+      var sc = statusColors[p.status]||'#94a3b8';
+      return '<tr>'
+        +'<td style="padding:10px 14px;border-bottom:1px solid #f0f4f8;color:var(--navy);font-weight:700">'+escapeHtml(p.name)+'</td>'
+        +'<td style="padding:10px 14px;border-bottom:1px solid #f0f4f8;color:var(--slate)">'+escapeHtml(p.axis||'—')+'</td>'
+        +'<td style="padding:10px 14px;border-bottom:1px solid #f0f4f8;color:var(--slate)">'+escapeHtml(p.timing||'—')+'</td>'
+        +'<td style="padding:10px 14px;border-bottom:1px solid #f0f4f8;font-weight:800;color:'+col+'">'+pct+'%</td>'
+        +'<td style="padding:10px 14px;border-bottom:1px solid #f0f4f8"><span style="background:'+sc+'22;color:'+sc+';padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">'+(PROGRAM_STATUS_LABELS[p.status]||p.status)+'</span></td>'
+        +'</tr>';
+    }).join('');
+  }
+  var countEl = document.getElementById('trackingCount');
+  if(countEl) countEl.textContent = list.length+' برنامجاً';
+}
+
+// ===================== HUB: مؤشرات مختصرة على الأزرار =====================
+async function renderHubSummary(){
+  var totalEl = document.getElementById('hubStatSelfeval');
+  if(totalEl && INDICATORS.length){
+    var avg = Math.round(INDICATORS.reduce(function(s,i){return s+loadPct(i.id);},0)/INDICATORS.length);
+    totalEl.textContent = 'متوسط الإنجاز: '+avg+'%';
+  }
+  var progList = await getProgramsList();
+  var progEl = document.getElementById('hubStatPrograms');
+  if(progEl) progEl.textContent = progList.length+' برنامجاً مسجَّلاً';
+  var trackEl = document.getElementById('hubStatTracking');
+  if(trackEl){
+    var delayed = progList.filter(function(p){return p.status==='delayed'||p.status==='stalled';}).length;
+    trackEl.textContent = delayed ? (delayed+' برنامجاً يحتاج متابعة') : 'لا توجد برامج متأخرة';
+  }
+}
+
+// ===================== قفز سريع + زر العودة للأعلى =====================
+function jumpToSection(id){
+  var el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function scrollToTop(){
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function syncTopbarHeightVar(){
+  var tb = document.querySelector('.topbar');
+  if(tb) document.documentElement.style.setProperty('--topbar-h', tb.offsetHeight+'px');
+}
+window.addEventListener('load', syncTopbarHeightVar);
+window.addEventListener('resize', syncTopbarHeightVar);
+window.addEventListener('scroll', function(){
+  var btn = document.getElementById('backToTopBtn');
+  if(btn) btn.classList.toggle('visible', window.scrollY > 400);
+});
 
 // ===================== STORAGE =====================
 // نظام جديد: نخزّن مصفوفة الخطوات المحققة، والنسبة تُحسب تلقائياً
@@ -1497,6 +2079,10 @@ async function confirmReset(){
 
 // INIT
 render();
+renderPrograms();
+renderTracking();
+renderHubSummary();
+syncTopbarHeightVar();
 
 
 // ===== EXPORT/IMPORT للنسب فقط: أُزيلت (المرحلة الحالية) =====
@@ -1639,7 +2225,8 @@ setTimeout(function(){
 </div>
 
 <!-- SCHOOL RECORDS SECTION -->
-<section style="max-width:1200px;margin:30px auto 20px;padding:0 16px">
+<div data-page="selfeval">
+<section style="max-width:1200px;margin:30px auto 20px;padding:0 16px" id="recordsSection">
   <div style="background:linear-gradient(135deg,#0f1b35,#1d2e5a);border-radius:16px;padding:22px 24px;margin-bottom:18px;color:white;position:relative;overflow:hidden">
     <div style="position:absolute;top:-30px;left:-30px;width:120px;height:120px;border:1px solid rgba(255,255,255,0.06);border-radius:50%"></div>
     <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:2">
@@ -1775,6 +2362,8 @@ if(document.readyState === 'loading'){
   renderRecords();
 }
 </script>
+</div>
+<!-- END selfeval (records) -->
 
 <!-- FOOTER -->
 <footer class="site-footer">
@@ -1784,6 +2373,7 @@ if(document.readyState === 'loading'){
   </div>
 </footer>
 
+<button id="backToTopBtn" onclick="scrollToTop()" title="العودة للأعلى" aria-label="العودة للأعلى">↑</button>
 
 </body>
 </html>
